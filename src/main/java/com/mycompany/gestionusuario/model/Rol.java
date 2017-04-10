@@ -4,11 +4,13 @@
  */
 package com.mycompany.gestionusuario.model;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  *
@@ -23,6 +25,9 @@ public class Rol {
     int id;
     @Column(name = "descripcion")
     String descripcion;
+    @Version
+    @Column(name = "LAST_UPDATED_TIME")
+    private Date updatedTime;
 
     public Rol() {
     }
@@ -46,6 +51,14 @@ public class Rol {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     @Override

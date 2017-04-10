@@ -6,10 +6,13 @@ package com.mycompany.gestionusuario.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -23,24 +26,32 @@ import javax.persistence.Transient;
 public class Empleado {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "APODO", length = 15)
     private String apodo;
+    @Column(name = "EMAIL", length = 50)
     private String email;
-    @Column(name = "NRO_CELULAR")
+    @Column(name = "NRO_CELULAR", length = 50)
     private String nroCelular;
-    @Column(name = "NRO_TELEFONO")
+    @Column(name = "NRO_TELEFONO", length = 50)
     private String nroTelefono;
-    @Column(name = "DIRECCION")
+    @Column(name = "DIRECCION", length = 150)
     private String direccion;
     @Transient
     private String password;
     @Temporal(javax.persistence.TemporalType.DATE)
+    @Column(name = "FECHA_INGRESO")
     private Date fechaIngreso;
     @Transient
     private Rol rol;
+    @ManyToMany(cascade = CascadeType.ALL)
     private ArrayList<Rol> roles;
+    @Column(name = "OBSERVACION", length = 150)
     private String observacion;
+
+    public Empleado() {
+    }
 
     public String getObservacion() {
         return observacion;
