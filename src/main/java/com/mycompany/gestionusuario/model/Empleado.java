@@ -22,7 +22,7 @@ import javax.persistence.Transient;
  * @author Ramiro Ferreira
  */
 @Entity(name = "Empleado")
-@Table(name = "EMPLEADO")
+@Table(name = "empleado")
 public class Empleado {
 
     @Id
@@ -45,8 +45,8 @@ public class Empleado {
     private Date fechaIngreso;
     @Transient
     private Rol rol;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private ArrayList<Rol> roles;
+    /*@ManyToMany(cascade = CascadeType.ALL)
+    private ArrayList<Rol> roles;*/
     @Column(name = "OBSERVACION", length = 150)
     private String observacion;
 
@@ -132,12 +132,12 @@ public class Empleado {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-
+/*
     public ArrayList<Rol> getRoles() {
         return roles;
     }
 
     public void setRoles(ArrayList<Rol> roles) {
         this.roles = roles;
-    }
+    }*/
 }

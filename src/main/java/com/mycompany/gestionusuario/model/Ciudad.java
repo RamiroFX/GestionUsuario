@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @author Ramiro Ferreira
  */
 @Entity(name = "Ciudad")
-@Table(name = "CIUDAD")
+@Table(name = "ciudad")
 public class Ciudad {
 
     @Id
@@ -28,8 +28,7 @@ public class Ciudad {
     public Ciudad() {
     }
 
-    public Ciudad(int id, String descripcion) {
-        this.id = id;
+    public Ciudad(String descripcion) {
         this.descripcion = descripcion;
     }
 

@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @author Ramiro Ferreira
  */
 @Entity(name = "Pais")
-@Table(name = "PAIS")
+@Table(name = "pais")
 public class Pais {
 
     @Id

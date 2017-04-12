@@ -16,8 +16,8 @@ import javax.persistence.Version;
  *
  * @author Ramiro Ferreira
  */
-@Entity(name = "Rol")
-@Table(name = "ROL")
+@Entity(name = "Roles")
+@Table(name = "roles")
 public class Rol {
 
     @Id

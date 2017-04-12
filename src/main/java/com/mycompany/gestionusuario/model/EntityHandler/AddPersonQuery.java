@@ -10,6 +10,8 @@ import com.mycompany.gestionusuario.model.EstadoCivil;
 import com.mycompany.gestionusuario.model.Genero;
 import com.mycompany.gestionusuario.model.Pais;
 import com.mycompany.gestionusuario.model.Rol;
+import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,6 +25,20 @@ public class AddPersonQuery extends AbstractQuery {
     public void insertCiudad(Ciudad ciudad) {
         open();
         EntityManagerHandler.INSTANCE.getEntityManager().persist(ciudad);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public List<Ciudad> getAllCiudad() {
+        open();
+        String jpql = "SELECT s FROM Ciudad s";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<Ciudad> ciudadList = query.getResultList();
+        return ciudadList;
+    }
+
+    public void removeCiudad(Ciudad ciudad) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().remove(ciudad);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
