@@ -3,7 +3,7 @@
     <persistence-unit name="user-persistence-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="hibernate.archive.autodetection" value="class" />
+            <!--<property name="hibernate.archive.autodetection" value="class" />
        		 
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
@@ -14,17 +14,18 @@
  
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
-            <property name="use_sql_comments" value="true" />
+            <property name="use_sql_comments" value="true" /> -->
             
             
             
-            <!--<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>-->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test"/>-->
-            <!--<property name="javax.persistence.jdbc.user" value="sa"/>-->
-            <!--<property name="javax.persistence.jdbc.password" value=""/>-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/Desktop/test"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
             
-            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
-            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
     </persistence-unit>
 </persistence>

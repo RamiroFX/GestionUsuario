@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestionusuario.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity(name = "Roles")
 @Table(name = "roles")
-public class Rol {
+public class Rol implements Serializable {
 
     @Id
     @GeneratedValue
@@ -32,7 +33,7 @@ public class Rol {
     public Rol() {
     }
 
-    public Rol(int id, String descripcion) {
+    public Rol(String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }

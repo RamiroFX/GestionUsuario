@@ -9,6 +9,7 @@ import com.mycompany.gestionusuario.model.Ciudad;
 import com.mycompany.gestionusuario.model.EstadoCivil;
 import com.mycompany.gestionusuario.model.Genero;
 import com.mycompany.gestionusuario.model.Pais;
+import com.mycompany.gestionusuario.model.Persona;
 import com.mycompany.gestionusuario.model.Rol;
 import java.util.List;
 import javax.persistence.Query;
@@ -63,6 +64,12 @@ public class AddPersonQuery extends AbstractQuery {
     public void insertEstadoCivil(EstadoCivil estadoCivil) {
         open();
         EntityManagerHandler.INSTANCE.getEntityManager().persist(estadoCivil);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void insertPersona(Persona persona) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().persist(persona);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 

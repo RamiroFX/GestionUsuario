@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestionusuario.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ import javax.persistence.Transient;
  */
 @Entity(name = "Empleado")
 @Table(name = "empleado")
-public class Empleado {
+public class Empleado implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

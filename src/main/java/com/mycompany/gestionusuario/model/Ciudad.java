@@ -4,6 +4,7 @@
  */
 package com.mycompany.gestionusuario.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity(name = "Ciudad")
 @Table(name = "ciudad")
-public class Ciudad {
+public class Ciudad implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
