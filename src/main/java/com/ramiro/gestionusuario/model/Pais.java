@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model;
+package com.ramiro.gestionusuario.model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -15,21 +15,20 @@ import javax.persistence.Table;
  *
  * @author Ramiro Ferreira
  */
-@Entity(name = "Genero")
-@Table(name = "genero")
-public class Genero implements Serializable {
+@Entity(name = "Pais")
+@Table(name = "pais")
+public class Pais implements Serializable {
 
     @Id
     @GeneratedValue
     int id;
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     String descripcion;
 
-    public Genero() {
+    public Pais() {
     }
 
-    public Genero(String descripcion) {
-        this.id = id;
+    public Pais(String descripcion) {
         this.descripcion = descripcion;
     }
 

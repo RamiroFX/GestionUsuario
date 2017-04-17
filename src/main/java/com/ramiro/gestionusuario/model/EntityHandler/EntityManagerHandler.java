@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model.EntityHandler;
+package com.ramiro.gestionusuario.model.EntityHandler;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,9 +18,9 @@ public enum EntityManagerHandler {
 
     INSTANCE;
 
-    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("user-persistence-unit");
-    private EntityManager entityManager = entityManagerFactory.createEntityManager();
-    private EntityTransaction entityTransaction = entityManager.getTransaction();
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("user-persistence-unit");
+    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private final EntityTransaction entityTransaction = entityManager.getTransaction();
 
     public void open() {
         if (!entityTransaction.isActive()) {

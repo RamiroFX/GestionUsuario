@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model;
+package com.ramiro.gestionusuario.model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -22,14 +22,13 @@ public class EstadoCivil implements Serializable {
     @Id
     @GeneratedValue
     int id;
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     String descripcion;
 
     public EstadoCivil() {
     }
 
     public EstadoCivil(String descripcion) {
-        this.id = id;
         this.descripcion = descripcion;
     }
 

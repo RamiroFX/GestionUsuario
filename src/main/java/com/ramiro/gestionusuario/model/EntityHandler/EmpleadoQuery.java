@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model.EntityHandler;
+package com.ramiro.gestionusuario.model.EntityHandler;
 
-import com.mycompany.gestionusuario.model.Ciudad;
-import com.mycompany.gestionusuario.model.EstadoCivil;
-import com.mycompany.gestionusuario.model.Genero;
-import com.mycompany.gestionusuario.model.Pais;
-import com.mycompany.gestionusuario.model.Persona;
-import com.mycompany.gestionusuario.model.Rol;
+import com.ramiro.gestionusuario.model.Ciudad;
+import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EstadoCivil;
+import com.ramiro.gestionusuario.model.Genero;
+import com.ramiro.gestionusuario.model.Pais;
+import com.ramiro.gestionusuario.model.Persona;
+import com.ramiro.gestionusuario.model.Rol;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -18,9 +19,9 @@ import javax.persistence.Query;
  *
  * @author Ramiro
  */
-public class AddPersonQuery extends AbstractQuery {
+public class EmpleadoQuery extends AbstractQuery {
 
-    public AddPersonQuery() {
+    public EmpleadoQuery() {
     }
 
     public void insertCiudad(Ciudad ciudad) {
@@ -70,6 +71,12 @@ public class AddPersonQuery extends AbstractQuery {
     public void insertPersona(Persona persona) {
         open();
         EntityManagerHandler.INSTANCE.getEntityManager().persist(persona);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void insertEmpleado(Empleado employ) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().persist(employ);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 

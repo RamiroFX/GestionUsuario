@@ -2,39 +2,33 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model;
+package com.ramiro.gestionusuario.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 /**
  *
  * @author Ramiro Ferreira
  */
-@Entity(name = "Roles")
-@Table(name = "roles")
-public class Rol implements Serializable {
+@Entity(name = "Genero")
+@Table(name = "genero")
+public class Genero implements Serializable {
 
     @Id
     @GeneratedValue
     int id;
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     String descripcion;
-    @Version
-    @Column(name = "LAST_UPDATED_TIME")
-    private Date updatedTime;
 
-    public Rol() {
+    public Genero() {
     }
 
-    public Rol(String descripcion) {
-        this.id = id;
+    public Genero(String descripcion) {
         this.descripcion = descripcion;
     }
 
@@ -52,14 +46,6 @@ public class Rol implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
     }
 
     @Override

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.util;
+package com.ramiro.gestionusuario.util;
 
 /**
  *

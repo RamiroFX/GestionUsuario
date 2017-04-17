@@ -2,18 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model;
+package com.ramiro.gestionusuario.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -24,11 +24,9 @@ import javax.persistence.Transient;
  */
 @Entity(name = "Empleado")
 @Table(name = "empleado")
-public class Empleado implements Serializable {
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
+public class Empleado extends Persona implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     @Column(name = "APODO", length = 15)
     private String apodo;
     @Column(name = "EMAIL", length = 50)
@@ -46,12 +44,27 @@ public class Empleado implements Serializable {
     private Date fechaIngreso;
     @Transient
     private Rol rol;
-    /*@ManyToMany(cascade = CascadeType.ALL)
-    private ArrayList<Rol> roles;*/
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rol> roles;
     @Column(name = "OBSERVACION", length = 150)
     private String observacion;
 
     public Empleado() {
+        this.roles = new ArrayList<>();
+    }
+
+    public Empleado(String apodo, String email, String nroCelular, String nroTelefono, String direccion, String password, Date fechaIngreso, Rol rol, List<Rol> roles, String observacion, String nombre, String apellido, Date fechaNacimiento, int cedula, Genero sexo, Ciudad ciudad, Pais pais, EstadoCivil estadoCivil) {
+        super(nombre, apellido, fechaNacimiento, cedula, sexo, ciudad, pais, estadoCivil);
+        this.apodo = apodo;
+        this.email = email;
+        this.nroCelular = nroCelular;
+        this.nroTelefono = nroTelefono;
+        this.direccion = direccion;
+        this.password = password;
+        this.fechaIngreso = fechaIngreso;
+        this.rol = rol;
+        this.roles = roles;
+        this.observacion = observacion;
     }
 
     public String getObservacion() {
@@ -118,14 +131,6 @@ public class Empleado implements Serializable {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Rol getRol() {
         return rol;
     }
@@ -133,12 +138,21 @@ public class Empleado implements Serializable {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-/*
-    public ArrayList<Rol> getRoles() {
+
+    public List<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(ArrayList<Rol> roles) {
+    public void setRoles(List<Rol> roles) {
         this.roles = roles;
-    }*/
+    }
+
+    public void agregarRol(Rol rol) {
+        this.roles.add(rol);
+    }
+
+    public void quitarRol(Rol rol) {
+        this.roles.remove(rol);
+    }
+
 }

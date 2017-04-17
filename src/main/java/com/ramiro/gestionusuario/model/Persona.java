@@ -2,17 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gestionusuario.model;
+package com.ramiro.gestionusuario.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -22,24 +24,32 @@ import javax.persistence.Temporal;
  */
 @Entity(name = "Persona")
 @Table(name = "persona")
-public class Persona {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Persona implements Serializable {
+
+    private static long SerialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "persona_id")
+    @Column(name = "id")
     private Long id;
     private String nombre;
     private String apellido;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaNacimiento;
+    @Column(name = "cedula", unique = true, nullable = false, length = 15)
     private int cedula;
-    @OneToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_sexo", nullable = false, updatable = false)
     private Genero sexo;
-    @OneToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_ciudad", nullable = false, updatable = false)
     private Ciudad ciudad;
-    @OneToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_pais", nullable = false, updatable = false)
     private Pais pais;
-    @OneToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_estadoCivil", nullable = false, updatable = false)
     private EstadoCivil estadoCivil;
 
     public Persona() {
@@ -126,6 +136,14 @@ public class Persona {
 
     public void setEstadoCivil(EstadoCivil estadoCivil) {
         this.estadoCivil = estadoCivil;
+    }
+
+    public static long getSerialVersionUID() {
+        return SerialVersionUID;
+    }
+
+    public static void setSerialVersionUID(long SerialVersionUID) {
+        Persona.SerialVersionUID = SerialVersionUID;
     }
 
 }
