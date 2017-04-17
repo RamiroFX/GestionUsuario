@@ -12,6 +12,9 @@ import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Persona;
 import com.ramiro.gestionusuario.model.Rol;
+import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -24,13 +27,19 @@ public class EmpleadoQuery extends AbstractQuery {
     public EmpleadoQuery() {
     }
 
-    public void insertCiudad(Ciudad ciudad) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(ciudad);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    public void getCityColumns() {
+        Field[] cols = Ciudad.class.getFields();
+        ArrayList columns = new ArrayList();
+        for (Field field : cols) {
+            columns.add(field.getName());
+        }
     }
 
-    public List<Ciudad> getAllCiudad() {
+    public ResultSet readAllCities() {
+        return null;
+    }
+
+    public List<Ciudad> getAllCities() {
         open();
         String jpql = "SELECT s FROM Ciudad s";
         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
@@ -38,21 +47,53 @@ public class EmpleadoQuery extends AbstractQuery {
         return ciudadList;
     }
 
-    public void removeCiudad(Ciudad ciudad) {
+    public void insertCity(Ciudad ciudad) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().persist(ciudad);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void updateCity(Ciudad ciudad, String descripcion) {
+        open();
+        ciudad.setDescripcion(descripcion);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void removeCity(Ciudad ciudad) {
         open();
         EntityManagerHandler.INSTANCE.getEntityManager().remove(ciudad);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public List<Pais> getAllCountries() {
+        open();
+        String jpql = "SELECT p FROM Pais P";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<Pais> countryList = query.getResultList();
+        return countryList;
+    }
+
+    public void insertCountry(Pais pais) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().persist(pais);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void updateCountry(Pais pais, String descripcion) {
+        open();
+        pais.setDescripcion(descripcion);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void removeCountry(Pais pais) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().remove(pais);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
     public void insertSexo(Genero genero) {
         open();
         EntityManagerHandler.INSTANCE.getEntityManager().persist(genero);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void insertPais(Pais pais) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(pais);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
@@ -79,5 +120,4 @@ public class EmpleadoQuery extends AbstractQuery {
         EntityManagerHandler.INSTANCE.getEntityManager().persist(employ);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
-
 }

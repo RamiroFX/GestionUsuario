@@ -21,7 +21,7 @@ package com.ramiro.gestionusuario.ui.inicio;
  * JDesktopPane que será el encargado de contener a las ventanas internas
  * JInternalFrame.
  */
-import com.ramiro.gestionusuario.util.AppConstants;
+import com.ramiro.gestionusuario.util.AppUIConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,8 +49,8 @@ public class App extends JFrame implements ActionListener {
      * parametros iniciales
      */
     public App() {
-        super(AppConstants.APP_TITLE);
-        setName(AppConstants.APP_NAME);
+        super(AppUIConstants.APP_TITLE);
+        setName(AppUIConstants.APP_NAME);
         initializeVariables();
         setJMenuBar(barraMenu);
         constructLayout();
@@ -67,10 +67,10 @@ public class App extends JFrame implements ActionListener {
         this.barraMenu = new BarraMenu(this);
         this.desktop = new JDesktopPane();
 
-        jtfUsuario = new JTextField(AppConstants.CONNECTED_AS);
+        jtfUsuario = new JTextField(AppUIConstants.CONNECTED_AS);
         jtfUsuario.setEditable(false);
 
-        jtbBarraHerramientas = new JToolBar(AppConstants.TOOL_BAR_NAME, 0);
+        jtbBarraHerramientas = new JToolBar(AppUIConstants.TOOL_BAR_NAME, 0);
         jtbBarraHerramientas.setPreferredSize(new Dimension(this.getWidth(), 30));
         jtbBarraHerramientas.setFloatable(false);
         jtbBarraHerramientas.add(jtfUsuario);
@@ -95,7 +95,7 @@ public class App extends JFrame implements ActionListener {
     }
 
     public void setJtfUsuario(String jtfUsuario) {
-        this.jtfUsuario.setText(AppConstants.CONNECTED_AS + jtfUsuario);
+        this.jtfUsuario.setText(AppUIConstants.CONNECTED_AS + jtfUsuario);
     }
 
     public JInternalFrame getCurrentJIF() {

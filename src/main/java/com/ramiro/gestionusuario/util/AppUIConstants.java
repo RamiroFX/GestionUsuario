@@ -9,7 +9,7 @@ package com.ramiro.gestionusuario.util;
  *
  * @author Ramiro
  */
-public class AppConstants {
+public class AppUIConstants {
 
     public static final String APP_TITLE = "App";
     public static final String APP_NAME = "app";

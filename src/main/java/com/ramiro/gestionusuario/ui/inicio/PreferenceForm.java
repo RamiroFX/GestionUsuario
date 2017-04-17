@@ -5,7 +5,7 @@
  */
 package com.ramiro.gestionusuario.ui.inicio;
 
-import com.ramiro.gestionusuario.util.AppConstants;
+import com.ramiro.gestionusuario.util.AppUIConstants;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -50,7 +50,7 @@ public class PreferenceForm extends JDialog implements ActionListener {
 //    private RemoveStudentCallback removeStudentCallback;
 
     public PreferenceForm(JFrame parent) {
-        super(parent, AppConstants.PREFERENCE_FORM_TITLE, false);
+        super(parent, AppUIConstants.PREFERENCE_FORM_TITLE, false);
         initializeVariables();
         loadData();
         constructLayout();
@@ -64,14 +64,13 @@ public class PreferenceForm extends JDialog implements ActionListener {
 
         UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
         studentList.addAll(Arrays.asList(lafInfo));
-        studentList.stream().forEach((studentList1) -> {
-            lookAndFellComboBox.addItem(studentList1);
-        });
-
+        for (UIManager.LookAndFeelInfo lookAndFeelInfo : lafInfo) {
+            lookAndFellComboBox.addItem(lookAndFeelInfo);
+        }
     }
 
     private void setWindows(JFrame parent) {
-        this.setSize(AppConstants.PREFERENCE_WINDOWS_SIZE_WIDTH, AppConstants.PREFERENCE_WINDOWS_SIZE_HEIGHT);
+        this.setSize(AppUIConstants.PREFERENCE_WINDOWS_SIZE_WIDTH, AppUIConstants.PREFERENCE_WINDOWS_SIZE_HEIGHT);
         this.setLocationRelativeTo(parent);
     }
 
@@ -79,9 +78,9 @@ public class PreferenceForm extends JDialog implements ActionListener {
         /*this.removeStudentFormService = new RemoveStudentFormServiceImpl();*/
         this.lookAndFellComboBox = new JComboBox<>();
         this.lookAndFellComboBox.setRenderer(new ColorCellRenderer());
-        this.selectButton = new JButton(AppConstants.PREFERENCE_SELECT_BTN);
-        this.cancelButton = new JButton(AppConstants.PREFERENCE_CANCEL_BTN);
-        this.studentName = new JLabel(AppConstants.PREFERENCE_LNF);
+        this.selectButton = new JButton(AppUIConstants.PREFERENCE_SELECT_BTN);
+        this.cancelButton = new JButton(AppUIConstants.PREFERENCE_CANCEL_BTN);
+        this.studentName = new JLabel(AppUIConstants.PREFERENCE_LNF);
 
         this.selectButton.addActionListener(this);
         this.cancelButton.addActionListener(this);
@@ -93,7 +92,7 @@ public class PreferenceForm extends JDialog implements ActionListener {
 
         int space = 15;
         Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-        Border titleBorder = BorderFactory.createTitledBorder(AppConstants.PREFERENCE_FORM_TITLE);
+        Border titleBorder = BorderFactory.createTitledBorder(AppUIConstants.PREFERENCE_FORM_TITLE);
 
         studentInfoPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, titleBorder));
 

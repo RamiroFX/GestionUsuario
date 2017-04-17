@@ -8,6 +8,7 @@ import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Rol;
 import com.ramiro.gestionusuario.ui.inicio.App;
+import java.lang.annotation.Annotation;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.Column;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -31,9 +33,7 @@ public class Main {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         SwingUtilities.invokeLater(new Runnable() {
-
             @Override
             public void run() {
                 new App();
@@ -45,10 +45,10 @@ public class Main {
         cargarBD();
         EmpleadoQuery addPersonQuery = new EmpleadoQuery();
 
-        List<Ciudad> ciudadList = addPersonQuery.getAllCiudad();
-        ciudadList.stream().forEach((ciudadList1) -> {
-            System.out.println(ciudadList1.toString());
-        });
+        List<Ciudad> ciudadList = addPersonQuery.getAllCities();
+        for (Ciudad ciudad : ciudadList) {
+            System.out.println(ciudad.toString());
+        }
     }
 
     public static void cargarBD() {
@@ -58,17 +58,17 @@ public class Main {
         Ciudad ciudad2 = new Ciudad("ASUNCION");
         Ciudad ciudad3 = new Ciudad("LAMBARE");
         Ciudad ciudad4 = new Ciudad("SAN LORENZO");
-        addPersonQuery.insertCiudad(ciudad1);
-        addPersonQuery.insertCiudad(ciudad2);
-        addPersonQuery.insertCiudad(ciudad3);
-        addPersonQuery.insertCiudad(ciudad4);
+        addPersonQuery.insertCity(ciudad1);
+        addPersonQuery.insertCity(ciudad2);
+        addPersonQuery.insertCity(ciudad3);
+        addPersonQuery.insertCity(ciudad4);
 
         Pais pais1 = new Pais("SIN ASIGNAR");
         Pais pais2 = new Pais("ARGENTINA");
         Pais pais3 = new Pais("PARAGUAY");
-        addPersonQuery.insertPais(pais1);
-        addPersonQuery.insertPais(pais2);
-        addPersonQuery.insertPais(pais3);
+        addPersonQuery.insertCountry(pais1);
+        addPersonQuery.insertCountry(pais2);
+        addPersonQuery.insertCountry(pais3);
 
         EstadoCivil estadoCivil1 = new EstadoCivil("SIN ASIGNAR");
         EstadoCivil estadoCivil2 = new EstadoCivil("SOLTERO/A");

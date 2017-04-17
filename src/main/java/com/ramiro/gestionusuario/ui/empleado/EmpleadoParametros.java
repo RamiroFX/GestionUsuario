@@ -4,11 +4,17 @@
  */
 package com.ramiro.gestionusuario.ui.empleado;
 
+import com.ramiro.gestionusuario.model.Pais;
+import com.ramiro.gestionusuario.service.EmployParamService;
+import com.ramiro.gestionusuario.serviceImpl.EmployParamServiceImpl;
 import com.ramiro.gestionusuario.ui.inicio.App;
+import com.ramiro.gestionusuario.ui.inicio.ArrayListTableModel;
+import com.ramiro.gestionusuario.util.ParamEmployUIConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,18 +33,27 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     private JPanel jpSouth;
     JScrollPane jspPais, jspCiudad;
     JTable jtPais, jtCiudad;
+    EmployParamService service;
 
     public EmpleadoParametros(App app) {
         super(app, true);
-        setTitle("Parametros");
-        setSize(new java.awt.Dimension(400, 300));
-        setLocationRelativeTo(app);
-        initComponents();
-        inicializarVista();
-        agregarListener();
+        constructWindows(app);
+        initializeVariables();
+        loadData();
+        addListener();
     }
 
-    private void inicializarVista() {
+    private void constructWindows(App app) {
+        setTitle(ParamEmployUIConstants.TITLE);
+        setSize(new java.awt.Dimension(400, 300));
+        setLocationRelativeTo(app);
+    }
+
+    private void loadData() {
+        List<Pais> countryList = this.service.getAllCountries();
+        ArrayListTableModel altm = new ArrayListTableModel();
+//        this.tablePanel.setTableModel(studentList);
+//        this.tablePanel.updateTable();
     }
 
     private void initMarcas() {
@@ -54,16 +69,17 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         jspCiudad = new JScrollPane(jtCiudad);
     }
 
-    private void initComponents() {
+    private void initializeVariables() {
+        service = new EmployParamServiceImpl();
         initMarcas();
         initCategorias();
         jtpCenter = new JTabbedPane();
-        jtpCenter.add("País", jspPais);
-        jtpCenter.add("Ciudad", jspCiudad);
+        jtpCenter.add(ParamEmployUIConstants.COUNTRY_TITLE, jspPais);
+        jtpCenter.add(ParamEmployUIConstants.CITY_TITLE, jspCiudad);
         jpSouth = new JPanel();
-        jbCrear = new javax.swing.JButton("Agregar");
-        jbModificar = new javax.swing.JButton("Modificar");
-        jbEliminar = new javax.swing.JButton("Eliminar");
+        jbCrear = new javax.swing.JButton(ParamEmployUIConstants.ADD_BTN);
+        jbModificar = new javax.swing.JButton(ParamEmployUIConstants.UPDATE_BTN);
+        jbEliminar = new javax.swing.JButton(ParamEmployUIConstants.DELETE_BTN);
         jpSouth.add(jbCrear);
         jpSouth.add(jbModificar);
         jpSouth.add(jbEliminar);
@@ -72,7 +88,7 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         getContentPane().add(jpSouth, "dock south");
     }
 
-    private void agregarListener() {
+    private void addListener() {
         jtpCenter.addMouseListener(this);
         jtCiudad.addMouseListener(this);
         jtPais.addMouseListener(this);
@@ -94,30 +110,27 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     }
 
     private void agregarCiudad(String ciudad) {
-
     }
 
     private void modificarCiudad(String ciudad) {
-
     }
 
     private void eliminarCiudad() {
-
     }
 
     private void createButtonHandler() {
         if (this.jtpCenter.getSelectedComponent().equals(this.jspPais)) {
-            String marca = JOptionPane.showInputDialog(this, "Inserte el nombre del país", "Insertar país", JOptionPane.PLAIN_MESSAGE);
-            if (marca != null) {
-                if (!marca.isEmpty()) {
-                    agregarPais(marca);
+            String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_CREATE_MESSAGE, "Insertar país", JOptionPane.PLAIN_MESSAGE);
+            if (pais != null) {
+                if (!pais.isEmpty()) {
+                    agregarPais(pais);
                 }
             }
         } else if (this.jtpCenter.getSelectedComponent().equals(this.jspCiudad)) {
-            String rubro = JOptionPane.showInputDialog(this, "Inserte el nombre de la ciudad", "Insertar ciudad", JOptionPane.PLAIN_MESSAGE);
-            if (rubro != null) {
-                if (!rubro.isEmpty()) {
-                    agregarCiudad(rubro);
+            String city = JOptionPane.showInputDialog(this, ParamEmployUIConstants.CITY_CREATE_MESSAGE, "Insertar ciudad", JOptionPane.PLAIN_MESSAGE);
+            if (city != null) {
+                if (!city.isEmpty()) {
+                    agregarCiudad(city);
                 }
             }
         }
@@ -125,14 +138,14 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     private void updateButtonHandler() {
         if (this.jtpCenter.getSelectedComponent().equals(this.jspPais)) {
-            String pais = JOptionPane.showInputDialog(this, "Inserte el nombre del país", "Insertar pais", JOptionPane.PLAIN_MESSAGE);
+            String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_UPDATE_MESSAGE, ParamEmployUIConstants.COUNTRY_UPDATE_MESSAGE_TITLE, JOptionPane.PLAIN_MESSAGE);
             if (pais != null) {
                 if (!pais.isEmpty()) {
                     modificarPais(pais);
                 }
             }
         } else if (this.jtpCenter.getSelectedComponent().equals(this.jspCiudad)) {
-            String ciudad = JOptionPane.showInputDialog(this, "Inserte el nombre de la ciudad", "Insertar ciudad", JOptionPane.PLAIN_MESSAGE);
+            String ciudad = JOptionPane.showInputDialog(this, ParamEmployUIConstants.CITY_UPDATE_MESSAGE, ParamEmployUIConstants.CITY_UPDATE_MESSAGE_TITLE, JOptionPane.PLAIN_MESSAGE);
             if (ciudad != null) {
                 if (!ciudad.isEmpty()) {
                     modificarCiudad(ciudad);

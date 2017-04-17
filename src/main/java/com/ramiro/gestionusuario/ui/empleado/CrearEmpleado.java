@@ -4,6 +4,7 @@
  */
 package com.ramiro.gestionusuario.ui.empleado;
 
+import com.ramiro.gestionusuario.util.CreateEmployUIConstants;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -40,10 +41,10 @@ public class CrearEmpleado extends javax.swing.JDialog {
     public CrearEmpleado(JFrame frame) {
         super(frame, true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Crear usuario");
+        setTitle(CreateEmployUIConstants.TITLE);
         setAlwaysOnTop(false);
-        setName("Crear usuario");
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setName(CreateEmployUIConstants.NAME);
+        setPreferredSize(new java.awt.Dimension(CreateEmployUIConstants.WIDTH, CreateEmployUIConstants.HEIGHT));
         setResizable(false);
         initComponents();
     }
@@ -56,10 +57,10 @@ public class CrearEmpleado extends javax.swing.JDialog {
         initPaneNorth();
         initPanelSouth();
         jtpCenter = new JTabbedPane();
-        jtpCenter.add("Datos Generales", jpDatosPersonales1);
-        jtpCenter.add("Datos Personales", jpDatosPersonales2);
-        jtpCenter.add("Datos Empresariales", jpDatosEmpresariales);
-        jtpCenter.add("Roles", jpRol);
+        jtpCenter.add(CreateEmployUIConstants.GENERAL_DATA, jpDatosPersonales1);
+        jtpCenter.add(CreateEmployUIConstants.PERSONAL_DATA, jpDatosPersonales2);
+        jtpCenter.add(CreateEmployUIConstants.CORP_DATA, jpDatosEmpresariales);
+        jtpCenter.add(CreateEmployUIConstants.ROL_DATA, jpRol);
         getContentPane().add(jpNorth, java.awt.BorderLayout.NORTH);
         getContentPane().add(jtpCenter, java.awt.BorderLayout.CENTER);
         getContentPane().add(jpSouth, java.awt.BorderLayout.SOUTH);
@@ -73,29 +74,29 @@ public class CrearEmpleado extends javax.swing.JDialog {
         jpDatosPersonales1.setLayout(new java.awt.GridLayout(7, 4));
         int swingConstant = javax.swing.SwingConstants.CENTER;
         //Labels, textfields, combobox
-        jlNombre = new javax.swing.JLabel("Nombre (*)");
+        jlNombre = new javax.swing.JLabel(CreateEmployUIConstants.NAME_FIELD);
         jlNombre.setHorizontalAlignment(swingConstant);
         jtfNombre = new javax.swing.JTextField();
-        jlApellido = new javax.swing.JLabel("Apellido (*)");
+        jlApellido = new javax.swing.JLabel(CreateEmployUIConstants.LAST_NAME_FIELD);
         jtfApellido = new javax.swing.JTextField();
         jlApellido.setHorizontalAlignment(swingConstant);
-        jlFechaNacimiento = new javax.swing.JLabel("Fecha de nacimiento");
+        jlFechaNacimiento = new javax.swing.JLabel(CreateEmployUIConstants.BIRTH_DATE_FIELD);
         jlFechaNacimiento.setHorizontalAlignment(swingConstant);
         dccFechaNacimiento = new JDateChooser();
         dccFechaNacimiento.setDateFormatString("dd/MM/yyyy");
-        jlCedulaIdentidad = new javax.swing.JLabel("Cedula de identidad (**)");
+        jlCedulaIdentidad = new javax.swing.JLabel(CreateEmployUIConstants.PIN_FIELD);
         jlCedulaIdentidad.setHorizontalAlignment(swingConstant);
         jftCedulaIdentidad = new javax.swing.JFormattedTextField();
-        jlNacionalidad = new javax.swing.JLabel("Nacionalidad");
+        jlNacionalidad = new javax.swing.JLabel(CreateEmployUIConstants.NATIONALITY_FIELD);
         jlNacionalidad.setHorizontalAlignment(swingConstant);
         jcbNacionalidad = new javax.swing.JComboBox();
-        jlCiudad = new javax.swing.JLabel("Ciudad");
+        jlCiudad = new javax.swing.JLabel(CreateEmployUIConstants.CITY_FIELD);
         jlCiudad.setHorizontalAlignment(swingConstant);
         jcbCiudad = new javax.swing.JComboBox();
-        jlGenero = new javax.swing.JLabel("Género");
+        jlGenero = new javax.swing.JLabel(CreateEmployUIConstants.GENDER_FIELD);
         jlGenero.setHorizontalAlignment(swingConstant);
         jcbGenero = new javax.swing.JComboBox();
-        jlEstadoCivil = new javax.swing.JLabel("Estado civil");
+        jlEstadoCivil = new javax.swing.JLabel(CreateEmployUIConstants.CIVIL_STATE_FIELD);
         jlEstadoCivil.setHorizontalAlignment(swingConstant);
         jcbEstadoCivil = new javax.swing.JComboBox();
 
@@ -147,16 +148,16 @@ public class CrearEmpleado extends javax.swing.JDialog {
         jpDatosPersonales2 = new javax.swing.JPanel(new MigLayout());
         //int swingConstant = javax.swing.SwingConstants.CENTER;
         //Labels, Textfields & textarea
-        jlNroTelefono = new javax.swing.JLabel("Número de telefono");
+        jlNroTelefono = new javax.swing.JLabel(CreateEmployUIConstants.PHONE_FIELD);
         //jlNroTelefono.setHorizontalAlignment(swingConstant);
         jtfNroTelefono = new javax.swing.JTextField();
-        jlNroCelular = new javax.swing.JLabel("Número de celular");
+        jlNroCelular = new javax.swing.JLabel(CreateEmployUIConstants.CELLPHONE_FIELD);
         //jlNroCelular.setHorizontalAlignment(swingConstant);
         jtfNroCelular = new javax.swing.JTextField();
         jtaObservacion = new javax.swing.JTextArea();
         jspObservacion = new javax.swing.JScrollPane(jtaObservacion);
-        jspObservacion.setBorder(javax.swing.BorderFactory.createTitledBorder("Observaciones"));
-        jlDireccion = new javax.swing.JLabel("Dirección");
+        jspObservacion.setBorder(javax.swing.BorderFactory.createTitledBorder(CreateEmployUIConstants.OBSERVATION_FIELD));
+        jlDireccion = new javax.swing.JLabel(CreateEmployUIConstants.ADRESS_FIELD);
         //jlDireccion.setHorizontalAlignment(swingConstant);
         jtfDireccion = new javax.swing.JTextField();
         //Adding components into panel
@@ -188,24 +189,24 @@ public class CrearEmpleado extends javax.swing.JDialog {
         //Labels, textfields, buttons, combobox, list & passwordfields
         jlAlias = new javax.swing.JLabel();
         jlAlias.setHorizontalAlignment(swingConstant);
-        jlAlias.setText("Alias (**)");
+        jlAlias.setText(CreateEmployUIConstants.ALIAS_FIELD);
         jtfAlias = new javax.swing.JTextField();
         jlFechaIngreso = new javax.swing.JLabel();
         jlFechaIngreso.setHorizontalAlignment(swingConstant);
-        jlFechaIngreso.setText("Fecha de ingreso");
+        jlFechaIngreso.setText(CreateEmployUIConstants.ENTER_DATE_FIELD);
         dccFechaIngreso = new JDateChooser();
         dccFechaIngreso.setDateFormatString("dd/MM/yyyy");
         jlPassword = new javax.swing.JLabel();
         jlPassword.setHorizontalAlignment(swingConstant);
-        jlPassword.setText("Contraseña (*)");
+        jlPassword.setText(CreateEmployUIConstants.PASSWORD_FIELD);
         jpassword1 = new javax.swing.JPasswordField();
         jlRepetirPassword = new javax.swing.JLabel();
         jlRepetirPassword.setHorizontalAlignment(swingConstant);
-        jlRepetirPassword.setText("Repetir contraseña (*)");
+        jlRepetirPassword.setText(CreateEmployUIConstants.REPEAT_PASSWORD_FIELD);
         jpassword2 = new javax.swing.JPasswordField();
         jlCorreoElectronico = new javax.swing.JLabel();
         jlCorreoElectronico.setHorizontalAlignment(swingConstant);
-        jlCorreoElectronico.setText("Correo electrónico");
+        jlCorreoElectronico.setText(CreateEmployUIConstants.EMAIL_FIELD);
         jtfCorreoElectronico = new javax.swing.JTextField();
         jpDatosEmpresariales.add(jlAlias);
         jpDatosEmpresariales.add(jtfAlias);
@@ -261,24 +262,24 @@ public class CrearEmpleado extends javax.swing.JDialog {
 
     private void initPaneNorth() {
         jpNorth = new javax.swing.JPanel(new MigLayout("center"));
-        jpNorth.add(new JLabel("Los campos marcados con un asterisco(*) son obligatorios."), "wrap");
-        jpNorth.add(new JLabel("Los campos marcados con dos asteriscos(**) son únicos."));
+        jpNorth.add(new JLabel(CreateEmployUIConstants.INFO1), "wrap");
+        jpNorth.add(new JLabel(CreateEmployUIConstants.INFO2));
     }
 
     private void initPaneRol() {
         //Panel
         jpRol = new javax.swing.JPanel(new java.awt.GridLayout(1, 2));
-        jbAgregarRol = new javax.swing.JButton("Agregar");
-        jbQuitarRol = new javax.swing.JButton("Quitar");
+        jbAgregarRol = new javax.swing.JButton(CreateEmployUIConstants.ADD_BTN);
+        jbQuitarRol = new javax.swing.JButton(CreateEmployUIConstants.REMOVE_BTN);
 
         jtRolesSeleccionados = new JTable();
         jtRolesSeleccionados.getTableHeader().setReorderingAllowed(false);
         jtRolesDisponibles = new JTable();
         jtRolesDisponibles.getTableHeader().setReorderingAllowed(false);
         JScrollPane jspRolesSeleccionados = new JScrollPane(jtRolesSeleccionados);
-        jspRolesSeleccionados.setBorder(javax.swing.BorderFactory.createTitledBorder("Roles seleccionados(*)"));
+        jspRolesSeleccionados.setBorder(javax.swing.BorderFactory.createTitledBorder(CreateEmployUIConstants.SELECTED_ROL_SUBTITLE));
         JScrollPane jspRolesDisponibles = new JScrollPane(jtRolesDisponibles);
-        jspRolesDisponibles.setBorder(javax.swing.BorderFactory.createTitledBorder("Roles disponibles"));
+        jspRolesDisponibles.setBorder(javax.swing.BorderFactory.createTitledBorder(CreateEmployUIConstants.AVAILVABLE_ROL_SUBTITLE));
 
         javax.swing.JPanel left = new javax.swing.JPanel(new java.awt.BorderLayout());
         javax.swing.JPanel right = new javax.swing.JPanel(new java.awt.BorderLayout());
@@ -294,8 +295,8 @@ public class CrearEmpleado extends javax.swing.JDialog {
     private void initPanelSouth() {
         jpSouth = new javax.swing.JPanel();
         jpSouth.setBorder(new javax.swing.border.EtchedBorder());
-        jbAceptar = new javax.swing.JButton("Aceptar");
-        jbCancelar = new javax.swing.JButton("Cancelar");
+        jbAceptar = new javax.swing.JButton(CreateEmployUIConstants.ACEPT_BTN);
+        jbCancelar = new javax.swing.JButton(CreateEmployUIConstants.CANCEL_BTN);
         jpSouth.add(jbAceptar);
         jpSouth.add(jbCancelar);
     }
