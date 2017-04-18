@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -17,6 +19,11 @@ import javax.persistence.Table;
  */
 @Entity(name = "Pais")
 @Table(name = "pais")
+@NamedQueries({
+    @NamedQuery(name = "pais.getAll", query = "SELECT p FROM Pais p"),
+    @NamedQuery(name = "pais.getPaisById", query = "SELECT p FROM Pais p WHERE p.id = :id"),
+    @NamedQuery(name = "pais.getPaisByDescripcion", query = "SELECT p FROM Pais p WHERE p.descripcion = :descripcion"),
+    @NamedQuery(name = "pais.existByDescripcion", query = "SELECT COUNT(p.id) FROM Pais p WHERE p.descripcion = :descripcion")})
 public class Pais implements Serializable {
 
     @Id

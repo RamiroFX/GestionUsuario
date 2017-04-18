@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -33,6 +34,17 @@ public class EmpleadoQuery extends AbstractQuery {
         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
         List<Ciudad> ciudadList = query.getResultList();
         return ciudadList;
+    }
+
+    public boolean existCountry(String descripcion) {
+        open();
+        TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("pais.getPaisByDescripcion", Pais.class);
+        typedQuery.setParameter("descripcion", descripcion);
+        if (typedQuery.getSingleResult() == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void insertCity(Ciudad ciudad) {

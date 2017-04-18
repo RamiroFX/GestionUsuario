@@ -126,5 +126,7 @@ public class Main {
         employ.setObservacion("Sin observaciones");
 
         addPersonQuery.insertEmpleado(employ);
+
+        System.out.println(addPersonQuery.existCountry("ARGENTINAa"));
     }
 }

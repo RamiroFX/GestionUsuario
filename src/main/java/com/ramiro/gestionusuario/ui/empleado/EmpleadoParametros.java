@@ -4,12 +4,13 @@
  */
 package com.ramiro.gestionusuario.ui.empleado;
 
+import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.service.EmployParamService;
 import com.ramiro.gestionusuario.serviceImpl.EmployParamServiceImpl;
+import com.ramiro.gestionusuario.tableModel.CiudadTableModel;
+import com.ramiro.gestionusuario.tableModel.PaisTableModel;
 import com.ramiro.gestionusuario.ui.inicio.App;
-import com.ramiro.gestionusuario.ui.inicio.ArrayListTableModel;
-import com.ramiro.gestionusuario.ui.inicio.TableModel;
 import com.ramiro.gestionusuario.util.ParamEmployUIConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,8 +36,8 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     private JPanel jpSouth;
     JScrollPane jspPais, jspCiudad;
     JTable jtPais, jtCiudad;
-    TableModel model;
-    ArrayListTableModel modelo;
+    PaisTableModel paisTableModel;
+    CiudadTableModel ciudadTableModel;
     EmployParamService service;
 
     public EmpleadoParametros(App app) {
@@ -55,13 +56,13 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     private void loadData() {
         List<Pais> countryList = this.service.getAllCountries();
-        ArrayList cols = new ArrayList();
-        cols.add("Descripcion");
-        modelo = new ArrayListTableModel((ArrayList) countryList, cols);
-        modelo.setDataArray((ArrayList) countryList, cols);
-        //model = new TableModel((ArrayList) countryList, cols);
-        jtPais.setModel(modelo);
-        modelo.fireTableDataChanged();
+        List<Ciudad> ciudadList = this.service.getAllCities();
+        paisTableModel.setPaisList(countryList);
+        ciudadTableModel.setCiudadList(ciudadList);
+        jtPais.setModel(paisTableModel);
+        jtCiudad.setModel(ciudadTableModel);
+        paisTableModel.fireTableDataChanged();
+        ciudadTableModel.fireTableDataChanged();
     }
 
     private void initMarcas() {
@@ -79,6 +80,8 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     private void initializeVariables() {
         service = new EmployParamServiceImpl();
+        paisTableModel = new PaisTableModel();
+        ciudadTableModel = new CiudadTableModel();
         initMarcas();
         initCategorias();
         jtpCenter = new JTabbedPane();
@@ -105,12 +108,12 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         jbEliminar.addActionListener(this);
     }
 
-    private void agregarPais(String pais) {
-        //IMPLEMENTAR
+    private void agregarPais(Pais pais) {
+        service.insertCountry(pais);
     }
 
     private void modificarPais(String pais) {
-        //IMPLEMENTAR
+        service.updateCity(null, pais);
     }
 
     private void eliminarPais() {
@@ -131,7 +134,8 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
             String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_CREATE_MESSAGE, "Insertar país", JOptionPane.PLAIN_MESSAGE);
             if (pais != null) {
                 if (!pais.isEmpty()) {
-                    agregarPais(pais);
+                    Pais p = new Pais(pais);
+                    agregarPais(p);
                 }
             }
         } else if (this.jtpCenter.getSelectedComponent().equals(this.jspCiudad)) {

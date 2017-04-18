@@ -6,7 +6,6 @@ package com.ramiro.gestionusuario.service;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Pais;
-import java.sql.ResultSet;
 import java.util.List;
 
 /**
