@@ -9,11 +9,13 @@ import com.ramiro.gestionusuario.service.EmployParamService;
 import com.ramiro.gestionusuario.serviceImpl.EmployParamServiceImpl;
 import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.ui.inicio.ArrayListTableModel;
+import com.ramiro.gestionusuario.ui.inicio.TableModel;
 import com.ramiro.gestionusuario.util.ParamEmployUIConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,6 +35,8 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     private JPanel jpSouth;
     JScrollPane jspPais, jspCiudad;
     JTable jtPais, jtCiudad;
+    TableModel model;
+    ArrayListTableModel modelo;
     EmployParamService service;
 
     public EmpleadoParametros(App app) {
@@ -51,9 +55,13 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     private void loadData() {
         List<Pais> countryList = this.service.getAllCountries();
-        ArrayListTableModel altm = new ArrayListTableModel();
-//        this.tablePanel.setTableModel(studentList);
-//        this.tablePanel.updateTable();
+        ArrayList cols = new ArrayList();
+        cols.add("Descripcion");
+        modelo = new ArrayListTableModel((ArrayList) countryList, cols);
+        modelo.setDataArray((ArrayList) countryList, cols);
+        //model = new TableModel((ArrayList) countryList, cols);
+        jtPais.setModel(modelo);
+        modelo.fireTableDataChanged();
     }
 
     private void initMarcas() {

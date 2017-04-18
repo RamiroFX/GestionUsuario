@@ -44,7 +44,7 @@ public class EmpleadoUIConstants {
     public static final String USER_MANAGMENT_EMAIL_CORP = "Correo electrónico";
     public static final String USER_MANAGMENT_ROL_CORP = "Roles";
     //NUMBER CONSTANTS
-    public static final int WINDOWS_SIZE_WIDTH = 800;
+    public static final int WINDOWS_SIZE_WIDTH = 900;
     public static final int WINDOWS_SIZE_HEIGHT = 600;
     //FILTRO DE BUSQUEDA
     public static final String USER_MANAGMENT_SEARCH_FIELD_NAME = "buscar persona";

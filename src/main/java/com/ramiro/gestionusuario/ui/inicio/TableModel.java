@@ -5,9 +5,7 @@
  */
 package com.ramiro.gestionusuario.ui.inicio;
 
-import com.ramiro.gestionusuario.model.Pais;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -16,11 +14,16 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModel extends AbstractTableModel {
 
-    List<Pais> countryList;
-    private String[] colNames = {"Id", "Descripcion"};
+    ArrayList data;
+    private String[] colNames;
 
     public TableModel() {
-        countryList = new ArrayList<Pais>();
+
+    }
+
+    public TableModel(ArrayList data, String[] colNames) {
+        this.data = data;
+        this.colNames = colNames;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class TableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return this.countryList.size();
+        return this.data.size();
     }
 
     @Override
@@ -39,23 +42,13 @@ public class TableModel extends AbstractTableModel {
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int colIndex) {
-        Pais pais = this.countryList.get(rowIndex);
-        switch (colIndex) {
-            case 0: {
-                return pais.getId();
-            }
-            case 1: {
-                return pais.getDescripcion();
-            }
-            default: {
-                return null;
-            }
-        }
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        ArrayList rowArray = (ArrayList) data.get(rowIndex);
+        return rowArray.get(columnIndex);
     }
 
-    public void setCountryList(List<Pais> countryList) {
-        this.countryList = countryList;
+    public void setList(ArrayList list) {
+        this.data = list;
     }
 
     public void updateTable() {

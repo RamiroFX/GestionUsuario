@@ -25,6 +25,7 @@ import com.ramiro.gestionusuario.util.AppUIConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
@@ -32,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
@@ -43,6 +45,8 @@ public class App extends JFrame implements ActionListener {
     private JTextField jtfUsuario = null;
     private ImageIcon icono;
     private BarraMenu barraMenu;
+    private JLabel timeLabel;
+    private Timer timer;
 
     /**
      * Constructor que se encarga de inicializar la aplicación definiendo los
@@ -56,6 +60,7 @@ public class App extends JFrame implements ActionListener {
         constructLayout();
         setIconImage(icono.getImage());
         constructAppWindow();
+        startTimer();
     }
 
     private void initializeVariables() {
@@ -70,10 +75,14 @@ public class App extends JFrame implements ActionListener {
         jtfUsuario = new JTextField(AppUIConstants.CONNECTED_AS);
         jtfUsuario.setEditable(false);
 
-        jtbBarraHerramientas = new JToolBar(AppUIConstants.TOOL_BAR_NAME, 0);
+        this.timeLabel = new JLabel();
+        this.timer = new Timer(timeLabel);
+        jtbBarraHerramientas = new JToolBar(AppUIConstants.TOOL_BAR_NAME, JToolBar.HORIZONTAL);
         jtbBarraHerramientas.setPreferredSize(new Dimension(this.getWidth(), 30));
         jtbBarraHerramientas.setFloatable(false);
         jtbBarraHerramientas.add(jtfUsuario);
+        jtbBarraHerramientas.addSeparator();
+        jtbBarraHerramientas.add(timeLabel);
     }
 
     private void constructAppWindow() {
@@ -111,11 +120,27 @@ public class App extends JFrame implements ActionListener {
         setCurrentJIF(mdi);
         mdi.setVisible(true);
         mdi.moveToFront();
+        mdi.setLocation(centrarPantalla(mdi));
         try {
             mdi.setSelected(true);
         } catch (PropertyVetoException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public Point centrarPantalla(JInternalFrame i) {
+        /*con este codigo centramos el panel en el centro del contenedor
+         la anchura del contenedor menos la anchura de nuestro componente divido a 2
+         lo mismo con la altura.*/
+        return new Point((this.getWidth() - i.getWidth()) / 2, (this.getHeight() - i.getHeight() - 45) / 2);
+    }
+
+    public void startTimer() {
+        this.timer.start();
+    }
+
+    public void stopTimer() {
+        this.timer.setRunning(false);
     }
 
     @Override

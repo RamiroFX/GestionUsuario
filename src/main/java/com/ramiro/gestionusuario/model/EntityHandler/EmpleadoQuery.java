@@ -27,18 +27,6 @@ public class EmpleadoQuery extends AbstractQuery {
     public EmpleadoQuery() {
     }
 
-    public void getCityColumns() {
-        Field[] cols = Ciudad.class.getFields();
-        ArrayList columns = new ArrayList();
-        for (Field field : cols) {
-            columns.add(field.getName());
-        }
-    }
-
-    public ResultSet readAllCities() {
-        return null;
-    }
-
     public List<Ciudad> getAllCities() {
         open();
         String jpql = "SELECT s FROM Ciudad s";
@@ -67,7 +55,7 @@ public class EmpleadoQuery extends AbstractQuery {
 
     public List<Pais> getAllCountries() {
         open();
-        String jpql = "SELECT p FROM Pais P";
+        String jpql = "SELECT p FROM Pais p";
         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
         List<Pais> countryList = query.getResultList();
         return countryList;

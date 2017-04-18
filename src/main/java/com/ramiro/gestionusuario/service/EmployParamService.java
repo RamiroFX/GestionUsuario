@@ -15,8 +15,6 @@ import java.util.List;
  */
 public interface EmployParamService {
 
-    public ResultSet readAllCountries();
-    
     public List<Pais> getAllCountries();
 
     public List<Ciudad> getAllCities();

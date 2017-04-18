@@ -8,10 +8,13 @@ package com.ramiro.gestionusuario.ui.empleado;
  * and open the template in the editor.
  */
 
+import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.CommonFormat;
 import com.ramiro.gestionusuario.util.EmpleadoUIConstants;
 import java.awt.BorderLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -27,7 +30,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Administrador
  */
-public class GestionEmpleado extends JInternalFrame {
+public class GestionEmpleado extends JInternalFrame implements ActionListener {
 
     private javax.swing.JPanel jpDatosPersonalesVarios2;
     private javax.swing.JPanel jpDatosPersonalesVarios1;
@@ -83,7 +86,10 @@ public class GestionEmpleado extends JInternalFrame {
     public JCheckBox jckbNombreApellido, jckbCedula;
     public JRadioButton jrbExclusivo, jrbInclusivo;
 
-    public GestionEmpleado() {
+    App app;
+
+    public GestionEmpleado(App app) {
+        this.app = app;
         setClosable(true);
         setForeground(java.awt.Color.white);
         setIconifiable(true);
@@ -91,7 +97,7 @@ public class GestionEmpleado extends JInternalFrame {
         setResizable(true);
         setTitle(EmpleadoUIConstants.USER_MANAGMENT_TITLE);
         setName(EmpleadoUIConstants.USER_MANAGMENT_TITLE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setSize(new java.awt.Dimension(EmpleadoUIConstants.WINDOWS_SIZE_WIDTH, EmpleadoUIConstants.WINDOWS_SIZE_HEIGHT));
         initComponents();
     }
 
@@ -115,6 +121,7 @@ public class GestionEmpleado extends JInternalFrame {
         jtfFechaNacimiento.setEditable(false);
         jlCedulaIdentidad = new javax.swing.JLabel();
         jftCedulaIdentidad = new javax.swing.JFormattedTextField();
+        jftCedulaIdentidad.setEditable(false);
         jlNacionalidad = new javax.swing.JLabel();
         jtfNacionalidad = new javax.swing.JTextField();
         jtfNacionalidad.setEditable(false);
@@ -178,7 +185,6 @@ public class GestionEmpleado extends JInternalFrame {
         jpDatosPersonales1 = new javax.swing.JPanel();
         jpDatosPersonales1.setLayout(new java.awt.BorderLayout());
 
-
         jpDatos = new javax.swing.JPanel();
         jlNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlNombre.setText(EmpleadoUIConstants.USER_MANAGMENT_NAME_PERSONAL);
@@ -216,7 +222,6 @@ public class GestionEmpleado extends JInternalFrame {
 
         jpDatosPersonales1.add(jpDatos, java.awt.BorderLayout.CENTER);
 
-
         jpDatosPersonales2.setLayout(new java.awt.BorderLayout());
 
         jpDatosPersonalesVarios1 = new javax.swing.JPanel(new java.awt.GridLayout(3, 2));
@@ -245,7 +250,6 @@ public class GestionEmpleado extends JInternalFrame {
         jpDatosPersonalesVarios2.add(jspObservacion, java.awt.BorderLayout.CENTER);
 
         jpDatosPersonales2.add(jpDatosPersonalesVarios2, java.awt.BorderLayout.CENTER);
-
 
         jpDatosEmpresariales = new javax.swing.JPanel();
         jpDatosEmpresariales.setLayout(new java.awt.GridLayout(12, 2));
@@ -302,6 +306,7 @@ public class GestionEmpleado extends JInternalFrame {
         getContentPane().add(jpCenter, java.awt.BorderLayout.CENTER);
         getContentPane().add(jpSouth, java.awt.BorderLayout.SOUTH);
 
+        jbUsuarioParametros.addActionListener(this);
     }
 
     private void initFilter() {
@@ -325,5 +330,14 @@ public class GestionEmpleado extends JInternalFrame {
         jpNorth.add(jrbExclusivo, width + ", cell 0 1, span");
         jpNorth.add(jrbInclusivo, width + ", cell 0 1");
         jpNorth.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED), EmpleadoUIConstants.USER_MANAGMENT_SEARCH_SUBTITLE));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        if (src.equals(jbUsuarioParametros)) {
+            EmpleadoParametros empParam = new EmpleadoParametros(app);
+            empParam.setVisible(true);
+        }
     }
 }

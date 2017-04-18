@@ -8,10 +8,7 @@ import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.EntityHandler.EmpleadoQuery;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.service.EmployParamService;
-import java.lang.annotation.Annotation;
-import java.sql.ResultSet;
 import java.util.List;
-import javax.persistence.Column;
 
 /**
  *
@@ -23,13 +20,6 @@ public class EmployParamServiceImpl implements EmployParamService {
 
     public EmployParamServiceImpl() {
         this.employQuery = new EmpleadoQuery();
-    }
-
-    @Override
-    public ResultSet readAllCountries() {
-
-       
-        return null;
     }
 
     @Override

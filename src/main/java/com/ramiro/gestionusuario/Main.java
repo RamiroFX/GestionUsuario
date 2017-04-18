@@ -7,8 +7,8 @@ import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Rol;
+import com.ramiro.gestionusuario.ui.empleado.GestionEmpleado;
 import com.ramiro.gestionusuario.ui.inicio.App;
-import java.lang.annotation.Annotation;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +16,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Column;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -33,10 +32,14 @@ public class Main {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
+        test();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new App();
+                App app = new App();
+                GestionEmpleado ges = new GestionEmpleado(app);
+                app.agregarVentana(ges);
+
             }
         });
     }
@@ -44,7 +47,6 @@ public class Main {
     public static void test() {
         cargarBD();
         EmpleadoQuery addPersonQuery = new EmpleadoQuery();
-
         List<Ciudad> ciudadList = addPersonQuery.getAllCities();
         for (Ciudad ciudad : ciudadList) {
             System.out.println(ciudad.toString());
