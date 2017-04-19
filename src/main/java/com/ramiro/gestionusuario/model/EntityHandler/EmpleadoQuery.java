@@ -12,9 +12,6 @@ import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Persona;
 import com.ramiro.gestionusuario.model.Rol;
-import java.lang.reflect.Field;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -39,12 +36,15 @@ public class EmpleadoQuery extends AbstractQuery {
     public boolean existCountry(String descripcion) {
         open();
         TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("pais.getPaisByDescripcion", Pais.class);
-        typedQuery.setParameter("descripcion", descripcion);
-        if (typedQuery.getSingleResult() == null) {
-            return false;
-        } else {
-            return true;
-        }
+        typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
+        return typedQuery.getResultList().size() > 0;
+    }
+
+    public boolean existCity(String descripcion) {
+        open();
+        TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("ciudad.geCiudadByDescripcion", Ciudad.class);
+        typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
+        return typedQuery.getResultList().size() > 0;
     }
 
     public void insertCity(Ciudad ciudad) {
@@ -55,7 +55,7 @@ public class EmpleadoQuery extends AbstractQuery {
 
     public void updateCity(Ciudad ciudad, String descripcion) {
         open();
-        ciudad.setDescripcion(descripcion);
+        ciudad.setDescripcion(descripcion.toUpperCase());
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
@@ -81,7 +81,7 @@ public class EmpleadoQuery extends AbstractQuery {
 
     public void updateCountry(Pais pais, String descripcion) {
         open();
-        pais.setDescripcion(descripcion);
+        pais.setDescripcion(descripcion.toUpperCase());
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 

@@ -33,6 +33,11 @@ public class EmployParamServiceImpl implements EmployParamService {
     }
 
     @Override
+    public boolean existCity(String descripcion) {
+        return this.employQuery.existCity(descripcion);
+    }
+
+    @Override
     public void insertCity(Ciudad ciudad) {
         this.employQuery.insertCity(ciudad);
     }
@@ -45,6 +50,11 @@ public class EmployParamServiceImpl implements EmployParamService {
     @Override
     public void deleteCity(Ciudad ciudad) {
         this.employQuery.removeCity(ciudad);
+    }
+
+    @Override
+    public boolean existCountry(String descripcion) {
+        return this.employQuery.existCountry(descripcion);
     }
 
     @Override

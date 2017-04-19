@@ -127,6 +127,6 @@ public class Main {
 
         addPersonQuery.insertEmpleado(employ);
 
-        System.out.println(addPersonQuery.existCountry("ARGENTINAa"));
+        System.out.println(addPersonQuery.existCountry("argentina"));
     }
 }

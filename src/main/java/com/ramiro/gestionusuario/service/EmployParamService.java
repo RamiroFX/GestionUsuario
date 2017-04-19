@@ -18,11 +18,15 @@ public interface EmployParamService {
 
     public List<Ciudad> getAllCities();
 
+    public boolean existCity(String descripcion);
+
     public void insertCity(Ciudad ciudad);
 
     public void updateCity(Ciudad ciudad, String descripcion);
 
     public void deleteCity(Ciudad ciudad);
+
+    public boolean existCountry(String descripcion);
 
     public void insertCountry(Pais pais);
 

@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -18,6 +20,10 @@ import javax.persistence.Table;
  */
 @Entity(name = "Ciudad")
 @Table(name = "ciudad")
+@NamedQueries({
+    @NamedQuery(name = "ciudad.getAll", query = "SELECT c FROM Ciudad c"),
+    @NamedQuery(name = "ciudad.getCiudadById", query = "SELECT c FROM Ciudad c WHERE c.id = :id"),
+    @NamedQuery(name = "ciudad.getCiudadByDescripcion", query = "SELECT c FROM Ciudad c WHERE c.descripcion = :descripcion")})
 public class Ciudad implements Serializable {
 
     @Id
