@@ -11,6 +11,6 @@ package com.ramiro.gestionusuario.util;
  */
 public class PaisValidationConstants {
 
-    public static final String NOT_NULL = "El campo esta vacío";
+    public static final String NOT_NULL = "Por favor, inserte un valor.";
     public static final String SIZE = "El máximo permitido es 50 caracteres";
 }

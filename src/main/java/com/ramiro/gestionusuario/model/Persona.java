@@ -28,7 +28,6 @@ import javax.persistence.Temporal;
 public class Persona implements Serializable {
 
     private static long SerialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -145,5 +144,4 @@ public class Persona implements Serializable {
     public static void setSerialVersionUID(long SerialVersionUID) {
         Persona.SerialVersionUID = SerialVersionUID;
     }
-
 }

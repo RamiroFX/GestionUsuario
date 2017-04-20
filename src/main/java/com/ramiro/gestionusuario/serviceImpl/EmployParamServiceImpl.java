@@ -43,8 +43,8 @@ public class EmployParamServiceImpl implements EmployParamService {
     }
 
     @Override
-    public void updateCity(Ciudad ciudad, String descripcion) {
-        this.employQuery.updateCity(ciudad, descripcion);
+    public void updateCity(int idCiudad, String descripcion) {
+        this.employQuery.updateCity(idCiudad, descripcion);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class EmployParamServiceImpl implements EmployParamService {
     }
 
     @Override
-    public void updateCountry(Pais pais, String descripcion) {
-        this.employQuery.updateCountry(pais, descripcion);
+    public void updateCountry(int idCountry, String description) {
+        this.employQuery.updateCountry(idCountry, description);
     }
 
     @Override

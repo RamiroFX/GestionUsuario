@@ -128,5 +128,6 @@ public class Main {
         addPersonQuery.insertEmpleado(employ);
 
         System.out.println(addPersonQuery.existCountry("argentina"));
+        System.out.println("Counntry in use: " + addPersonQuery.isInUseCountry("SIN ASIGNAR"));
     }
 }

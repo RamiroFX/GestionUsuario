@@ -12,6 +12,7 @@ import com.ramiro.gestionusuario.tableModel.CiudadTableModel;
 import com.ramiro.gestionusuario.tableModel.PaisTableModel;
 import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.ParamEmployUIConstants;
+import com.ramirogestionusuario.validator.Validator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -96,6 +97,8 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         getContentPane().setLayout(new MigLayout());
         getContentPane().add(jtpCenter, "dock center");
         getContentPane().add(jpSouth, "dock south");
+        this.jbModificar.setEnabled(false);
+        this.jbEliminar.setEnabled(false);
     }
 
     private void addListener() {
@@ -109,61 +112,102 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     private void agregarPais(Pais pais) {
         if (!service.existCountry(pais.getDescripcion())) {
-            service.insertCountry(pais);
+            if (Validator.validar(pais, this)) {
+                service.insertCountry(pais);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "País existente", "Titulo", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void modificarPais(String pais) {
-        service.updateCity(null, pais);
+    private void modificarPais(int idCountry, String pais) {
+        if (!service.existCountry(pais)) {
+            if (Validator.validar(pais, this)) {
+                service.updateCity(idCountry, pais);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "País existente", "Titulo", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void eliminarPais() {
-        //IMPLEMENTAR
+        service.deleteCountry(null);
+        jbModificar.setEnabled(false);
+        jbEliminar.setEnabled(false);
     }
 
-    private void agregarCiudad(String ciudad) {
+    private void agregarCiudad(Ciudad ciudad) {
+        if (!service.existCity(ciudad.getDescripcion())) {
+            if (Validator.validar(ciudad, this)) {
+                service.insertCity(ciudad);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ciudad existente", "Titulo", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    private void modificarCiudad(String ciudad) {
+    private void modificarCiudad(int idCiudad, String descripcion) {
+        if (!service.existCity(descripcion)) {
+            if (Validator.validar(descripcion, this)) {
+                service.updateCity(idCiudad, descripcion);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ciudad existente", "Titulo", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void eliminarCiudad() {
+        jbModificar.setEnabled(false);
+        jbEliminar.setEnabled(false);
     }
 
     private void createButtonHandler() {
         if (this.jtpCenter.getSelectedComponent().equals(this.jspPais)) {
-            String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_CREATE_MESSAGE, "Insertar país", JOptionPane.PLAIN_MESSAGE);
+            String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_CREATE_MESSAGE, "Insertar país", JOptionPane.PLAIN_MESSAGE).trim();
             if (pais != null) {
                 if (!pais.isEmpty()) {
                     Pais p = new Pais(pais);
                     agregarPais(p);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Inserte un valor", "Atención", JOptionPane.WARNING_MESSAGE);
                 }
             }
         } else if (this.jtpCenter.getSelectedComponent().equals(this.jspCiudad)) {
-            String city = JOptionPane.showInputDialog(this, ParamEmployUIConstants.CITY_CREATE_MESSAGE, "Insertar ciudad", JOptionPane.PLAIN_MESSAGE);
+            String city = JOptionPane.showInputDialog(this, ParamEmployUIConstants.CITY_CREATE_MESSAGE, "Insertar ciudad", JOptionPane.PLAIN_MESSAGE).trim();
             if (city != null) {
                 if (!city.isEmpty()) {
-                    agregarCiudad(city);
+                    Ciudad c = new Ciudad(city);
+                    agregarCiudad(c);
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Inserte un valor", "Atención", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
 
     private void updateButtonHandler() {
         if (this.jtpCenter.getSelectedComponent().equals(this.jspPais)) {
-            String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_UPDATE_MESSAGE, ParamEmployUIConstants.COUNTRY_UPDATE_MESSAGE_TITLE, JOptionPane.PLAIN_MESSAGE);
+            String pais = JOptionPane.showInputDialog(this, ParamEmployUIConstants.COUNTRY_UPDATE_MESSAGE, ParamEmployUIConstants.COUNTRY_UPDATE_MESSAGE_TITLE, JOptionPane.PLAIN_MESSAGE).trim();
+            int idPais = (int) jtPais.getValueAt(jtPais.getSelectedRow(), 0);
             if (pais != null) {
                 if (!pais.isEmpty()) {
-                    modificarPais(pais);
+                    modificarPais(idPais, pais);
+                    jbModificar.setEnabled(false);
+                    jbEliminar.setEnabled(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Inserte un valor", "Atención", JOptionPane.WARNING_MESSAGE);
                 }
             }
         } else if (this.jtpCenter.getSelectedComponent().equals(this.jspCiudad)) {
-            String ciudad = JOptionPane.showInputDialog(this, ParamEmployUIConstants.CITY_UPDATE_MESSAGE, ParamEmployUIConstants.CITY_UPDATE_MESSAGE_TITLE, JOptionPane.PLAIN_MESSAGE);
+            String ciudad = JOptionPane.showInputDialog(this, ParamEmployUIConstants.CITY_UPDATE_MESSAGE, ParamEmployUIConstants.CITY_UPDATE_MESSAGE_TITLE, JOptionPane.PLAIN_MESSAGE).trim();
+            int idCiudad = (int) jtCiudad.getValueAt(jtCiudad.getSelectedRow(), 0);
             if (ciudad != null) {
                 if (!ciudad.isEmpty()) {
-                    modificarCiudad(ciudad);
+                    modificarCiudad(idCiudad, ciudad);
+                    jbModificar.setEnabled(false);
+                    jbEliminar.setEnabled(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Inserte un valor", "Atención", JOptionPane.WARNING_MESSAGE);
                 }
             }
         }

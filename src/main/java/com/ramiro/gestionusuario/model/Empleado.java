@@ -154,5 +154,4 @@ public class Empleado extends Persona implements Serializable {
     public void quitarRol(Rol rol) {
         this.roles.remove(rol);
     }
-
 }
