@@ -129,6 +129,8 @@ public class Main {
 
         System.out.println(addPersonQuery.existCountry("argentinaa"));
         System.out.println(employ.getPais());
-        System.out.println("Counntry in use: " + addPersonQuery.isInUseCountry("SINa ASIGNAR"));
+        System.out.println("Counntry in use by Id: " + addPersonQuery.isInUseCountry(3));
+        System.out.println("Counntry in use by Description: " + addPersonQuery.isInUseCountry("PARAGUAY"));
+
     }
 }

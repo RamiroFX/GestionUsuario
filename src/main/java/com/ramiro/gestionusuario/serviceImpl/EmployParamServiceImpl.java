@@ -48,8 +48,8 @@ public class EmployParamServiceImpl implements EmployParamService {
     }
 
     @Override
-    public void deleteCity(Ciudad ciudad) {
-        this.employQuery.removeCity(ciudad);
+    public void deleteCity(int idCity) {
+        this.employQuery.removeCity(idCity);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class EmployParamServiceImpl implements EmployParamService {
     }
 
     @Override
-    public void deleteCountry(Pais pais) {
-        this.employQuery.removeCountry(pais);
+    public void deleteCountry(int idPais) {
+        this.employQuery.removeCountry(idPais);
     }
 }

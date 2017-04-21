@@ -41,20 +41,20 @@ public class EmpleadoQuery extends AbstractQuery {
     }
 
     public boolean isInUseCountry(String descripcion) {
-        /*open();
-         String jpql = "SELECT p FROM Pais p WHERE p.descripcion = :descripcion";
-         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
-         query.setParameter("descripcion", descripcion);
-         Pais p = (Pais) query.getSingleResult();
-         if (p.getPersonas().isEmpty()) {
-         return true;
-         }
-         return false;*/
         open();
         TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCountry", Persona.class);
         typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
-
         return typedQuery.getResultList().size() > 0;
+    }
+
+    public boolean isInUseCountry(int idCountry) {
+        open();
+        Pais pais = EntityManagerHandler.INSTANCE.getEntityManager().find(Pais.class, idCountry);
+        List p = pais.getPersonas();
+        for (Object object : p) {
+            System.out.println("x-> " + p);
+        }
+        return pais.getPersonas().isEmpty();
     }
 
     public boolean existCity(String descripcion) {
@@ -77,8 +77,9 @@ public class EmpleadoQuery extends AbstractQuery {
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
-    public void removeCity(Ciudad ciudad) {
+    public void removeCity(int idCity) {
         open();
+        Ciudad ciudad = EntityManagerHandler.INSTANCE.getEntityManager().find(Ciudad.class, idCity);
         EntityManagerHandler.INSTANCE.getEntityManager().remove(ciudad);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
@@ -104,8 +105,9 @@ public class EmpleadoQuery extends AbstractQuery {
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
-    public void removeCountry(Pais pais) {
+    public void removeCountry(int idPais) {
         open();
+        Pais pais = EntityManagerHandler.INSTANCE.getEntityManager().find(Pais.class, idPais);
         EntityManagerHandler.INSTANCE.getEntityManager().remove(pais);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }

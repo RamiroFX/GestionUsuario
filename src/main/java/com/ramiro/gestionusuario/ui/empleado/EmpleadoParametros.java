@@ -56,13 +56,21 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     }
 
     private void loadData() {
+        loadCountries();
+        loadCities();
+    }
+
+    private void loadCountries() {
         List<Pais> countryList = this.service.getAllCountries();
-        List<Ciudad> ciudadList = this.service.getAllCities();
         paisTableModel.setPaisList(countryList);
-        ciudadTableModel.setCiudadList(ciudadList);
         jtPais.setModel(paisTableModel);
-        jtCiudad.setModel(ciudadTableModel);
         paisTableModel.fireTableDataChanged();
+    }
+
+    private void loadCities() {
+        List<Ciudad> ciudadList = this.service.getAllCities();
+        ciudadTableModel.setCiudadList(ciudadList);
+        jtCiudad.setModel(ciudadTableModel);
         ciudadTableModel.fireTableDataChanged();
     }
 
@@ -115,6 +123,7 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         if (!service.existCountry(pais.getDescripcion())) {
             if (Validator.validar(pais, this)) {
                 service.insertCountry(pais);
+                loadCountries();
             }
         } else {
             JOptionPane.showMessageDialog(this, "País existente", "Titulo", JOptionPane.ERROR_MESSAGE);
@@ -124,15 +133,19 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     private void modificarPais(int idCountry, String pais) {
         if (!service.existCountry(pais)) {
             if (Validator.validar(pais, this)) {
-                service.updateCity(idCountry, pais);
+                service.updateCountry(idCountry, pais);
+                loadCountries();
             }
         } else {
             JOptionPane.showMessageDialog(this, "País existente", "Titulo", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void eliminarPais() {
-        service.deleteCountry(null);
+    private void eliminarPais(int idPais) {
+        if (true) {
+        }
+        service.deleteCountry(idPais);
+        loadCountries();
         jbModificar.setEnabled(false);
         jbEliminar.setEnabled(false);
     }
@@ -141,6 +154,7 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         if (!service.existCity(ciudad.getDescripcion())) {
             if (Validator.validar(ciudad, this)) {
                 service.insertCity(ciudad);
+                loadCities();
             }
         } else {
             JOptionPane.showMessageDialog(this, "Ciudad existente", "Titulo", JOptionPane.ERROR_MESSAGE);
@@ -151,13 +165,15 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
         if (!service.existCity(descripcion)) {
             if (Validator.validar(descripcion, this)) {
                 service.updateCity(idCiudad, descripcion);
+                loadCities();
             }
         } else {
             JOptionPane.showMessageDialog(this, "Ciudad existente", "Titulo", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void eliminarCiudad() {
+    private void eliminarCiudad(int idCiudad) {
+        loadCities();
         jbModificar.setEnabled(false);
         jbEliminar.setEnabled(false);
     }
@@ -216,9 +232,11 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     private void deleteButtonHandler() {
         if (this.jtpCenter.getSelectedComponent().equals(this.jspPais)) {
-            eliminarPais();
+            int idPais = (int) jtPais.getValueAt(jtPais.getSelectedRow(), 0);
+            eliminarPais(idPais);
         } else if (this.jtpCenter.getSelectedComponent().equals(this.jspCiudad)) {
-            eliminarCiudad();
+            int idCiudad = (int) jtCiudad.getValueAt(jtCiudad.getSelectedRow(), 0);
+            eliminarCiudad(idCiudad);
         }
     }
 

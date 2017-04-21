@@ -24,7 +24,7 @@ public interface EmployParamService {
 
     public void updateCity(int idCity, String description);
 
-    public void deleteCity(Ciudad ciudad);
+    public void deleteCity(int idCity);
 
     public boolean existCountry(String description);
 
@@ -32,5 +32,5 @@ public interface EmployParamService {
 
     public void updateCountry(int idCountry, String description);
 
-    public void deleteCountry(Pais pais);
+    public void deleteCountry(int idPais);
 }

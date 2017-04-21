@@ -28,8 +28,7 @@ import javax.persistence.Temporal;
 @Table(name = "persona")
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-    @NamedQuery(name = "persona.getPersonasByCountry", query = "SELECT p FROM Persona p WHERE p.pais.descripcion =:descripcion")}
-)
+    @NamedQuery(name = "persona.getPersonasByCountry", query = "SELECT p FROM Persona p WHERE p.pais.descripcion =:descripcion")})
 public class Persona implements Serializable {
 
     private static long SerialVersionUID = 1L;
