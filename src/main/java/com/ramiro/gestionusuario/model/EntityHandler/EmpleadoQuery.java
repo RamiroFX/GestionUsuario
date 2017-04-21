@@ -41,15 +41,20 @@ public class EmpleadoQuery extends AbstractQuery {
     }
 
     public boolean isInUseCountry(String descripcion) {
+        /*open();
+         String jpql = "SELECT p FROM Pais p WHERE p.descripcion = :descripcion";
+         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+         query.setParameter("descripcion", descripcion);
+         Pais p = (Pais) query.getSingleResult();
+         if (p.getPersonas().isEmpty()) {
+         return true;
+         }
+         return false;*/
         open();
-        String jpql = "SELECT p FROM Pais p WHERE p.descripcion = :descripcion";
-        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
-        query.setParameter("descripcion", descripcion);
-        Pais p = (Pais) query.getSingleResult();
-        if (p.getPersonas().isEmpty()) {
-            return true;
-        }
-        return false;
+        TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCountry", Persona.class);
+        typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
+
+        return typedQuery.getResultList().size() > 0;
     }
 
     public boolean existCity(String descripcion) {

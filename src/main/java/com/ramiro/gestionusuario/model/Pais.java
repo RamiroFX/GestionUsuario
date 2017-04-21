@@ -6,9 +6,11 @@ package com.ramiro.gestionusuario.model;
 
 import com.ramiro.gestionusuario.util.PaisValidationConstants;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -28,7 +30,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "pais.getAll", query = "SELECT p FROM Pais p"),
     @NamedQuery(name = "pais.getPaisById", query = "SELECT p FROM Pais p WHERE p.id = :id"),
     @NamedQuery(name = "pais.getPaisByDescripcion", query = "SELECT p FROM Pais p WHERE p.descripcion = :descripcion"),
-    @NamedQuery(name = "pais.getAllPerson", query = "SELECT p.personas FROM Pais p WHERE p.descripcion = :descripcion")})
+    @NamedQuery(name = "pais.getAllPerson", query = "SELECT p FROM Pais p LEFT JOIN FETCH p.personas WHERE p.descripcion = :descripcion")})
 public class Pais implements Serializable {
 
     @Id
@@ -42,6 +44,7 @@ public class Pais implements Serializable {
     List<Persona> personas;
 
     public Pais() {
+        this.personas = new ArrayList<>();
     }
 
     public Pais(String descripcion) {

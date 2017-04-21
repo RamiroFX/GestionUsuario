@@ -112,7 +112,7 @@ public class Main {
         employ.setApellido("Ferreira");
         employ.setCedula(6344586);
         employ.setCiudad(ciudad1);
-        employ.setPais(pais1);
+        employ.setPais(pais2);
         employ.setEstadoCivil(estadoCivil1);
         employ.setSexo(genero2);
         employ.setFechaNacimiento(new GregorianCalendar.Builder().setDate(1991, 02, 29).build().getTime());
@@ -127,7 +127,8 @@ public class Main {
 
         addPersonQuery.insertEmpleado(employ);
 
-        System.out.println(addPersonQuery.existCountry("argentina"));
-        System.out.println("Counntry in use: " + addPersonQuery.isInUseCountry("SIN ASIGNAR"));
+        System.out.println(addPersonQuery.existCountry("argentinaa"));
+        System.out.println(employ.getPais());
+        System.out.println("Counntry in use: " + addPersonQuery.isInUseCountry("SINa ASIGNAR"));
     }
 }

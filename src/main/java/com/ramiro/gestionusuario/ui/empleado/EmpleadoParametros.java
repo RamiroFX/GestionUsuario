@@ -10,6 +10,7 @@ import com.ramiro.gestionusuario.service.EmployParamService;
 import com.ramiro.gestionusuario.serviceImpl.EmployParamServiceImpl;
 import com.ramiro.gestionusuario.tableModel.CiudadTableModel;
 import com.ramiro.gestionusuario.tableModel.PaisTableModel;
+import com.ramiro.gestionusuario.ui.Callbacks.EmpleadoParametrosCallback;
 import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.ParamEmployUIConstants;
 import com.ramirogestionusuario.validator.Validator;
@@ -29,7 +30,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Usuario
  */
-public class EmpleadoParametros extends javax.swing.JDialog implements ActionListener, MouseListener {
+public class EmpleadoParametros extends javax.swing.JDialog implements ActionListener, MouseListener, EmpleadoParametrosCallback {
 
     private javax.swing.JButton jbCrear, jbModificar, jbEliminar;
     private JTabbedPane jtpCenter;
@@ -278,5 +279,35 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
 
     @Override
     public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void insertCity() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateCity() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeCity() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void insertCountry() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateCountry() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void removeCountry() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
