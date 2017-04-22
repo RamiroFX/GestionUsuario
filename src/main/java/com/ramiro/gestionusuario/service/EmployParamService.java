@@ -20,6 +20,8 @@ public interface EmployParamService {
 
     public boolean existCity(String description);
 
+    public boolean isInUseCity(int idCity);
+
     public void insertCity(Ciudad ciudad);
 
     public void updateCity(int idCity, String description);
@@ -27,6 +29,8 @@ public interface EmployParamService {
     public void deleteCity(int idCity);
 
     public boolean existCountry(String description);
+
+    public boolean isInUseCountry(int idCountry);
 
     public void insertCountry(Pais pais);
 

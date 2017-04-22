@@ -142,12 +142,16 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     }
 
     private void eliminarPais(int idPais) {
-        if (true) {
+        if (service.isInUseCountry(idPais)) {
+            JOptionPane.showMessageDialog(this, "Pais en uso", "Atención", JOptionPane.WARNING_MESSAGE);
+            jbModificar.setEnabled(false);
+            jbEliminar.setEnabled(false);
+        } else {
+            service.deleteCountry(idPais);
+            loadCountries();
+            jbModificar.setEnabled(false);
+            jbEliminar.setEnabled(false);
         }
-        service.deleteCountry(idPais);
-        loadCountries();
-        jbModificar.setEnabled(false);
-        jbEliminar.setEnabled(false);
     }
 
     private void agregarCiudad(Ciudad ciudad) {
@@ -173,9 +177,16 @@ public class EmpleadoParametros extends javax.swing.JDialog implements ActionLis
     }
 
     private void eliminarCiudad(int idCiudad) {
-        loadCities();
-        jbModificar.setEnabled(false);
-        jbEliminar.setEnabled(false);
+        if (service.isInUseCity(idCiudad)) {
+            JOptionPane.showMessageDialog(this, "Ciudad en uso", "Atención", JOptionPane.WARNING_MESSAGE);
+            jbModificar.setEnabled(false);
+            jbEliminar.setEnabled(false);
+        } else {
+            service.deleteCity(idCiudad);
+            loadCities();
+            jbModificar.setEnabled(false);
+            jbEliminar.setEnabled(false);
+        }
     }
 
     private void createButtonHandler() {

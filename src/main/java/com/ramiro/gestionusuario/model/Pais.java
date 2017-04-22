@@ -30,7 +30,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "pais.getAll", query = "SELECT p FROM Pais p"),
     @NamedQuery(name = "pais.getPaisById", query = "SELECT p FROM Pais p WHERE p.id = :id"),
     @NamedQuery(name = "pais.getPaisByDescripcion", query = "SELECT p FROM Pais p WHERE p.descripcion = :descripcion"),
-    @NamedQuery(name = "pais.getAllPerson", query = "SELECT p FROM Pais p LEFT JOIN FETCH p.personas WHERE p.descripcion = :descripcion")})
+    @NamedQuery(name = "pais.getAllPerson", query = "SELECT p FROM Pais p LEFT JOIN FETCH p.personas WHERE p.descripcion = :descripcion"),
+    @NamedQuery(name = "pais.getAllPersonByID", query = "SELECT p FROM Pais p LEFT JOIN FETCH p.personas WHERE p.id = :id")})
 public class Pais implements Serializable {
 
     @Id
@@ -40,13 +41,15 @@ public class Pais implements Serializable {
     @NotNull(message = PaisValidationConstants.NOT_NULL)
     @Size(max = 50, message = PaisValidationConstants.SIZE)
     String descripcion;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pais")
-    List<Persona> personas = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pais")
+    List<Persona> personas;
 
     public Pais() {
+        this.personas = new ArrayList<>();
     }
 
     public Pais(String descripcion) {
+        this.personas = new ArrayList<>();
         this.descripcion = descripcion;
     }
 

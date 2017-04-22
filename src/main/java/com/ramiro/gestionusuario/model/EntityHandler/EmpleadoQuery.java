@@ -40,21 +40,11 @@ public class EmpleadoQuery extends AbstractQuery {
         return typedQuery.getResultList().size() > 0;
     }
 
-    public boolean isInUseCountry(String descripcion) {
-        open();
-        TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCountry", Persona.class);
-        typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
-        return typedQuery.getResultList().size() > 0;
-    }
-
     public boolean isInUseCountry(int idCountry) {
         open();
-        Pais pais = EntityManagerHandler.INSTANCE.getEntityManager().find(Pais.class, idCountry);
-        List p = pais.getPersonas();
-        for (Object object : p) {
-            System.out.println("x-> " + p);
-        }
-        return pais.getPersonas().isEmpty();
+        TypedQuery<Persona> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCountryId", Persona.class);
+        query.setParameter("id", idCountry);
+        return !query.getResultList().isEmpty();
     }
 
     public boolean existCity(String descripcion) {
@@ -62,6 +52,13 @@ public class EmpleadoQuery extends AbstractQuery {
         TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("ciudad.getCiudadByDescripcion", Ciudad.class);
         typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
         return typedQuery.getResultList().size() > 0;
+    }
+
+    public boolean isInUseCity(int idCity) {
+        open();
+        TypedQuery<Persona> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCityId", Persona.class);
+        query.setParameter("id", idCity);
+        return !query.getResultList().isEmpty();
     }
 
     public void insertCity(Ciudad ciudad) {

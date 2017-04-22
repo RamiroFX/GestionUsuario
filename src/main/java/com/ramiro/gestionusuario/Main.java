@@ -65,12 +65,12 @@ public class Main {
         addPersonQuery.insertCity(ciudad3);
         addPersonQuery.insertCity(ciudad4);
 
-        Pais pais1 = new Pais("SIN ASIGNAR");
-        Pais pais2 = new Pais("ARGENTINA");
-        Pais pais3 = new Pais("PARAGUAY");
-        addPersonQuery.insertCountry(pais1);
-        addPersonQuery.insertCountry(pais2);
-        addPersonQuery.insertCountry(pais3);
+        Pais paisSinAsignar = new Pais("SIN ASIGNAR");
+        Pais paisArgentina = new Pais("ARGENTINA");
+        Pais paisParaguay = new Pais("PARAGUAY");
+        addPersonQuery.insertCountry(paisSinAsignar);
+        addPersonQuery.insertCountry(paisArgentina);
+        addPersonQuery.insertCountry(paisParaguay);
 
         EstadoCivil estadoCivil1 = new EstadoCivil("SIN ASIGNAR");
         EstadoCivil estadoCivil2 = new EstadoCivil("SOLTERO/A");
@@ -112,7 +112,7 @@ public class Main {
         employ.setApellido("Ferreira");
         employ.setCedula(6344586);
         employ.setCiudad(ciudad1);
-        employ.setPais(pais2);
+        employ.setPais(paisArgentina);
         employ.setEstadoCivil(estadoCivil1);
         employ.setSexo(genero2);
         employ.setFechaNacimiento(new GregorianCalendar.Builder().setDate(1991, 02, 29).build().getTime());
@@ -126,11 +126,5 @@ public class Main {
         employ.setObservacion("Sin observaciones");
 
         addPersonQuery.insertEmpleado(employ);
-
-        System.out.println(addPersonQuery.existCountry("argentinaa"));
-        System.out.println(employ.getPais());
-        System.out.println("Counntry in use by Id: " + addPersonQuery.isInUseCountry(3));
-        System.out.println("Counntry in use by Description: " + addPersonQuery.isInUseCountry("PARAGUAY"));
-
     }
 }

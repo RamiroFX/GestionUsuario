@@ -71,4 +71,14 @@ public class EmployParamServiceImpl implements EmployParamService {
     public void deleteCountry(int idPais) {
         this.employQuery.removeCountry(idPais);
     }
+
+    @Override
+    public boolean isInUseCity(int idCity) {
+        return this.employQuery.isInUseCity(idCity);
+    }
+
+    @Override
+    public boolean isInUseCountry(int idCountry) {
+        return this.employQuery.isInUseCountry(idCountry);
+    }
 }
