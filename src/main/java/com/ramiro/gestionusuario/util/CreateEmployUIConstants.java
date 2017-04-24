@@ -12,8 +12,8 @@ public class CreateEmployUIConstants {
 
     public static final String TITLE = "Crear usuario";
     public static final String NAME = "Crear usuario";
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 700;
+    public static final int HEIGHT = 350;
     public static final String INFO1 = "Los campos marcados con un asterisco(*) son obligatorios.";
     public static final String INFO2 = "Los campos marcados con dos asteriscos(**) son únicos.";
     public static final String GENERAL_DATA = "Datos Generales";

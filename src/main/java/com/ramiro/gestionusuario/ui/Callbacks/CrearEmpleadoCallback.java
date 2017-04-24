@@ -7,20 +7,14 @@ package com.ramiro.gestionusuario.ui.Callbacks;
 
 /**
  *
- * @author Ramiro
+ * @author Ramiro Ferreira
  */
-public interface EmpleadoParametrosCallback {
+public interface CrearEmpleadoCallback {
 
     public void insertCity();
 
     public void updateCity();
 
     public void removeCity();
-
-    public void insertCountry();
-
-    public void updateCountry();
-
-    public void removeCountry();
 
 }

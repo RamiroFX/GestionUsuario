@@ -17,7 +17,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  *
- * @author RAMIRO-VM
+ * @author Ramiro Ferreira
  */
 public class CrearEmpleado extends javax.swing.JDialog {
 
@@ -40,13 +40,18 @@ public class CrearEmpleado extends javax.swing.JDialog {
 
     public CrearEmpleado(JFrame frame) {
         super(frame, true);
+        constructWindow(frame);
+        initComponents();
+        constructLayout(frame);
+    }
+
+    private void constructWindow(JFrame frame) {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(CreateEmployUIConstants.TITLE);
         setAlwaysOnTop(false);
         setName(CreateEmployUIConstants.NAME);
         setPreferredSize(new java.awt.Dimension(CreateEmployUIConstants.WIDTH, CreateEmployUIConstants.HEIGHT));
         setResizable(false);
-        initComponents();
     }
 
     private void initComponents() {
@@ -61,17 +66,11 @@ public class CrearEmpleado extends javax.swing.JDialog {
         jtpCenter.add(CreateEmployUIConstants.PERSONAL_DATA, jpDatosPersonales2);
         jtpCenter.add(CreateEmployUIConstants.CORP_DATA, jpDatosEmpresariales);
         jtpCenter.add(CreateEmployUIConstants.ROL_DATA, jpRol);
-        getContentPane().add(jpNorth, java.awt.BorderLayout.NORTH);
-        getContentPane().add(jtpCenter, java.awt.BorderLayout.CENTER);
-        getContentPane().add(jpSouth, java.awt.BorderLayout.SOUTH);
-        pack();
     }
 
     private void initPanelDatosPersonales1() {
         //Panel
-        jpDatosPersonales1 = new javax.swing.JPanel();
-        //jpDatosPersonales1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos personales 1"));
-        jpDatosPersonales1.setLayout(new java.awt.GridLayout(7, 4));
+        jpDatosPersonales1 = new javax.swing.JPanel(new java.awt.GridLayout(7, 4));
         int swingConstant = javax.swing.SwingConstants.CENTER;
         //Labels, textfields, combobox
         jlNombre = new javax.swing.JLabel(CreateEmployUIConstants.NAME_FIELD);
@@ -144,48 +143,30 @@ public class CrearEmpleado extends javax.swing.JDialog {
 
     private void initPanelDatosPersonales2() {
         //Panel
-        //jpDatosPersonales2 = new javax.swing.JPanel(new java.awt.GridLayout(9, 2));
         jpDatosPersonales2 = new javax.swing.JPanel(new MigLayout());
-        //int swingConstant = javax.swing.SwingConstants.CENTER;
         //Labels, Textfields & textarea
         jlNroTelefono = new javax.swing.JLabel(CreateEmployUIConstants.PHONE_FIELD);
-        //jlNroTelefono.setHorizontalAlignment(swingConstant);
         jtfNroTelefono = new javax.swing.JTextField();
         jlNroCelular = new javax.swing.JLabel(CreateEmployUIConstants.CELLPHONE_FIELD);
-        //jlNroCelular.setHorizontalAlignment(swingConstant);
         jtfNroCelular = new javax.swing.JTextField();
         jtaObservacion = new javax.swing.JTextArea();
         jspObservacion = new javax.swing.JScrollPane(jtaObservacion);
         jspObservacion.setBorder(javax.swing.BorderFactory.createTitledBorder(CreateEmployUIConstants.OBSERVATION_FIELD));
         jlDireccion = new javax.swing.JLabel(CreateEmployUIConstants.ADRESS_FIELD);
-        //jlDireccion.setHorizontalAlignment(swingConstant);
         jtfDireccion = new javax.swing.JTextField();
         //Adding components into panel
         jpDatosPersonales2.add(jlDireccion);
         jpDatosPersonales2.add(jtfDireccion, "pushx, grow, wrap");
-        /*jpDatosPersonales2.add(new Component() {
-         });
-         jpDatosPersonales2.add(new Component() {
-         });*/
         jpDatosPersonales2.add(jlNroTelefono);
         jpDatosPersonales2.add(jtfNroTelefono, "pushx, grow, wrap");
-        /*jpDatosPersonales2.add(new Component() {
-         });
-         jpDatosPersonales2.add(new Component() {
-         });*/
         jpDatosPersonales2.add(jlNroCelular);
         jpDatosPersonales2.add(jtfNroCelular, "pushx, grow, wrap");
-        /*jpDatosPersonales2.add(new Component() {
-         });
-         jpDatosPersonales2.add(new Component() {
-         });*/
     }
 
     private void initPanelDatosEmpresariales() {
         //Panel
         jpDatosEmpresariales = new javax.swing.JPanel(new java.awt.GridLayout(8, 4));
         int swingConstant = javax.swing.SwingConstants.CENTER;
-        //jpDatosEmpresariales.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos empresariales"));
         //Labels, textfields, buttons, combobox, list & passwordfields
         jlAlias = new javax.swing.JLabel();
         jlAlias.setHorizontalAlignment(swingConstant);
@@ -299,5 +280,17 @@ public class CrearEmpleado extends javax.swing.JDialog {
         jbCancelar = new javax.swing.JButton(CreateEmployUIConstants.CANCEL_BTN);
         jpSouth.add(jbAceptar);
         jpSouth.add(jbCancelar);
+    }
+
+    private void constructLayout(JFrame frame) {
+        getContentPane().add(jpNorth, java.awt.BorderLayout.NORTH);
+        getContentPane().add(jtpCenter, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jpSouth, java.awt.BorderLayout.SOUTH);
+        pack();
+        setLocationRelativeTo(frame);
+    }
+
+    private void initializeData() {
+
     }
 }

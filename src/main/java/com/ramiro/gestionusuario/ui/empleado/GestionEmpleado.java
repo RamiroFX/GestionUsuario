@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 package com.ramiro.gestionusuario.ui.empleado;
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
+import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.service.GestionEmpleadoService;
+import com.ramiro.gestionusuario.serviceImpl.GestionEmpleadoServiceImpl;
+import com.ramiro.gestionusuario.tableModel.EmpleadoTableModel;
 import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.CommonFormat;
 import com.ramiro.gestionusuario.util.EmpleadoUIConstants;
@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
@@ -28,7 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  *
- * @author Administrador
+ * @author Ramiro Ferreira
  */
 public class GestionEmpleado extends JInternalFrame implements ActionListener {
 
@@ -87,9 +88,18 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
     public JRadioButton jrbExclusivo, jrbInclusivo;
 
     App app;
+    GestionEmpleadoService service;
+    EmpleadoTableModel empleadoTableModel;
 
     public GestionEmpleado(App app) {
         this.app = app;
+        constructWindow();
+        initComponents();
+        addListeners();
+        loadData();
+    }
+
+    private void constructWindow() {
         setClosable(true);
         setForeground(java.awt.Color.white);
         setIconifiable(true);
@@ -98,10 +108,11 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         setTitle(EmpleadoUIConstants.USER_MANAGMENT_TITLE);
         setName(EmpleadoUIConstants.USER_MANAGMENT_TITLE);
         setSize(new java.awt.Dimension(EmpleadoUIConstants.WINDOWS_SIZE_WIDTH, EmpleadoUIConstants.WINDOWS_SIZE_HEIGHT));
-        initComponents();
     }
 
     private void initComponents() {
+        service = new GestionEmpleadoServiceImpl();
+        empleadoTableModel = new EmpleadoTableModel();
         initFilter();
         jpCenter = new javax.swing.JPanel();
         jpCenter.setLayout(new java.awt.GridLayout(1, 0));
@@ -110,54 +121,71 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setViewportView(jtUsuario);
         jTabbedPane = new javax.swing.JTabbedPane();
-        jlNombre = new javax.swing.JLabel();
+        //DATOS PERSONALES 1
+        jlNombre = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_NAME_PERSONAL);
+        jlNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfNombre = new javax.swing.JTextField();
         jtfNombre.setEditable(false);
-        jlApellido = new javax.swing.JLabel();
+        jlApellido = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_LASTNAME_PERSONAL);
         jtfApellido = new javax.swing.JTextField();
+        jlApellido.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfApellido.setEditable(false);
-        jlFechaNacimiento = new javax.swing.JLabel();
+        jlFechaNacimiento = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_BIRTHDATE_PERSONAL);
+        jlFechaNacimiento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfFechaNacimiento = new javax.swing.JTextField();
         jtfFechaNacimiento.setEditable(false);
-        jlCedulaIdentidad = new javax.swing.JLabel();
+        jlCedulaIdentidad = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_PIN_PERSONAL);
+        jlCedulaIdentidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jftCedulaIdentidad = new javax.swing.JFormattedTextField();
         jftCedulaIdentidad.setEditable(false);
-        jlNacionalidad = new javax.swing.JLabel();
+        jlNacionalidad = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_NATIONALITY_PERSONAL);
+        jlNacionalidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfNacionalidad = new javax.swing.JTextField();
         jtfNacionalidad.setEditable(false);
-        jlCiudad = new javax.swing.JLabel();
+        jlCiudad = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_CITY_PERSONAL);
+        jlCiudad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfCiudad = new javax.swing.JTextField();
         jtfCiudad.setEditable(false);
-        jlEstadoCivil = new javax.swing.JLabel();
+        jlEstadoCivil = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_CIVIL_STATE_PERSONAL);
+        jlEstadoCivil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfEstadoCivil = new javax.swing.JTextField();
         jtfEstadoCivil.setEditable(false);
-        jlGenero = new javax.swing.JLabel();
+        jlGenero = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_GENDER_PERSONAL);
+        jlGenero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfGenero = new javax.swing.JTextField();
         jtfGenero.setEditable(false);
-        jpDatosPersonales2 = new javax.swing.JPanel();
-        jlDireccion = new javax.swing.JLabel();
+        //DATOS PERSONALES 2        
+        jlDireccion = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_ADRESS_PERSONAL);
+        jlDireccion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfDireccion = new javax.swing.JTextField();
         jtfDireccion.setEditable(false);
-        jlTelefono = new javax.swing.JLabel();
+        jlTelefono = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_TELEPHONE_PERSONAL);
+        jlTelefono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfNroTelefono = new javax.swing.JTextField();
         jtfNroTelefono.setEditable(false);
-        jlNroCelular = new javax.swing.JLabel();
+        jlNroCelular = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_CELLPHONE_PERSONAL);
+        jlNroCelular.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfNroCelular = new javax.swing.JTextField();
         jtfNroCelular.setEditable(false);
-        jpDatosPersonalesVarios2 = new javax.swing.JPanel();
-        jspObservacion = new javax.swing.JScrollPane();
         jtaObservacion = new javax.swing.JTextArea();
-        jlAlias = new javax.swing.JLabel();
+        jspObservacion = new javax.swing.JScrollPane(jtaObservacion);
+        //DATOS EMPRESARIALES
+        jlAlias = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_ALIAS_CORP);
+        jlAlias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfAlias = new javax.swing.JTextField();
         jtfAlias.setEditable(false);
-        jlFechaIngreso = new javax.swing.JLabel();
+        jlFechaIngreso = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_ENTER_DATE_CORP);
+        jlFechaIngreso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfFechaIngreso = new javax.swing.JTextField();
         jtfFechaIngreso.setEditable(false);
-        jlCorreoElectronico = new javax.swing.JLabel();
+        jlCorreoElectronico = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_EMAIL_CORP);
+        jlCorreoElectronico.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jtfCorreoElectronico = new javax.swing.JTextField();
         jtfCorreoElectronico.setEditable(false);
-        jlRol = new javax.swing.JLabel();
+        jlRol = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_ROL_CORP);
+        jlRol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jcbRol = new javax.swing.JComboBox();
+        //BOTONES
         jbCrearUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_CREATE_BTN);
         jbModificarUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_UPDATE_BTN);
         jbEliminarUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_DELETE_BTN);
@@ -168,41 +196,24 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jbCrearUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_CREATE_BTN);
         jbModificarUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_UPDATE_BTN);
         jbEliminarUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_DELETE_BTN);
-
+        jbGestionRol = new JButton(EmpleadoUIConstants.USER_MANAGMENT_ROL_MANAGMENT);
+        jbGestionRol.setName(EmpleadoUIConstants.USER_MANAGMENT_ROL_BTN);
         Insets insets = new Insets(10, 10, 10, 10);
         jbCrearUsuario.setMargin(insets);
         jbModificarUsuario.setMargin(insets);
         jbEliminarUsuario.setMargin(insets);
         jbCambiarPassword.setMargin(insets);
         jbUsuarioParametros.setMargin(insets);
+        jbGestionRol.setMargin(insets);
 
         jbCrearUsuario.setFont(CommonFormat.fuente);
         jbModificarUsuario.setFont(CommonFormat.fuente);
         jbEliminarUsuario.setFont(CommonFormat.fuente);
         jbCambiarPassword.setFont(CommonFormat.fuente);
         jbUsuarioParametros.setFont(CommonFormat.fuente);
+        jbGestionRol.setFont(CommonFormat.fuente);
 
-        jpDatosPersonales1 = new javax.swing.JPanel();
-        jpDatosPersonales1.setLayout(new java.awt.BorderLayout());
-
-        jpDatos = new javax.swing.JPanel();
-        jlNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlNombre.setText(EmpleadoUIConstants.USER_MANAGMENT_NAME_PERSONAL);
-        jlApellido.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlApellido.setText(EmpleadoUIConstants.USER_MANAGMENT_LASTNAME_PERSONAL);
-        jlFechaNacimiento.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlFechaNacimiento.setText(EmpleadoUIConstants.USER_MANAGMENT_BIRTHDATE_PERSONAL);
-        jlCedulaIdentidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlCedulaIdentidad.setText(EmpleadoUIConstants.USER_MANAGMENT_PIN_PERSONAL);
-        jlNacionalidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlNacionalidad.setText(EmpleadoUIConstants.USER_MANAGMENT_NATIONALITY_PERSONAL);
-        jlCiudad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlCiudad.setText(EmpleadoUIConstants.USER_MANAGMENT_CITY_PERSONAL);
-        jlEstadoCivil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlEstadoCivil.setText(EmpleadoUIConstants.USER_MANAGMENT_CIVIL_STATE_PERSONAL);
-        jlGenero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlGenero.setText(EmpleadoUIConstants.USER_MANAGMENT_GENDER_PERSONAL);
-        jpDatos.setLayout(new java.awt.GridLayout(8, 2));
+        jpDatos = new javax.swing.JPanel(new java.awt.GridLayout(8, 2));
         jpDatos.add(jlNombre);
         jpDatos.add(jtfNombre);
         jpDatos.add(jlApellido);
@@ -220,17 +231,10 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jpDatos.add(jlGenero);
         jpDatos.add(jtfGenero);
 
+        jpDatosPersonales1 = new javax.swing.JPanel(new java.awt.BorderLayout());
         jpDatosPersonales1.add(jpDatos, java.awt.BorderLayout.CENTER);
 
-        jpDatosPersonales2.setLayout(new java.awt.BorderLayout());
-
         jpDatosPersonalesVarios1 = new javax.swing.JPanel(new java.awt.GridLayout(3, 2));
-        jlDireccion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlDireccion.setText(EmpleadoUIConstants.USER_MANAGMENT_ADRESS_PERSONAL);
-        jlNroCelular.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlNroCelular.setText(EmpleadoUIConstants.USER_MANAGMENT_CELLPHONE_PERSONAL);
-        jlTelefono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlTelefono.setText(EmpleadoUIConstants.USER_MANAGMENT_TELEPHONE_PERSONAL);
         jpDatosPersonalesVarios1.add(jlDireccion);
         jpDatosPersonalesVarios1.add(jtfDireccion);
         jpDatosPersonalesVarios1.add(jlTelefono);
@@ -238,30 +242,16 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jpDatosPersonalesVarios1.add(jlNroCelular);
         jpDatosPersonalesVarios1.add(jtfNroCelular);
 
+        jpDatosPersonales2 = new javax.swing.JPanel(new java.awt.BorderLayout());
         jpDatosPersonales2.add(jpDatosPersonalesVarios1, java.awt.BorderLayout.PAGE_START);
 
+        jpDatosPersonalesVarios2 = new javax.swing.JPanel(new java.awt.BorderLayout());
         jpDatosPersonalesVarios2.setBorder(javax.swing.BorderFactory.createTitledBorder(EmpleadoUIConstants.USER_MANAGMENT_OPTIONS_SUBTITLE));
-        jpDatosPersonalesVarios2.setLayout(new java.awt.BorderLayout());
-
-        jtaObservacion.setColumns(20);
-        jtaObservacion.setRows(5);
-        jspObservacion.setViewportView(jtaObservacion);
-
         jpDatosPersonalesVarios2.add(jspObservacion, java.awt.BorderLayout.CENTER);
 
         jpDatosPersonales2.add(jpDatosPersonalesVarios2, java.awt.BorderLayout.CENTER);
 
-        jpDatosEmpresariales = new javax.swing.JPanel();
-        jpDatosEmpresariales.setLayout(new java.awt.GridLayout(12, 2));
-
-        jlAlias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlAlias.setText(EmpleadoUIConstants.USER_MANAGMENT_ALIAS_CORP);
-        jlFechaIngreso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlFechaIngreso.setText(EmpleadoUIConstants.USER_MANAGMENT_ENTER_DATE_CORP);
-        jlCorreoElectronico.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlCorreoElectronico.setText(EmpleadoUIConstants.USER_MANAGMENT_EMAIL_CORP);
-        jlRol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlRol.setText(EmpleadoUIConstants.USER_MANAGMENT_ROL_CORP);
+        jpDatosEmpresariales = new javax.swing.JPanel(new java.awt.GridLayout(12, 2));
         jpDatosEmpresariales.add(jlAlias);
         jpDatosEmpresariales.add(jtfAlias);
         jpDatosEmpresariales.add(jlFechaIngreso);
@@ -289,24 +279,26 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
 
         //JP SOUTH
         jpSouth = new javax.swing.JPanel();
-        jpSouth.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jbGestionRol = new JButton(EmpleadoUIConstants.USER_MANAGMENT_ROL_MANAGMENT);
-        jbGestionRol.setName(EmpleadoUIConstants.USER_MANAGMENT_ROL_BTN);
-        jbGestionRol.setFont(CommonFormat.fuente);
-        jbGestionRol.setMargin(insets);
+        jpSouth.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED), EmpleadoUIConstants.USER_MANAGMENT_OPTIONS_SUBTITLE));
         jpSouth.add(jbCrearUsuario);
         jpSouth.add(jbModificarUsuario);
         jpSouth.add(jbEliminarUsuario);
         jpSouth.add(jbCambiarPassword);
         jpSouth.add(jbUsuarioParametros);
         jpSouth.add(jbGestionRol);
-        jpSouth.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED), EmpleadoUIConstants.USER_MANAGMENT_OPTIONS_SUBTITLE));
 
         //ADDING INTO CONTAINER
         getContentPane().add(jpCenter, java.awt.BorderLayout.CENTER);
         getContentPane().add(jpSouth, java.awt.BorderLayout.SOUTH);
+    }
 
+    private void addListeners() {
+        jbCrearUsuario.addActionListener(this);
+        jbModificarUsuario.addActionListener(this);
+        jbEliminarUsuario.addActionListener(this);
+        jbCambiarPassword.addActionListener(this);
         jbUsuarioParametros.addActionListener(this);
+        jbGestionRol.addActionListener(this);
     }
 
     private void initFilter() {
@@ -332,12 +324,26 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jpNorth.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED), EmpleadoUIConstants.USER_MANAGMENT_SEARCH_SUBTITLE));
     }
 
+    private void loadData() {
+        List<Empleado> empleadoList = this.service.getAllEmpleados();
+        empleadoTableModel.setEmpleadoList(empleadoList);
+        jtUsuario.setModel(empleadoTableModel);
+        empleadoTableModel.fireTableDataChanged();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
-        if (src.equals(jbUsuarioParametros)) {
+        if (src.equals(jbCrearUsuario)) {
+            CrearEmpleado empParam = new CrearEmpleado(app);
+            empParam.setVisible(true);
+        } else if (src.equals(jbUsuarioParametros)) {
             EmpleadoParametros empParam = new EmpleadoParametros(app);
             empParam.setVisible(true);
+        } else if (src.equals(jbModificarUsuario)) {
+        } else if (src.equals(jbEliminarUsuario)) {
+        } else if (src.equals(jbCambiarPassword)) {
+        } else if (src.equals(jbGestionRol)) {
         }
     }
 }

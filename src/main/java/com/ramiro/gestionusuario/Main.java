@@ -2,7 +2,7 @@ package com.ramiro.gestionusuario;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
-import com.ramiro.gestionusuario.model.EntityHandler.EmpleadoQuery;
+import com.ramiro.gestionusuario.model.EntityHandler.EmployParamQuery;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
@@ -46,7 +46,7 @@ public class Main {
 
     public static void test() {
         cargarBD();
-        EmpleadoQuery addPersonQuery = new EmpleadoQuery();
+        EmployParamQuery addPersonQuery = new EmployParamQuery();
         List<Ciudad> ciudadList = addPersonQuery.getAllCities();
         for (Ciudad ciudad : ciudadList) {
             System.out.println(ciudad.toString());
@@ -54,7 +54,7 @@ public class Main {
     }
 
     public static void cargarBD() {
-        EmpleadoQuery addPersonQuery = new EmpleadoQuery();
+        EmployParamQuery addPersonQuery = new EmployParamQuery();
 
         Ciudad ciudad1 = new Ciudad("SIN ASIGNAR");
         Ciudad ciudad2 = new Ciudad("ASUNCION");

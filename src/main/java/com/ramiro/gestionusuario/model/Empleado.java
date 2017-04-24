@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,6 +27,9 @@ import javax.persistence.Transient;
 @Entity(name = "Empleado")
 @Table(name = "empleado")
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
+@NamedQueries({
+    @NamedQuery(name = "empleado.getEmpleadoByCi", query = "SELECT e FROM Empleado e WHERE e.cedula = :cedula")
+})
 public class Empleado extends Persona implements Serializable {
 
     @Column(name = "APODO", length = 15)

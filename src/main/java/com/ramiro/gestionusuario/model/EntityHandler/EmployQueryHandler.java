@@ -18,19 +18,19 @@ import javax.persistence.TypedQuery;
 
 /**
  *
- * @author Ramiro
+ * @author Ramiro Ferreira
  */
-public class EmpleadoQuery extends AbstractQuery {
+public class EmployQueryHandler extends AbstractQuery {
 
-    public EmpleadoQuery() {
+    public EmployQueryHandler() {
     }
 
-    public List<Ciudad> getAllCities() {
+    public List<Rol> getAllRols() {
         open();
-        String jpql = "SELECT s FROM Ciudad s";
+        String jpql = "SELECT r FROM Rol r";
         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
-        List<Ciudad> ciudadList = query.getResultList();
-        return ciudadList;
+        List<Rol> rolList = query.getResultList();
+        return rolList;
     }
 
     public boolean existCountry(String descripcion) {
