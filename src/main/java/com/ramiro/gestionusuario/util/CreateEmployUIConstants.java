@@ -24,7 +24,7 @@ public class CreateEmployUIConstants {
     public static final String NAME_FIELD = "Nombre (*)";
     public static final String LAST_NAME_FIELD = "Apellido (*)";
     public static final String BIRTH_DATE_FIELD = "Fecha de nacimiento";
-    public static final String PIN_FIELD = "Cedula de identidad (**)";
+    public static final String PIN_FIELD = "Cedula de identidad (*)(**)";
     public static final String NATIONALITY_FIELD = "Nacionalidad";
     public static final String CITY_FIELD = "Ciudad";
     public static final String GENDER_FIELD = "Género";
@@ -34,11 +34,11 @@ public class CreateEmployUIConstants {
     public static final String OBSERVATION_FIELD = "Observaciones";
     public static final String ADRESS_FIELD = "Dirección";
     //
-    public static final String ALIAS_FIELD = "Alias (**)";
+    public static final String ALIAS_FIELD = "Alias (*)(**)";
     public static final String ENTER_DATE_FIELD = "Fecha de ingreso";
     public static final String PASSWORD_FIELD = "Contraseña (*)";
     public static final String REPEAT_PASSWORD_FIELD = "Repetir contraseña (*)";
-    public static final String EMAIL_FIELD = "Correo electrónico";
+    public static final String EMAIL_FIELD = "Correo electrónico(**)";
     //
     public static final String ADD_BTN = "Agregar";
     public static final String REMOVE_BTN = "Quitar";

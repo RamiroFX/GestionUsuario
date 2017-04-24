@@ -20,8 +20,8 @@ import javax.persistence.Version;
  *
  * @author Ramiro Ferreira
  */
-@Entity(name = "Roles")
-@Table(name = "roles")
+@Entity(name = "Rol")
+@Table(name = "rol")
 public class Rol implements Serializable {
 
     @Id

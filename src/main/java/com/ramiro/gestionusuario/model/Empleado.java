@@ -4,6 +4,7 @@
  */
 package com.ramiro.gestionusuario.model;
 
+import com.ramiro.gestionusuario.util.EmployValidationConstants;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +20,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -28,19 +30,25 @@ import javax.persistence.Transient;
 @Table(name = "empleado")
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
 @NamedQueries({
-    @NamedQuery(name = "empleado.getEmpleadoByCi", query = "SELECT e FROM Empleado e WHERE e.cedula = :cedula")
+    @NamedQuery(name = "empleado.getEmpleadoByApodo", query = "SELECT e FROM Empleado e WHERE e.apodo = :apodo"),
+    @NamedQuery(name = "empleado.getEmpleadoByEmail", query = "SELECT e FROM Empleado e WHERE e.email = :email")
 })
 public class Empleado extends Persona implements Serializable {
 
-    @Column(name = "APODO", length = 15)
+    @Column(name = "APODO", unique = true, length = 15)
+    @Size(max = 15, message = EmployValidationConstants.ALIAS_SIZE)
     private String apodo;
-    @Column(name = "EMAIL", length = 50)
+    @Column(name = "EMAIL", unique = true, length = 50)
+    @Size(max = 50, message = EmployValidationConstants.SIZE_50)
     private String email;
     @Column(name = "NRO_CELULAR", length = 50)
+    @Size(max = 50, message = EmployValidationConstants.SIZE_50)
     private String nroCelular;
     @Column(name = "NRO_TELEFONO", length = 50)
+    @Size(max = 50, message = EmployValidationConstants.SIZE_50)
     private String nroTelefono;
     @Column(name = "DIRECCION", length = 150)
+    @Size(max = 150, message = EmployValidationConstants.SIZE_150)
     private String direccion;
     @Transient
     private String password;
@@ -52,6 +60,7 @@ public class Empleado extends Persona implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rol> roles;
     @Column(name = "OBSERVACION", length = 150)
+    @Size(max = 150, message = EmployValidationConstants.SIZE_50)
     private String observacion;
 
     public Empleado() {

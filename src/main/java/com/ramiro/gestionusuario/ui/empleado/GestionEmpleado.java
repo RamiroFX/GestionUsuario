@@ -86,7 +86,6 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
     public JTextField jtfBuscar;
     public JCheckBox jckbNombreApellido, jckbCedula;
     public JRadioButton jrbExclusivo, jrbInclusivo;
-
     App app;
     GestionEmpleadoService service;
     EmpleadoTableModel empleadoTableModel;
@@ -117,6 +116,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jpCenter = new javax.swing.JPanel();
         jpCenter.setLayout(new java.awt.GridLayout(1, 0));
         jtUsuario = new javax.swing.JTable();
+        jtUsuario.getTableHeader().setReorderingAllowed(false);
         jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setViewportView(jtUsuario);

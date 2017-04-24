@@ -4,12 +4,36 @@
  */
 package com.ramiro.gestionusuario.ui.empleado;
 
+import com.ramiro.gestionusuario.model.Ciudad;
+import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EstadoCivil;
+import com.ramiro.gestionusuario.model.Genero;
+import com.ramiro.gestionusuario.model.Pais;
+import com.ramiro.gestionusuario.model.Rol;
+import com.ramiro.gestionusuario.service.EmployService;
+import com.ramiro.gestionusuario.serviceImpl.EmployServiceImpl;
+import com.ramiro.gestionusuario.tableModel.RolTableModel;
 import com.ramiro.gestionusuario.util.CreateEmployUIConstants;
+import com.ramirogestionusuario.validator.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -19,7 +43,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Ramiro Ferreira
  */
-public class CrearEmpleado extends javax.swing.JDialog {
+public class CrearEmpleado extends javax.swing.JDialog implements ActionListener, KeyListener, MouseListener {
 
     private javax.swing.JPanel jpNorth;
     private javax.swing.JScrollPane jspObservacion;
@@ -37,12 +61,18 @@ public class CrearEmpleado extends javax.swing.JDialog {
     public JDateChooser dccFechaNacimiento, dccFechaIngreso;
     public javax.swing.JTabbedPane jtpCenter;
     public JTable jtRolesSeleccionados, jtRolesDisponibles;
+    private EmployService servicio;
+    private RolTableModel availableRol, selectedRol;
+    private List<Rol> selectedRolsList;
 
     public CrearEmpleado(JFrame frame) {
         super(frame, true);
         constructWindow(frame);
-        initComponents();
+        initializeUIComponents();
         constructLayout(frame);
+        initializeLogic();
+        initializeData();
+        agregarListeners();
     }
 
     private void constructWindow(JFrame frame) {
@@ -54,7 +84,7 @@ public class CrearEmpleado extends javax.swing.JDialog {
         setResizable(false);
     }
 
-    private void initComponents() {
+    private void initializeUIComponents() {
         initPanelDatosPersonales1();
         initPanelDatosPersonales2();
         initPanelDatosEmpresariales();
@@ -264,10 +294,10 @@ public class CrearEmpleado extends javax.swing.JDialog {
 
         javax.swing.JPanel left = new javax.swing.JPanel(new java.awt.BorderLayout());
         javax.swing.JPanel right = new javax.swing.JPanel(new java.awt.BorderLayout());
-        left.add(jspRolesSeleccionados, BorderLayout.CENTER);
-        left.add(jbQuitarRol, BorderLayout.SOUTH);
-        right.add(jspRolesDisponibles, BorderLayout.CENTER);
-        right.add(jbAgregarRol, BorderLayout.SOUTH);
+        left.add(jspRolesDisponibles, BorderLayout.CENTER);
+        left.add(jbAgregarRol, BorderLayout.SOUTH);
+        right.add(jspRolesSeleccionados, BorderLayout.CENTER);
+        right.add(jbQuitarRol, BorderLayout.SOUTH);
 
         jpRol.add(left);
         jpRol.add(right);
@@ -291,6 +321,293 @@ public class CrearEmpleado extends javax.swing.JDialog {
     }
 
     private void initializeData() {
+        this.jcbNacionalidad.removeAllItems();
+        this.jcbCiudad.removeAllItems();
+        this.jcbGenero.removeAllItems();
+        this.jcbEstadoCivil.removeAllItems();
+        List<Pais> paises = servicio.getAllCountries();
+        List<Ciudad> ciudades = servicio.getAllCities();
+        List<Genero> generos = servicio.getAllGenders();
+        List<EstadoCivil> estadosCiviles = servicio.getAllCivilStates();
+        List<Rol> roles = servicio.getAllRoles();
+        for (Pais pais : paises) {
+            this.jcbNacionalidad.addItem(pais);
+        }
+        for (Ciudad ciudad : ciudades) {
+            this.jcbCiudad.addItem(ciudad);
+        }
+        for (Genero genero : generos) {
+            this.jcbGenero.addItem(genero);
+        }
+        for (EstadoCivil estadoCivil : estadosCiviles) {
+            this.jcbEstadoCivil.addItem(estadoCivil);
+        }
+        this.availableRol.setRolList(roles);
+        this.jtRolesDisponibles.setModel(availableRol);
+        this.dccFechaIngreso.setDate(Calendar.getInstance().getTime());
+        this.jftCedulaIdentidad.setFormatterFactory(
+                new javax.swing.text.DefaultFormatterFactory(
+                new javax.swing.text.NumberFormatter(
+                new java.text.DecimalFormat("#,##0"))));
+    }
 
+    private void initializeLogic() {
+        servicio = new EmployServiceImpl();
+        availableRol = new RolTableModel();
+        selectedRolsList = new ArrayList<>();
+        selectedRol = new RolTableModel();
+    }
+
+    private void agregarListeners() {
+        this.jbCancelar.addActionListener(this);
+        this.jbAceptar.addActionListener(this);
+        this.jbQuitarRol.addActionListener(this);
+        this.jbAgregarRol.addActionListener(this);
+        this.jftCedulaIdentidad.addKeyListener(this);
+        this.jtfNombre.addMouseListener(this);
+        this.jtfApellido.addMouseListener(this);
+        this.jftCedulaIdentidad.addMouseListener(this);
+        this.dccFechaNacimiento.addMouseListener(this);
+        this.dccFechaIngreso.addMouseListener(this);
+        this.jpassword1.addMouseListener(this);
+        this.jpassword2.addMouseListener(this);
+        this.jtfAlias.addMouseListener(this);
+        this.jtRolesDisponibles.addMouseListener(this);
+        this.jtRolesSeleccionados.addMouseListener(this);
+    }
+
+    private void CreateEmploy() {
+        char[] password1 = jpassword1.getPassword();
+        char[] password2 = jpassword2.getPassword();
+        if (!Arrays.equals(password1, password2)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String email = this.jtfCorreoElectronico.getText();
+        if (email.isEmpty()) {
+            email = null;
+        }
+        String direccion = this.jtfDireccion.getText();
+        if (direccion.isEmpty()) {
+            direccion = null;
+        }
+        String observacion = this.jtaObservacion.getText();
+        if (observacion.isEmpty()) {
+            observacion = null;
+        }
+        String telefono = this.jtfNroTelefono.getText();
+        if (telefono.isEmpty()) {
+            telefono = null;
+        }
+        String celular = this.jtfNroCelular.getText();
+        if (celular.isEmpty()) {
+            celular = null;
+        }
+        Date fechaIngreso = this.dccFechaIngreso.getDate();
+        String nombre = this.jtfNombre.getText();
+        String apellido = this.jtfApellido.getText();
+        String LongToString = String.valueOf(this.jftCedulaIdentidad.getValue());
+        Integer cedula = 0;
+        try {
+            cedula = Integer.valueOf(LongToString.replace(".", ""));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Inserte un valor en el campo cedula", "Atención", JOptionPane.WARNING_MESSAGE);
+            jftCedulaIdentidad.setForeground(Color.red);
+            return;
+        }
+        Date fechaNacimiento = this.dccFechaNacimiento.getDate();
+        String alias = this.jtfAlias.getText().toUpperCase();
+        boolean isPINInUse = servicio.isPINinUse(cedula);
+        boolean isAliasInUse = servicio.isApodoInUse(alias);
+        boolean isEmailInUse = servicio.isEmailInUse(email);
+        if (isPINInUse) {
+            JOptionPane.showMessageDialog(this, "La cedula de identidad seleccionada se encuentra ocupada", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (isEmailInUse) {
+            JOptionPane.showMessageDialog(this, "El Correo Electronico seleccionado se encuentra ocupado", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (isAliasInUse) {
+            JOptionPane.showMessageDialog(this, "El Alias selecciona se encuentra ocupado", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Empleado funcionario = new Empleado();
+        funcionario.setNombre(nombre);
+        funcionario.setApellido(apellido);
+        funcionario.setCedula(cedula);
+        funcionario.setFechaNacimiento(fechaNacimiento);
+        funcionario.setApodo(alias);
+        funcionario.setPassword(String.copyValueOf(password1));
+        funcionario.setNroTelefono(telefono);
+        funcionario.setNroCelular(celular);
+        funcionario.setFechaIngreso(fechaIngreso);
+        funcionario.setEstadoCivil((EstadoCivil) this.jcbEstadoCivil.getSelectedItem());
+        funcionario.setObservacion(observacion);
+        funcionario.setDireccion(direccion);
+        funcionario.setEmail(email);
+        funcionario.setCiudad((Ciudad) this.jcbCiudad.getSelectedItem());
+        funcionario.setRol(null);//se establece en el modelo
+        funcionario.setSexo((Genero) this.jcbGenero.getSelectedItem());
+        funcionario.setPais((Pais) this.jcbNacionalidad.getSelectedItem());
+        if (Validator.validar(funcionario, this)) {
+            servicio.createEmploy(funcionario);
+        }
+    }
+
+    private void validateRol() {
+    }
+
+    private void validatePIN() {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                String valorIngresado = jftCedulaIdentidad.getText().replace(".", "");
+                valorIngresado = valorIngresado.replace(",", "");
+                Long StringToLong = null;
+                try {
+                    StringToLong = Long.valueOf(valorIngresado);
+                } catch (NumberFormatException numberFormatException) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Ingrese solo numeros",
+                            "Parametros incorrectos",
+                            javax.swing.JOptionPane.OK_OPTION);
+                }
+                jftCedulaIdentidad.setValue(StringToLong);
+                String valorJFT = jftCedulaIdentidad.getText();
+                jftCedulaIdentidad.select(valorJFT.length(), valorJFT.length());
+            }
+        });
+    }
+
+    private void cerrar() {
+        this.dispose();
+        System.runFinalization();
+    }
+
+    private void agregarRol() {
+        int fila = this.jtRolesDisponibles.getSelectedRow();
+        int idRol = (Integer.valueOf((String) this.jtRolesDisponibles.getValueAt(fila, 0)));
+        for (int i = 0; i < selectedRolsList.size(); i++) {
+            if (selectedRolsList.get(i).getId() == idRol) {
+                JOptionPane.showMessageDialog(null, "El Rol seleccionado ya se ha encuentra", "Atención", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        String descripcionRol = (String) this.jtRolesDisponibles.getValueAt(fila, 1);
+        Rol rol = new Rol(descripcionRol);
+        selectedRolsList.add(rol);
+        selectedRol.setRolList(selectedRolsList);
+        this.jtRolesSeleccionados.setModel(selectedRol);
+        this.jbAgregarRol.setEnabled(false);
+        this.jbQuitarRol.setEnabled(false);
+    }
+
+    private void quitarRol() {
+        int fila = this.jtRolesDisponibles.getSelectedRow();
+        int idRol = (Integer.valueOf((String) this.jtRolesDisponibles.getValueAt(fila, 0)));
+        for (int i = 0; i < selectedRolsList.size(); i++) {
+            if (selectedRolsList.get(i).getId() == idRol) {
+                selectedRolsList.remove(i);
+            }
+        }
+        selectedRol.setRolList(selectedRolsList);
+        this.jtRolesSeleccionados.setModel(selectedRol);
+        this.jbAgregarRol.setEnabled(false);
+        this.jbQuitarRol.setEnabled(false);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (this.jftCedulaIdentidad.hasFocus()) {
+            this.jftCedulaIdentidad.setBackground(Color.white);
+        } else if (this.jtfNombre.hasFocus()) {
+            this.jtfNombre.setBackground(Color.white);
+        } else if (this.jtfApellido.hasFocus()) {
+            this.jtfApellido.setBackground(Color.white);
+        } else if (this.jtfAlias.hasFocus()) {
+            this.jtfAlias.setBackground(Color.white);
+        } else if (this.dccFechaIngreso.hasFocus()) {
+            this.dccFechaIngreso.setBackground(Color.white);
+        } else if (this.dccFechaNacimiento.hasFocus()) {
+            this.dccFechaNacimiento.setBackground(Color.white);
+        } else if (this.jpassword1.hasFocus()) {
+            this.jpassword1.setBackground(Color.white);
+        } else if (this.jpassword2.hasFocus()) {
+            this.jpassword2.setBackground(Color.white);
+        }
+        if (e.getSource().equals(this.jtRolesDisponibles)) {
+            int fila = this.jtRolesDisponibles.rowAtPoint(e.getPoint());
+            int columna = this.jtRolesDisponibles.columnAtPoint(e.getPoint());
+            int idRol = (int) this.jtRolesDisponibles.getValueAt(fila, 0);
+            String descripcionRol = (String) this.jtRolesDisponibles.getValueAt(fila, 1);
+            if ((fila > -1) && (columna > -1)) {
+                this.jbAgregarRol.setEnabled(true);
+            } else {
+                this.jbAgregarRol.setEnabled(false);
+            }
+            if (e.getClickCount() == 2) {
+                this.jbAgregarRol.setEnabled(false);
+                this.jbQuitarRol.setEnabled(false);
+            }
+        }
+        if (e.getSource().equals(this.jtRolesSeleccionados)) {
+            int fila = this.jtRolesSeleccionados.rowAtPoint(e.getPoint());
+            int columna = this.jtRolesSeleccionados.columnAtPoint(e.getPoint());
+            int idRol = (int) this.jtRolesSeleccionados.getValueAt(fila, 0);
+            if ((fila > -1) && (columna > -1)) {
+                this.jbQuitarRol.setEnabled(true);
+            } else {
+                this.jbQuitarRol.setEnabled(false);
+            }
+            if (e.getClickCount() == 2) {
+
+                this.jbAgregarRol.setEnabled(false);
+                this.jbQuitarRol.setEnabled(false);
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getSource() == this.jftCedulaIdentidad) {
+            validatePIN();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.jbCancelar) {
+            cerrar();
+        } else if (e.getSource() == this.jbAceptar) {
+            CreateEmploy();
+        } else if (e.getSource() == this.jbAgregarRol) {
+            agregarRol();
+        } else if (e.getSource() == this.jbQuitarRol) {
+            quitarRol();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }

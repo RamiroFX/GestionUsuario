@@ -25,6 +25,38 @@ public class EmployQueryHandler extends AbstractQuery {
     public EmployQueryHandler() {
     }
 
+    public List<EstadoCivil> getAllCivilStates() {
+        open();
+        String jpql = "SELECT ec FROM EstadoCivil ec";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<EstadoCivil> estadoCivilList = query.getResultList();
+        return estadoCivilList;
+    }
+
+    public List<Genero> getAllGenders() {
+        open();
+        String jpql = "SELECT g FROM Genero g";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<Genero> generoList = query.getResultList();
+        return generoList;
+    }
+
+    public List<Ciudad> getAllCities() {
+        open();
+        String jpql = "SELECT c FROM Ciudad c";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<Ciudad> ciudadList = query.getResultList();
+        return ciudadList;
+    }
+
+    public List<Pais> getAllCountries() {
+        open();
+        String jpql = "SELECT p FROM Pais p";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<Pais> paisList = query.getResultList();
+        return paisList;
+    }
+
     public List<Rol> getAllRols() {
         open();
         String jpql = "SELECT r FROM Rol r";
@@ -33,109 +65,60 @@ public class EmployQueryHandler extends AbstractQuery {
         return rolList;
     }
 
-    public boolean existCountry(String descripcion) {
+    public boolean isPINinUse(int cedula) {
         open();
-        TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("pais.getPaisByDescripcion", Pais.class);
-        typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
-        return typedQuery.getResultList().size() > 0;
+        TypedQuery<Persona> typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonaByCedula", Persona.class);
+        typedQuery.setParameter("cedula", cedula);
+        return !typedQuery.getResultList().isEmpty();
     }
 
-    public boolean isInUseCountry(int idCountry) {
+    public boolean isApodoInUse(String apodo) {
         open();
-        TypedQuery<Persona> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCountryId", Persona.class);
-        query.setParameter("id", idCountry);
-        return !query.getResultList().isEmpty();
+        TypedQuery<Empleado> typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("empleado.getEmpleadoByApodo", Empleado.class);
+        typedQuery.setParameter("apodo", apodo);
+        return !typedQuery.getResultList().isEmpty();
     }
 
-    public boolean existCity(String descripcion) {
+    public boolean isEmailInUse(String email) {
         open();
-        TypedQuery typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("ciudad.getCiudadByDescripcion", Ciudad.class);
-        typedQuery.setParameter("descripcion", descripcion.trim().toUpperCase());
-        return typedQuery.getResultList().size() > 0;
+        TypedQuery<Empleado> typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("empleado.getEmpleadoByEmail", Empleado.class);
+        typedQuery.setParameter("email", email);
+        return !typedQuery.getResultList().isEmpty();
     }
 
-    public boolean isInUseCity(int idCity) {
+    public void insertEmploy(Empleado empleado) {
         open();
-        TypedQuery<Persona> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("persona.getPersonasByCityId", Persona.class);
-        query.setParameter("id", idCity);
-        return !query.getResultList().isEmpty();
-    }
-
-    public void insertCity(Ciudad ciudad) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(ciudad);
+        EntityManagerHandler.INSTANCE.getEntityManager().persist(empleado);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
-    public void updateCity(int idCiudad, String descripcion) {
+    public void updateEmploy(int idEmploy, Empleado empleado) {
         open();
-        Ciudad ciudad = EntityManagerHandler.INSTANCE.getEntityManager().find(Ciudad.class, idCiudad);
-        ciudad.setDescripcion(descripcion.toUpperCase());
+        Empleado employ = EntityManagerHandler.INSTANCE.getEntityManager().find(Empleado.class, idEmploy);
+        employ.setApellido(empleado.getApellido());
+        employ.setApodo(empleado.getApodo());
+        employ.setCedula(empleado.getCedula());
+        employ.setCiudad(empleado.getCiudad());
+        employ.setDireccion(empleado.getDireccion());
+        employ.setEmail(empleado.getEmail());
+        employ.setEstadoCivil(empleado.getEstadoCivil());
+        employ.setFechaIngreso(empleado.getFechaIngreso());
+        employ.setFechaNacimiento(empleado.getFechaNacimiento());
+        employ.setNombre(empleado.getNombre());
+        employ.setNroCelular(empleado.getNroCelular());
+        employ.setNroTelefono(empleado.getNroTelefono());
+        employ.setObservacion(empleado.getObservacion());
+        employ.setPais(empleado.getPais());
+        employ.setPassword(empleado.getPassword());
+        employ.setRoles(empleado.getRoles());
+        employ.setSexo(empleado.getSexo());
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
-    public void removeCity(int idCity) {
+    public void removeEmploy(int idEmploy) {
         open();
-        Ciudad ciudad = EntityManagerHandler.INSTANCE.getEntityManager().find(Ciudad.class, idCity);
-        EntityManagerHandler.INSTANCE.getEntityManager().remove(ciudad);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public List<Pais> getAllCountries() {
-        open();
-        String jpql = "SELECT p FROM Pais p";
-        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
-        List<Pais> countryList = query.getResultList();
-        return countryList;
-    }
-
-    public void insertCountry(Pais pais) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(pais);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void updateCountry(int idCountry, String descripcion) {
-        open();
-        Pais pais = EntityManagerHandler.INSTANCE.getEntityManager().find(Pais.class, idCountry);
-        pais.setDescripcion(descripcion.toUpperCase());
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void removeCountry(int idPais) {
-        open();
-        Pais pais = EntityManagerHandler.INSTANCE.getEntityManager().find(Pais.class, idPais);
-        EntityManagerHandler.INSTANCE.getEntityManager().remove(pais);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void insertSexo(Genero genero) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(genero);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void insertRol(Rol rol) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(rol);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void insertEstadoCivil(EstadoCivil estadoCivil) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(estadoCivil);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void insertPersona(Persona persona) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(persona);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
-
-    public void insertEmpleado(Empleado employ) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(employ);
+        Empleado employ = EntityManagerHandler.INSTANCE.getEntityManager().find(Empleado.class, idEmploy);
+        EntityManagerHandler.INSTANCE.getEntityManager().remove(employ);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 }
