@@ -32,6 +32,11 @@ public class EmployServiceImpl implements EmployService {
     }
 
     @Override
+    public List<Rol> getAllRolByIds(List<Integer> roles) {
+        return this.employQueryHandler.getSelectedRols(roles);
+    }
+
+    @Override
     public List<Pais> getAllCountries() {
         return this.employQueryHandler.getAllCountries();
     }

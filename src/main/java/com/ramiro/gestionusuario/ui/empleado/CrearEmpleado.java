@@ -20,12 +20,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,6 +36,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -173,7 +176,6 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
 
     private void initPanelDatosPersonales2() {
         //Panel
-        jpDatosPersonales2 = new javax.swing.JPanel(new MigLayout());
         //Labels, Textfields & textarea
         jlNroTelefono = new javax.swing.JLabel(CreateEmployUIConstants.PHONE_FIELD);
         jtfNroTelefono = new javax.swing.JTextField();
@@ -185,12 +187,16 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         jlDireccion = new javax.swing.JLabel(CreateEmployUIConstants.ADRESS_FIELD);
         jtfDireccion = new javax.swing.JTextField();
         //Adding components into panel
-        jpDatosPersonales2.add(jlDireccion);
-        jpDatosPersonales2.add(jtfDireccion, "pushx, grow, wrap");
-        jpDatosPersonales2.add(jlNroTelefono);
-        jpDatosPersonales2.add(jtfNroTelefono, "pushx, grow, wrap");
-        jpDatosPersonales2.add(jlNroCelular);
-        jpDatosPersonales2.add(jtfNroCelular, "pushx, grow, wrap");
+        jpDatosPersonales2 = new javax.swing.JPanel(new GridLayout(2, 1));
+        JPanel aux1 = new JPanel(new MigLayout("insets 5 5 0 5", "[100.00][grow]", "[][][]"));
+        aux1.add(jlDireccion, "cell 0 0, alignx center");
+        aux1.add(jtfDireccion, "cell 1 0, growx");
+        aux1.add(jlNroTelefono, "cell 0 1, alignx center");
+        aux1.add(jtfNroTelefono, "cell 1 1, growx");
+        aux1.add(jlNroCelular, "cell 0 2, alignx center");
+        aux1.add(jtfNroCelular, "cell 1 2, growx, wrap");
+        jpDatosPersonales2.add(aux1);
+        jpDatosPersonales2.add(jspObservacion);
     }
 
     private void initPanelDatosEmpresariales() {
@@ -347,8 +353,8 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         this.dccFechaIngreso.setDate(Calendar.getInstance().getTime());
         this.jftCedulaIdentidad.setFormatterFactory(
                 new javax.swing.text.DefaultFormatterFactory(
-                        new javax.swing.text.NumberFormatter(
-                                new java.text.DecimalFormat("#,##0"))));
+                new javax.swing.text.NumberFormatter(
+                new java.text.DecimalFormat("#,##0"))));
     }
 
     private void initializeLogic() {
@@ -587,7 +593,7 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         funcionario.setDireccion(direccion);
         funcionario.setEmail(email);
         funcionario.setCiudad((Ciudad) this.jcbCiudad.getSelectedItem());
-        funcionario.setRoles(selectedRolsList);//se establece en el modelo
+        funcionario.setRoles(validateRol());//se establece en el modelo
         funcionario.setSexo((Genero) this.jcbGenero.getSelectedItem());
         funcionario.setPais((Pais) this.jcbNacionalidad.getSelectedItem());
         if (Validator.validar(funcionario, this)) {
@@ -598,8 +604,11 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
     }
 
     private List<Rol> validateRol() {
-        List<Rol> roles = null;
-
+        List<Integer> idRoles = new ArrayList<>();
+        for (Rol rol : selectedRolsList) {
+            idRoles.add(rol.getId());
+        }
+        List<Rol> roles = servicio.getAllRolByIds(idRoles);
         return roles;
     }
 
@@ -758,5 +767,4 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
     @Override
     public void keyReleased(KeyEvent e) {
     }
-
 }

@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -22,6 +24,8 @@ import javax.persistence.Version;
  */
 @Entity(name = "Rol")
 @Table(name = "rol")
+@NamedQueries({
+    @NamedQuery(name = "rol.getAllRolByIds", query = "SELECT r FROM Rol r WHERE r.id IN :id")})
 public class Rol implements Serializable {
 
     @Id

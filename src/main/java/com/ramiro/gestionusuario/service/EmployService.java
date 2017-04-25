@@ -20,6 +20,8 @@ public interface EmployService {
 
     public List<Rol> getAllRoles();
 
+    public List<Rol> getAllRolByIds(List<Integer> roles);
+
     public List<Pais> getAllCountries();
 
     public List<Ciudad> getAllCities();

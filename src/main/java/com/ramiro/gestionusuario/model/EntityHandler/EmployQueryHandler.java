@@ -13,6 +13,7 @@ import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Persona;
 import com.ramiro.gestionusuario.model.Rol;
 import java.util.List;
+import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -61,6 +62,15 @@ public class EmployQueryHandler extends AbstractQuery {
         open();
         String jpql = "SELECT r FROM Rol r";
         Query query = EntityManagerHandler.INSTANCE.getEntityManager().createQuery(jpql);
+        List<Rol> rolList = query.getResultList();
+        return rolList;
+    }
+
+    public List<Rol> getSelectedRols(List<Integer> roles) {
+        open();
+        String jpql = "SELECT r FROM Rol r";
+        Query query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("rol.getAllRolByIds", Rol.class);
+        query.setParameter("id", roles);
         List<Rol> rolList = query.getResultList();
         return rolList;
     }
