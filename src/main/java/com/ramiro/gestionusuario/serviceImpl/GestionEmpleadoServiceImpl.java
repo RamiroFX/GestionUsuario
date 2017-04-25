@@ -32,4 +32,14 @@ public class GestionEmpleadoServiceImpl implements GestionEmpleadoService {
         return this.gestionEmpleadoQuery.existEmpleado(cedula);
     }
 
+    @Override
+    public Empleado obtenerEmpleado(Long id) {
+        return this.gestionEmpleadoQuery.obtenerEmpleado(id);
+    }
+
+    @Override
+    public List<Empleado> consultarFuncionario(String busqueda, boolean exclusivo, boolean entidad, boolean ruc) {
+        return this.gestionEmpleadoQuery.consultarFuncionario(busqueda, exclusivo, entidad, ruc);
+    }
+
 }

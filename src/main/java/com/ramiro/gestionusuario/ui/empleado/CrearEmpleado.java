@@ -347,8 +347,8 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         this.dccFechaIngreso.setDate(Calendar.getInstance().getTime());
         this.jftCedulaIdentidad.setFormatterFactory(
                 new javax.swing.text.DefaultFormatterFactory(
-                new javax.swing.text.NumberFormatter(
-                new java.text.DecimalFormat("#,##0"))));
+                        new javax.swing.text.NumberFormatter(
+                                new java.text.DecimalFormat("#,##0"))));
     }
 
     private void initializeLogic() {
@@ -377,11 +377,55 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
     }
 
     private void CreateEmploy() {
-        char[] password1 = jpassword1.getPassword();
-        char[] password2 = jpassword2.getPassword();
-        if (!Arrays.equals(password1, password2)) {
-            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Atención", JOptionPane.WARNING_MESSAGE);
+        /*
+         * VALIDAR NOMBRE
+         */
+        String nombre;
+        if (this.jtfNombre.getText().isEmpty()) {
+            this.jtfNombre.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo nombre esta vacio",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
             return;
+        } else {
+            if (this.jtfNombre.getText().length() > 30) {
+                this.jtfNombre.setBackground(Color.red);
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "El campo nombre sobrepasa el limite permitido(30) de caracteres",
+                        "Parametros incorrectos",
+                        javax.swing.JOptionPane.OK_OPTION);
+                this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
+                return;
+            } else {
+                nombre = this.jtfNombre.getText();
+            }
+        }
+        /*
+         * VALIDAR APELLIDO
+         */
+        String apellido;
+        if (this.jtfApellido.getText().isEmpty()) {
+            this.jtfApellido.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo apellido esta vacio",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
+            return;
+        } else {
+            if (this.jtfApellido.getText().length() > 30) {
+                this.jtfApellido.setBackground(Color.red);
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "El campo apellido sobrepasa el limite permitido(30) de caracteres",
+                        "Parametros incorrectos",
+                        javax.swing.JOptionPane.OK_OPTION);
+                this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
+                return;
+            } else {
+                apellido = this.jtfApellido.getText();
+            }
         }
         String email = this.jtfCorreoElectronico.getText();
         if (email.isEmpty()) {
@@ -404,19 +448,115 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
             celular = null;
         }
         Date fechaIngreso = this.dccFechaIngreso.getDate();
-        String nombre = this.jtfNombre.getText();
-        String apellido = this.jtfApellido.getText();
-        String LongToString = String.valueOf(this.jftCedulaIdentidad.getValue());
-        Integer cedula = 0;
+        /*
+         * VALIDAR PIN
+         */
+        Integer cedula;
         try {
+            String LongToString = String.valueOf(this.jftCedulaIdentidad.getValue());
             cedula = Integer.valueOf(LongToString.replace(".", ""));
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Inserte un valor en el campo cedula", "Atención", JOptionPane.WARNING_MESSAGE);
-            jftCedulaIdentidad.setForeground(Color.red);
+            this.jftCedulaIdentidad.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this, "Coloque un Numero de CI valido",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
             return;
         }
-        Date fechaNacimiento = this.dccFechaNacimiento.getDate();
-        String alias = this.jtfAlias.getText().toUpperCase();
+        /*
+         * VALIDAR FECHA NACIMIENTO
+         */
+        Date fechaNacimiento;
+        try {
+            fechaNacimiento = this.dccFechaNacimiento.getDate();
+        } catch (Exception e) {
+            this.dccFechaNacimiento.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Ingrese una fecha valida en el campo Fecha nacimiento",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
+            return;
+        }
+        /*
+         * VALIDAR ALIAS
+         */
+        String alias;
+        if (this.jtfAlias.getText().isEmpty()) {
+            this.jtfAlias.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo alias esta vacio",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosEmpresariales);
+            return;
+        } else {
+            if (this.jtfAlias.getText().length() > 30) {
+                this.jtfAlias.setBackground(Color.red);
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "El campo alias sobrepasa el limite permitido(30) de caracteres",
+                        "Parametros incorrectos",
+                        javax.swing.JOptionPane.OK_OPTION);
+                this.jtpCenter.setSelectedComponent(jpDatosPersonales1);
+                return;
+            } else {
+                alias = this.jtfAlias.getText().toLowerCase();
+            }
+        }
+        /*
+         VALIDAR CONTRASEÑA
+         */
+        if (this.jpassword1.getText().isEmpty()) {
+            this.jpassword1.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo contraseña esta vacio",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosEmpresariales);
+            return;
+        } else if (this.jpassword1.getText().length() > 15) {
+            this.jpassword1.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo contraseña sobrepasa el limite permitido(15) de caracteres",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosEmpresariales);
+            return;
+        }
+        if (this.jpassword2.getText().isEmpty()) {
+            this.jpassword2.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo repetir contraseña esta vacio",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosEmpresariales);
+            return;
+        } else if (this.jpassword2.getText().length() > 15) {
+            this.jpassword2.setBackground(Color.red);
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "El campo repetir contraseña sobrepasa el limite permitido(15) de caracteres",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpDatosEmpresariales);
+            return;
+        }
+        char[] password1 = jpassword1.getPassword();
+        char[] password2 = jpassword2.getPassword();
+        if (!Arrays.equals(password1, password2)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        /*
+         VALIDAR ROL
+         */
+        if (this.jtRolesSeleccionados.getRowCount() < 1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Seleccione por lo menos un rol",
+                    "Parametros incorrectos",
+                    javax.swing.JOptionPane.OK_OPTION);
+            this.jtpCenter.setSelectedComponent(jpRol);
+            return;
+        }
         boolean isPINInUse = servicio.isPINinUse(cedula);
         boolean isAliasInUse = servicio.isApodoInUse(alias);
         boolean isEmailInUse = servicio.isEmailInUse(email);
@@ -447,15 +587,20 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         funcionario.setDireccion(direccion);
         funcionario.setEmail(email);
         funcionario.setCiudad((Ciudad) this.jcbCiudad.getSelectedItem());
-        funcionario.setRol(null);//se establece en el modelo
+        funcionario.setRoles(selectedRolsList);//se establece en el modelo
         funcionario.setSexo((Genero) this.jcbGenero.getSelectedItem());
         funcionario.setPais((Pais) this.jcbNacionalidad.getSelectedItem());
         if (Validator.validar(funcionario, this)) {
             servicio.createEmploy(funcionario);
+            JOptionPane.showMessageDialog(this, "Empleado creado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            cerrar();
         }
     }
 
-    private void validateRol() {
+    private List<Rol> validateRol() {
+        List<Rol> roles = null;
+
+        return roles;
     }
 
     private void validatePIN() {
@@ -479,14 +624,9 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         });
     }
 
-    private void cerrar() {
-        this.dispose();
-        System.runFinalization();
-    }
-
     private void agregarRol() {
         int fila = this.jtRolesDisponibles.getSelectedRow();
-        int idRol = (Integer.valueOf((String) this.jtRolesDisponibles.getValueAt(fila, 0)));
+        int idRol = (int) this.jtRolesDisponibles.getValueAt(fila, 0);
         for (int i = 0; i < selectedRolsList.size(); i++) {
             if (selectedRolsList.get(i).getId() == idRol) {
                 JOptionPane.showMessageDialog(null, "El Rol seleccionado ya se ha encuentra", "Atención", JOptionPane.ERROR_MESSAGE);
@@ -495,16 +635,18 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         }
         String descripcionRol = (String) this.jtRolesDisponibles.getValueAt(fila, 1);
         Rol rol = new Rol(descripcionRol);
+        rol.setId(idRol);
         selectedRolsList.add(rol);
         selectedRol.setRolList(selectedRolsList);
         this.jtRolesSeleccionados.setModel(selectedRol);
+        selectedRol.updateTable();
         this.jbAgregarRol.setEnabled(false);
         this.jbQuitarRol.setEnabled(false);
     }
 
     private void quitarRol() {
-        int fila = this.jtRolesDisponibles.getSelectedRow();
-        int idRol = (Integer.valueOf((String) this.jtRolesDisponibles.getValueAt(fila, 0)));
+        int fila = this.jtRolesSeleccionados.getSelectedRow();
+        int idRol = (int) this.jtRolesSeleccionados.getValueAt(fila, 0);
         for (int i = 0; i < selectedRolsList.size(); i++) {
             if (selectedRolsList.get(i).getId() == idRol) {
                 selectedRolsList.remove(i);
@@ -512,8 +654,27 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
         }
         selectedRol.setRolList(selectedRolsList);
         this.jtRolesSeleccionados.setModel(selectedRol);
+        selectedRol.updateTable();
         this.jbAgregarRol.setEnabled(false);
         this.jbQuitarRol.setEnabled(false);
+    }
+
+    private void cerrar() {
+        this.dispose();
+        System.runFinalization();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.jbCancelar) {
+            cerrar();
+        } else if (e.getSource() == this.jbAceptar) {
+            CreateEmploy();
+        } else if (e.getSource() == this.jbAgregarRol) {
+            agregarRol();
+        } else if (e.getSource() == this.jbQuitarRol) {
+            quitarRol();
+        }
     }
 
     @Override
@@ -568,34 +729,6 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        if (e.getSource() == this.jftCedulaIdentidad) {
-            validatePIN();
-        }
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.jbCancelar) {
-            cerrar();
-        } else if (e.getSource() == this.jbAceptar) {
-            CreateEmploy();
-        } else if (e.getSource() == this.jbAgregarRol) {
-            agregarRol();
-        } else if (e.getSource() == this.jbQuitarRol) {
-            quitarRol();
-        }
-    }
-
-    @Override
     public void mousePressed(MouseEvent e) {
     }
 
@@ -610,4 +743,20 @@ public class CrearEmpleado extends javax.swing.JDialog implements ActionListener
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (e.getSource() == this.jftCedulaIdentidad) {
+            validatePIN();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
 }

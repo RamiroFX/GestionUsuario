@@ -17,4 +17,8 @@ public interface GestionEmpleadoService {
     public List<Empleado> getAllEmpleados();
 
     public boolean existEmpleado(String cedula);
+
+    public Empleado obtenerEmpleado(Long id);
+
+    public List<Empleado> consultarFuncionario(String criteria, boolean isExclusivo, boolean buscarPorNombreApellido, boolean buscarPorPIN);
 }

@@ -31,4 +31,35 @@ public class GestionEmpleadoQuery extends AbstractQuery {
         return typedQuery.getResultList().size() > 0;
     }
 
+    public Empleado obtenerEmpleado(Long id) {
+        open();
+        Empleado empleado = EntityManagerHandler.INSTANCE.getEntityManager().find(Empleado.class, id);
+        return empleado;
+    }
+
+    public List<Empleado> consultarFuncionario(String criteria, boolean isExclusivo, boolean buscarPorNombreApellido, boolean buscarPorPIN) {
+        open();
+        TypedQuery typedQuery = null;
+        if (buscarPorNombreApellido) {
+            typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("empleado.getEmpleadoByNombreApellido", Empleado.class);
+            if (isExclusivo) {
+                typedQuery.setParameter("criteria", criteria.trim() + "%");
+            } else {
+                typedQuery.setParameter("criteria", "%" + criteria.trim() + "%");
+            }
+            return typedQuery.getResultList();
+        } else if (buscarPorPIN) {
+            typedQuery = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("empleado.getEmpleadoByCedula", Empleado.class);
+            int cedula = 0;
+            try {
+                cedula = Integer.parseInt(criteria.trim());
+            } catch (Exception e) {
+                typedQuery.setParameter("cedula", 0);
+            }
+            typedQuery.setParameter("cedula", cedula);
+            return typedQuery.getResultList();
+        }
+        return typedQuery.getResultList();
+    }
+
 }

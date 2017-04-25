@@ -12,9 +12,15 @@ import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.CommonFormat;
 import com.ramiro.gestionusuario.util.EmpleadoUIConstants;
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -31,7 +37,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Ramiro Ferreira
  */
-public class GestionEmpleado extends JInternalFrame implements ActionListener {
+public class GestionEmpleado extends JInternalFrame implements ActionListener, MouseListener, KeyListener {
 
     private javax.swing.JPanel jpDatosPersonalesVarios2;
     private javax.swing.JPanel jpDatosPersonalesVarios1;
@@ -168,6 +174,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jtfNroCelular = new javax.swing.JTextField();
         jtfNroCelular.setEditable(false);
         jtaObservacion = new javax.swing.JTextArea();
+        jtaObservacion.setEditable(false);
         jspObservacion = new javax.swing.JScrollPane(jtaObservacion);
         //DATOS EMPRESARIALES
         jlAlias = new javax.swing.JLabel(EmpleadoUIConstants.USER_MANAGMENT_ALIAS_CORP);
@@ -246,7 +253,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jpDatosPersonales2.add(jpDatosPersonalesVarios1, java.awt.BorderLayout.PAGE_START);
 
         jpDatosPersonalesVarios2 = new javax.swing.JPanel(new java.awt.BorderLayout());
-        jpDatosPersonalesVarios2.setBorder(javax.swing.BorderFactory.createTitledBorder(EmpleadoUIConstants.USER_MANAGMENT_OPTIONS_SUBTITLE));
+        jpDatosPersonalesVarios2.setBorder(javax.swing.BorderFactory.createTitledBorder(EmpleadoUIConstants.USER_MANAGMENT_OBSERVATION_PERSONAL));
         jpDatosPersonalesVarios2.add(jspObservacion, java.awt.BorderLayout.CENTER);
 
         jpDatosPersonales2.add(jpDatosPersonalesVarios2, java.awt.BorderLayout.CENTER);
@@ -293,12 +300,18 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
     }
 
     private void addListeners() {
-        jbCrearUsuario.addActionListener(this);
-        jbModificarUsuario.addActionListener(this);
-        jbEliminarUsuario.addActionListener(this);
-        jbCambiarPassword.addActionListener(this);
-        jbUsuarioParametros.addActionListener(this);
-        jbGestionRol.addActionListener(this);
+        this.jbCrearUsuario.addActionListener(this);
+        this.jbModificarUsuario.addActionListener(this);
+        this.jbEliminarUsuario.addActionListener(this);
+        this.jtUsuario.addMouseListener(this);
+        this.jtfBuscar.addKeyListener(this);
+        this.jbGestionRol.addActionListener(this);
+        this.jckbCedula.addActionListener(this);
+        this.jckbNombreApellido.addActionListener(this);
+        this.jrbExclusivo.addActionListener(this);
+        this.jrbInclusivo.addActionListener(this);
+        this.jbCambiarPassword.addActionListener(this);
+        this.jbUsuarioParametros.addActionListener(this);
     }
 
     private void initFilter() {
@@ -307,7 +320,6 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         jckbNombreApellido = new JCheckBox(EmpleadoUIConstants.USER_MANAGMENT_NAME_LASTNAME_FIELD);
         jckbNombreApellido.setSelected(true);
         jckbCedula = new JCheckBox(EmpleadoUIConstants.USER_MANAGMENT_PIN_SEARCH);
-        jckbCedula.setSelected(true);
         jrbExclusivo = new javax.swing.JRadioButton(EmpleadoUIConstants.USER_MANAGMENT_EXCLUSIVE_SEARCH, true);
         jrbInclusivo = new javax.swing.JRadioButton(EmpleadoUIConstants.USER_MANAGMENT_INCLUSIVE_SEARCH);
         javax.swing.ButtonGroup bg1 = new javax.swing.ButtonGroup();
@@ -328,7 +340,82 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         List<Empleado> empleadoList = this.service.getAllEmpleados();
         empleadoTableModel.setEmpleadoList(empleadoList);
         jtUsuario.setModel(empleadoTableModel);
-        empleadoTableModel.fireTableDataChanged();
+        empleadoTableModel.updateTable();
+    }
+
+    public void displayQueryResults() {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                String criteria = jtfBuscar.getText().toLowerCase();
+                boolean isExclusivo = false;
+                boolean buscarPorNombreApellido = false;
+                boolean buscarPorPIN = false;
+                if (jrbExclusivo.isSelected()) {
+                    isExclusivo = true;
+                }
+                if (jckbNombreApellido.isSelected()) {
+                    buscarPorNombreApellido = true;
+                }
+                if (jckbCedula.isSelected()) {
+                    buscarPorPIN = true;
+                }
+                List<Empleado> empleadoList = service.consultarFuncionario(criteria, isExclusivo, buscarPorNombreApellido, buscarPorPIN);
+                empleadoTableModel.setEmpleadoList(empleadoList);
+                jtUsuario.setModel(empleadoTableModel);
+                empleadoTableModel.updateTable();
+                jbModificarUsuario.setEnabled(false);
+                jbEliminarUsuario.setEnabled(false);
+            }
+        });
+    }
+
+    private void checkFilterCedula() {
+        if (jckbCedula.isSelected()) {
+            jckbNombreApellido.setSelected(false);
+        } else {
+            jckbNombreApellido.setSelected(true);
+        }
+    }
+
+    private void checkFilterNombreApellido() {
+        if (jckbNombreApellido.isSelected()) {
+            jckbCedula.setSelected(false);
+        } else {
+            jckbCedula.setSelected(true);
+        }
+    }
+
+    private void completarCampos(Empleado employ) {
+        this.jtfAlias.setText(employ.getApodo());
+        this.jtfDireccion.setText(employ.getDireccion());
+        this.jtfCorreoElectronico.setText(employ.getEmail());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            this.jtfFechaIngreso.setText(sdf.format(employ.getFechaIngreso()));
+        } catch (java.lang.NullPointerException ex) {
+            this.jtfFechaIngreso.setText("");
+        }
+        try {
+            this.jtfFechaNacimiento.setText(sdf.format(employ.getFechaNacimiento()));
+        } catch (java.lang.NullPointerException ex) {
+            this.jtfFechaNacimiento.setText("");
+        }
+        this.jtaObservacion.setText(employ.getObservacion());
+        this.jtfNroCelular.setText(employ.getNroCelular());
+        this.jtfNroTelefono.setText(employ.getNroTelefono());
+        //Datos personales
+        this.jtfNombre.setText(employ.getNombre());
+        this.jtfApellido.setText(employ.getApellido());
+        this.jftCedulaIdentidad.setValue(employ.getCedula());
+        this.jtfGenero.setText(employ.getSexo().getDescripcion());
+        this.jtfEstadoCivil.setText(employ.getEstadoCivil().getDescripcion());
+        this.jtfNacionalidad.setText(employ.getPais().getDescripcion());
+        this.jtfCiudad.setText(employ.getCiudad().getDescripcion());
+        this.jcbRol.removeAllItems();
+        List vRolUsuario = employ.getRoles();
+        for (int i = 0; i < vRolUsuario.size(); i++) {
+            this.jcbRol.addItem(vRolUsuario.get(i));
+        }
     }
 
     @Override
@@ -344,6 +431,54 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener {
         } else if (src.equals(jbEliminarUsuario)) {
         } else if (src.equals(jbCambiarPassword)) {
         } else if (src.equals(jbGestionRol)) {
+        } else if (src.equals(jckbCedula)) {
+            checkFilterCedula();
+        } else if (src.equals(jckbNombreApellido)) {
+            checkFilterNombreApellido();
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int fila = this.jtUsuario.rowAtPoint(e.getPoint());
+        int columna = this.jtUsuario.columnAtPoint(e.getPoint());
+        Long idFuncionario = (Long) this.jtUsuario.getValueAt(fila, 0);
+        Empleado empleado = service.obtenerEmpleado(idFuncionario);
+        if ((fila > -1) && (columna > -1)) {
+            //verificarAcceso();
+            completarCampos(empleado);
+        } else {
+            this.jbModificarUsuario.setEnabled(false);
+            this.jbEliminarUsuario.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        displayQueryResults();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
