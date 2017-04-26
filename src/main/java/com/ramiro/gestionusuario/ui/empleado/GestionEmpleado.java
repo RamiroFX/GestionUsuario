@@ -422,12 +422,24 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if (src.equals(jbCrearUsuario)) {
-            CrearEmpleado empParam = new CrearEmpleado(app);
+            CreateEmploy empParam = new CreateEmploy(app);
             empParam.setVisible(true);
         } else if (src.equals(jbUsuarioParametros)) {
             EmpleadoParametros empParam = new EmpleadoParametros(app);
             empParam.setVisible(true);
         } else if (src.equals(jbModificarUsuario)) {
+            int fila = this.jtUsuario.getSelectedRow();
+            if (fila > -1) {
+                Long idFuncionario = (Long) this.jtUsuario.getValueAt(fila, 0);
+                Empleado empleado = service.obtenerEmpleado(idFuncionario);
+                UpdateEmploy updateEmploy = new UpdateEmploy(app, empleado);
+                updateEmploy.setVisible(true);
+                this.jbModificarUsuario.setEnabled(false);
+                this.jbEliminarUsuario.setEnabled(false);
+            } else {
+                this.jbModificarUsuario.setEnabled(false);
+                this.jbEliminarUsuario.setEnabled(false);
+            }
         } else if (src.equals(jbEliminarUsuario)) {
         } else if (src.equals(jbCambiarPassword)) {
         } else if (src.equals(jbGestionRol)) {
@@ -447,6 +459,8 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         if ((fila > -1) && (columna > -1)) {
             //verificarAcceso();
             completarCampos(empleado);
+            this.jbModificarUsuario.setEnabled(true);
+            this.jbEliminarUsuario.setEnabled(true);
         } else {
             this.jbModificarUsuario.setEnabled(false);
             this.jbEliminarUsuario.setEnabled(false);

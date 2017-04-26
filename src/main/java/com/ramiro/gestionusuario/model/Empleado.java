@@ -52,7 +52,7 @@ public class Empleado extends Persona implements Serializable {
     @Column(name = "DIRECCION", length = 150)
     @Size(max = 150, message = EmployValidationConstants.SIZE_150)
     private String direccion;
-    @Transient
+    @Column(name = "PASSWORD")
     private String password;
     @Temporal(javax.persistence.TemporalType.DATE)
     @Column(name = "FECHA_INGRESO")

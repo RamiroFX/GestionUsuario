@@ -118,6 +118,7 @@ public class Main {
         employ.setFechaNacimiento(new GregorianCalendar.Builder().setDate(1991, 02, 29).build().getTime());
         employ.setFechaIngreso(Date.from(Instant.now()));
         employ.setRoles(roles);
+        employ.setPassword("rnfc");
         employ.setNroCelular("0984 330261");
         employ.setNroTelefono("021 420377");
         employ.setApodo("rnfc");

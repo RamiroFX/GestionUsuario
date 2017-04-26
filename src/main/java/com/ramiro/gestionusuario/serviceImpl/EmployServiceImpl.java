@@ -77,7 +77,7 @@ public class EmployServiceImpl implements EmployService {
     }
 
     @Override
-    public void updateEmploy(int idEmploy, Empleado employ) {
+    public void updateEmploy(Long idEmploy, Empleado employ) {
         this.employQueryHandler.updateEmploy(idEmploy, employ);
     }
 

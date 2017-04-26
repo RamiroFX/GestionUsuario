@@ -102,7 +102,7 @@ public class EmployQueryHandler extends AbstractQuery {
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
-    public void updateEmploy(int idEmploy, Empleado empleado) {
+    public void updateEmploy(Long idEmploy, Empleado empleado) {
         open();
         Empleado employ = EntityManagerHandler.INSTANCE.getEntityManager().find(Empleado.class, idEmploy);
         employ.setApellido(empleado.getApellido());

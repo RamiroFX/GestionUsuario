@@ -38,7 +38,7 @@ public interface EmployService {
 
     public void createEmploy(Empleado employ);
 
-    public void updateEmploy(int idEmploy, Empleado employ);
+    public void updateEmploy(Long idEmploy, Empleado employ);
 
     public void deleteEmploy(int idEmploy);
 }
