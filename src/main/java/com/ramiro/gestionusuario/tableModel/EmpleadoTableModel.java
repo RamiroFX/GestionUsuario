@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
 public class EmpleadoTableModel extends AbstractTableModel {
 
     List<Empleado> empleadoList;
-    private String[] colNames = {"Id", "CI", "Alias", "Nombre", "Apellido"};
+    private String[] colNames = {"Id", "CI", "Alias", "Nombre", "Apellido", "Estado"};
 
     public EmpleadoTableModel() {
         empleadoList = new ArrayList<>();
@@ -43,7 +43,7 @@ public class EmpleadoTableModel extends AbstractTableModel {
         Empleado empleado = this.empleadoList.get(rowIndex);
         switch (colIndex) {
             case 0: {
-                return empleado.getId();
+                return empleado.getIdPersona();
             }
             case 1: {
                 return empleado.getCedula();
@@ -56,6 +56,9 @@ public class EmpleadoTableModel extends AbstractTableModel {
             }
             case 4: {
                 return empleado.getApellido();
+            }
+            case 5: {
+                return empleado.getEmpleadoEstado();
             }
             default: {
                 return null;

@@ -2,6 +2,7 @@ package com.ramiro.gestionusuario;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import com.ramiro.gestionusuario.model.EntityHandler.EmployParamQuery;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
@@ -97,16 +98,12 @@ public class Main {
         roles.add(rol2);
         roles.add(rol3);
 
-        /*Persona persona = new Persona();
-         persona.setNombre("Ramiro");
-         persona.setApellido("Ferreira");
-         persona.setCedula(6344586);
-         persona.setCiudad(ciudad1);
-         persona.setPais(pais1);
-         persona.setEstadoCivil(estadoCivil1);
-         persona.setSexo(genero2);
+        EmpleadoEstado empleadoEstadoActivo = new EmpleadoEstado("ACTIVO");
+        EmpleadoEstado empleadoEstadoInactivo = new EmpleadoEstado("INACTIVO");
+        addPersonQuery.insertEmployStatus(empleadoEstadoActivo);
+        addPersonQuery.insertEmployStatus(empleadoEstadoInactivo);
 
-         addPersonQuery.insertPersona(persona);*/
+
         Empleado employ = new Empleado();
         employ.setNombre("Ramiro");
         employ.setApellido("Ferreira");
@@ -124,6 +121,7 @@ public class Main {
         employ.setApodo("rnfc");
         employ.setEmail("mr.ramiro@hotmail.com");
         employ.setDireccion("Tte. Prieto 1011 c/ Testanova");
+        employ.setEmpleadoEstado(empleadoEstadoActivo);
         employ.setObservacion("Sin observaciones");
 
         addPersonQuery.insertEmpleado(employ);

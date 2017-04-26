@@ -43,7 +43,7 @@ public class RolTableModel extends AbstractTableModel {
         Rol rol = this.rolList.get(rowIndex);
         switch (colIndex) {
             case 0: {
-                return rol.getId();
+                return rol.getIdRol();
             }
             case 1: {
                 return rol.getDescripcion();

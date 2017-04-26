@@ -38,7 +38,7 @@ public class Persona implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private Long idPersona;
     private String nombre;
     private String apellido;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -72,12 +72,12 @@ public class Persona implements Serializable {
         this.estadoCivil = estadoCivil;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdPersona() {
+        return idPersona;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdPersona(Long id) {
+        this.idPersona = id;
     }
 
     public String getNombre() {

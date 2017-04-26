@@ -11,6 +11,7 @@ import com.ramiro.gestionusuario.tableModel.EmpleadoTableModel;
 import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.CommonFormat;
 import com.ramiro.gestionusuario.util.EmpleadoUIConstants;
+import com.ramiro.gestionusuario.util.PackColumn;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Insets;
@@ -293,6 +294,9 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         jpSouth.add(jbCambiarPassword);
         jpSouth.add(jbUsuarioParametros);
         jpSouth.add(jbGestionRol);
+        jbModificarUsuario.setEnabled(false);
+        jbEliminarUsuario.setEnabled(false);
+        jbCambiarPassword.setEnabled(false);
 
         //ADDING INTO CONTAINER
         getContentPane().add(jpCenter, java.awt.BorderLayout.CENTER);
@@ -341,6 +345,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         empleadoTableModel.setEmpleadoList(empleadoList);
         jtUsuario.setModel(empleadoTableModel);
         empleadoTableModel.updateTable();
+        PackColumn.packColumns(jtUsuario, 1);
     }
 
     public void displayQueryResults() {
@@ -363,6 +368,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
                 empleadoTableModel.setEmpleadoList(empleadoList);
                 jtUsuario.setModel(empleadoTableModel);
                 empleadoTableModel.updateTable();
+                PackColumn.packColumns(jtUsuario, 1);
                 jbModificarUsuario.setEnabled(false);
                 jbEliminarUsuario.setEnabled(false);
             }

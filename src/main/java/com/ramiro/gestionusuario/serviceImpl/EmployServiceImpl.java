@@ -6,6 +6,7 @@ package com.ramiro.gestionusuario.serviceImpl;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import com.ramiro.gestionusuario.model.EntityHandler.EmployQueryHandler;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
@@ -84,5 +85,20 @@ public class EmployServiceImpl implements EmployService {
     @Override
     public void deleteEmploy(int idEmploy) {
         this.employQueryHandler.removeEmploy(idEmploy);
+    }
+
+    @Override
+    public void removeRol(Empleado employ, int idRol) {
+        this.employQueryHandler.removeRol(employ, idRol);
+    }
+
+    @Override
+    public void addRol(Empleado employ, int idRol) {
+        this.employQueryHandler.addRol(employ, idRol);
+    }
+
+    @Override
+    public EmpleadoEstado getEstadoActivo() {
+        return this.employQueryHandler.getEstadoActivo();
     }
 }

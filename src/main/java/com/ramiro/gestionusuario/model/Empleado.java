@@ -13,7 +13,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -60,7 +63,15 @@ public class Empleado extends Persona implements Serializable {
     @Transient
     private Rol rol;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "EMPLEADO_ROL",
+            joinColumns =
+            @JoinColumn(name = "idPersona"),
+            inverseJoinColumns =
+            @JoinColumn(name = "idRol"))
     private List<Rol> roles;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_empleado_estado", nullable = false, updatable = false)
+    private EmpleadoEstado empleadoEstado;
     @Column(name = "OBSERVACION", length = 150)
     @Size(max = 150, message = EmployValidationConstants.SIZE_50)
     private String observacion;
@@ -169,5 +180,13 @@ public class Empleado extends Persona implements Serializable {
 
     public void quitarRol(Rol rol) {
         this.roles.remove(rol);
+    }
+
+    public void setEmpleadoEstado(EmpleadoEstado empleadoEstado) {
+        this.empleadoEstado = empleadoEstado;
+    }
+
+    public EmpleadoEstado getEmpleadoEstado() {
+        return empleadoEstado;
     }
 }

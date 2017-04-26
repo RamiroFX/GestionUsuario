@@ -7,6 +7,7 @@ package com.ramiro.gestionusuario.model.EntityHandler;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
@@ -130,5 +131,26 @@ public class EmployQueryHandler extends AbstractQuery {
         Empleado employ = EntityManagerHandler.INSTANCE.getEntityManager().find(Empleado.class, idEmploy);
         EntityManagerHandler.INSTANCE.getEntityManager().remove(employ);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void removeRol(Empleado employ, int idRol) {
+        open();
+        Rol rol = EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRol);
+        employ.quitarRol(rol);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void addRol(Empleado employ, int idRol) {
+        open();
+        Rol rol = EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRol);
+        employ.agregarRol(rol);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public EmpleadoEstado getEstadoActivo() {
+        open();
+        TypedQuery<EmpleadoEstado> empleadoEstado = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("empleadoEstado.getEmpleadoEstadoACTIVO", EmpleadoEstado.class);
+        empleadoEstado.setParameter("activo", "ACTIVO");
+        return empleadoEstado.getSingleResult();
     }
 }

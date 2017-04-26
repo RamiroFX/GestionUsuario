@@ -9,15 +9,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
  * @author Ramiro Ferreira
  */
-@Entity(name = "EstadoCivil")
-@Table(name = "estado_civil")
-public class EstadoCivil implements Serializable {
+@Entity(name = "EmpleadoEstado")
+@Table(name = "empleado_estado")
+@NamedQueries({
+    @NamedQuery(name = "empleadoEstado.getEmpleadoEstadoACTIVO", query = "SELECT ee FROM EmpleadoEstado ee WHERE ee.descripcion = :activo")})
+public class EmpleadoEstado implements Serializable {
 
     @Id
     @GeneratedValue
@@ -25,10 +29,10 @@ public class EstadoCivil implements Serializable {
     @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     String descripcion;
 
-    public EstadoCivil() {
+    public EmpleadoEstado() {
     }
 
-    public EstadoCivil(String descripcion) {
+    public EmpleadoEstado(String descripcion) {
         this.descripcion = descripcion;
     }
 

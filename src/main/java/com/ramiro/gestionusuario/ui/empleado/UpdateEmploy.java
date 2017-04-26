@@ -80,8 +80,10 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
         this.dccFechaIngreso.setDate(Calendar.getInstance().getTime());
         this.jftCedulaIdentidad.setFormatterFactory(
                 new javax.swing.text.DefaultFormatterFactory(
-                        new javax.swing.text.NumberFormatter(
-                                new java.text.DecimalFormat("#,##0"))));
+                new javax.swing.text.NumberFormatter(
+                new java.text.DecimalFormat("#,##0"))));
+        this.jbAgregarRol.setEnabled(false);
+        this.jbQuitarRol.setEnabled(false);
     }
 
     private void initializeLogic() {
@@ -282,6 +284,10 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
             }
         }
         if (isEmailInUse) {
+            if (null == employ.getEmail()) {
+                JOptionPane.showMessageDialog(this, "El Correo Electronico seleccionado se encuentra ocupado", "Atención", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if (!employ.getEmail().equals(email)) {
                 JOptionPane.showMessageDialog(this, "El Correo Electronico seleccionado se encuentra ocupado", "Atención", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -313,7 +319,7 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
         funcionario.setPais((Pais) this.jcbNacionalidad.getSelectedItem());
 
         if (Validator.validar(funcionario, this)) {
-            servicio.updateEmploy(employ.getId(), funcionario);
+            servicio.updateEmploy(employ.getIdPersona(), funcionario);
             JOptionPane.showMessageDialog(this, "Empleado modificado", "Exito", JOptionPane.INFORMATION_MESSAGE);
             cerrar();
         }
@@ -321,14 +327,13 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
 
     private void compararEmpleado(Empleado empl) {
         if (employ.getCedula() == empl.getCedula()) {
-
         }
     }
 
     private List<Rol> validateRol() {
         List<Integer> idRoles = new ArrayList<>();
         for (Rol rol : selectedRolsList) {
-            idRoles.add(rol.getId());
+            idRoles.add(rol.getIdRol());
         }
         List<Rol> roles = servicio.getAllRolByIds(idRoles);
         return roles;
@@ -353,41 +358,6 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
                 jftCedulaIdentidad.select(valorJFT.length(), valorJFT.length());
             }
         });
-    }
-
-    private void agregarRol() {
-        int fila = this.jtRolesDisponibles.getSelectedRow();
-        int idRol = (int) this.jtRolesDisponibles.getValueAt(fila, 0);
-        for (int i = 0; i < selectedRolsList.size(); i++) {
-            if (selectedRolsList.get(i).getId() == idRol) {
-                JOptionPane.showMessageDialog(null, "El Rol seleccionado ya se ha encuentra", "Atención", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-        String descripcionRol = (String) this.jtRolesDisponibles.getValueAt(fila, 1);
-        Rol rol = new Rol(descripcionRol);
-        rol.setId(idRol);
-        selectedRolsList.add(rol);
-        selectedRol.setRolList(selectedRolsList);
-        this.jtRolesSeleccionados.setModel(selectedRol);
-        selectedRol.updateTable();
-        this.jbAgregarRol.setEnabled(false);
-        this.jbQuitarRol.setEnabled(false);
-    }
-
-    private void quitarRol() {
-        int fila = this.jtRolesSeleccionados.getSelectedRow();
-        int idRol = (int) this.jtRolesSeleccionados.getValueAt(fila, 0);
-        for (int i = 0; i < selectedRolsList.size(); i++) {
-            if (selectedRolsList.get(i).getId() == idRol) {
-                selectedRolsList.remove(i);
-            }
-        }
-        selectedRol.setRolList(selectedRolsList);
-        this.jtRolesSeleccionados.setModel(selectedRol);
-        selectedRol.updateTable();
-        this.jbAgregarRol.setEnabled(false);
-        this.jbQuitarRol.setEnabled(false);
     }
 
     private void cerrar() {
@@ -427,6 +397,46 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
         this.selectedRol.setRolList(selectedRolsList);
         this.jtRolesSeleccionados.setModel(this.selectedRol);
         this.selectedRol.updateTable();
+    }
+
+    public void quitarRol() {
+        int fila = this.jtRolesSeleccionados.getSelectedRow();
+        int idRol = (int) this.jtRolesSeleccionados.getValueAt(fila, 0);
+        if (fila > -1) {
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea quitar el rol seleccionado?", "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (opcion == JOptionPane.YES_OPTION) {
+                servicio.removeRol(employ, idRol);
+                this.selectedRolsList = employ.getRoles();
+                this.selectedRol.setRolList(selectedRolsList);
+                this.jtRolesSeleccionados.setModel(this.selectedRol);
+                this.selectedRol.updateTable();
+                this.jbAgregarRol.setEnabled(false);
+                this.jbQuitarRol.setEnabled(false);
+            }
+        }
+    }
+
+    public void agregarRol() {
+        int fila = this.jtRolesDisponibles.getSelectedRow();
+        if (fila > -1) {
+            int idRol = (int) this.jtRolesDisponibles.getValueAt(fila, 0);
+            for (int i = 0; i < selectedRolsList.size(); i++) {
+                if (selectedRolsList.get(i).getIdRol() == idRol) {
+                    JOptionPane.showMessageDialog(null, "El Rol seleccionado ya se ha encuentra asignado", "Atención", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea asginar el rol seleccionado?", "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (opcion == JOptionPane.YES_OPTION) {
+                servicio.addRol(employ, idRol);
+                this.selectedRolsList = employ.getRoles();
+                this.selectedRol.setRolList(selectedRolsList);
+                this.jtRolesSeleccionados.setModel(this.selectedRol);
+                this.selectedRol.updateTable();
+                this.jbAgregarRol.setEnabled(false);
+                this.jbQuitarRol.setEnabled(false);
+            }
+        }
     }
 
     private void addListeners() {

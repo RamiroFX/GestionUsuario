@@ -7,6 +7,7 @@ package com.ramiro.gestionusuario.ui.empleado;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
@@ -75,8 +76,10 @@ public class CreateEmploy extends CreateUpdateEmploy implements ActionListener, 
         this.dccFechaIngreso.setDate(Calendar.getInstance().getTime());
         this.jftCedulaIdentidad.setFormatterFactory(
                 new javax.swing.text.DefaultFormatterFactory(
-                        new javax.swing.text.NumberFormatter(
-                                new java.text.DecimalFormat("#,##0"))));
+                new javax.swing.text.NumberFormatter(
+                new java.text.DecimalFormat("#,##0"))));
+        this.jbAgregarRol.setEnabled(false);
+        this.jbQuitarRol.setEnabled(false);
     }
 
     private void initializeLogic() {
@@ -300,6 +303,7 @@ public class CreateEmploy extends CreateUpdateEmploy implements ActionListener, 
         funcionario.setRoles(validateRol());//se establece en el modelo
         funcionario.setSexo((Genero) this.jcbGenero.getSelectedItem());
         funcionario.setPais((Pais) this.jcbNacionalidad.getSelectedItem());
+        funcionario.setEmpleadoEstado(servicio.getEstadoActivo());
         if (Validator.validar(funcionario, this)) {
             servicio.createEmploy(funcionario);
             JOptionPane.showMessageDialog(this, "Empleado creado", "Exito", JOptionPane.INFORMATION_MESSAGE);
@@ -310,7 +314,7 @@ public class CreateEmploy extends CreateUpdateEmploy implements ActionListener, 
     private List<Rol> validateRol() {
         List<Integer> idRoles = new ArrayList<>();
         for (Rol rol : selectedRolsList) {
-            idRoles.add(rol.getId());
+            idRoles.add(rol.getIdRol());
         }
         List<Rol> roles = servicio.getAllRolByIds(idRoles);
         return roles;
@@ -339,37 +343,43 @@ public class CreateEmploy extends CreateUpdateEmploy implements ActionListener, 
 
     private void agregarRol() {
         int fila = this.jtRolesDisponibles.getSelectedRow();
-        int idRol = (int) this.jtRolesDisponibles.getValueAt(fila, 0);
-        for (int i = 0; i < selectedRolsList.size(); i++) {
-            if (selectedRolsList.get(i).getId() == idRol) {
-                JOptionPane.showMessageDialog(null, "El Rol seleccionado ya se ha encuentra", "Atención", JOptionPane.ERROR_MESSAGE);
-                return;
+        if (fila > -1) {
+
+            int idRol = (int) this.jtRolesDisponibles.getValueAt(fila, 0);
+            for (int i = 0; i < selectedRolsList.size(); i++) {
+                if (selectedRolsList.get(i).getIdRol() == idRol) {
+                    JOptionPane.showMessageDialog(null, "El Rol seleccionado ya se ha encuentra", "Atención", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
+            String descripcionRol = (String) this.jtRolesDisponibles.getValueAt(fila, 1);
+            Rol rol = new Rol(descripcionRol);
+            rol.setIdRol(idRol);
+            selectedRolsList.add(rol);
+            selectedRol.setRolList(selectedRolsList);
+            this.jtRolesSeleccionados.setModel(selectedRol);
+            selectedRol.updateTable();
+            this.jbAgregarRol.setEnabled(false);
+            this.jbQuitarRol.setEnabled(false);
         }
-        String descripcionRol = (String) this.jtRolesDisponibles.getValueAt(fila, 1);
-        Rol rol = new Rol(descripcionRol);
-        rol.setId(idRol);
-        selectedRolsList.add(rol);
-        selectedRol.setRolList(selectedRolsList);
-        this.jtRolesSeleccionados.setModel(selectedRol);
-        selectedRol.updateTable();
-        this.jbAgregarRol.setEnabled(false);
-        this.jbQuitarRol.setEnabled(false);
     }
 
     private void quitarRol() {
         int fila = this.jtRolesSeleccionados.getSelectedRow();
-        int idRol = (int) this.jtRolesSeleccionados.getValueAt(fila, 0);
-        for (int i = 0; i < selectedRolsList.size(); i++) {
-            if (selectedRolsList.get(i).getId() == idRol) {
-                selectedRolsList.remove(i);
+        if (fila > -1) {
+            int idRol = (int) this.jtRolesSeleccionados.getValueAt(fila, 0);
+            for (int i = 0; i < selectedRolsList.size(); i++) {
+                if (selectedRolsList.get(i).getIdRol() == idRol) {
+                    selectedRolsList.remove(i);
+                }
             }
+            selectedRol.setRolList(selectedRolsList);
+            this.jtRolesSeleccionados.setModel(selectedRol);
+            selectedRol.updateTable();
+            this.jbAgregarRol.setEnabled(false);
+            this.jbQuitarRol.setEnabled(false);
+
         }
-        selectedRol.setRolList(selectedRolsList);
-        this.jtRolesSeleccionados.setModel(selectedRol);
-        selectedRol.updateTable();
-        this.jbAgregarRol.setEnabled(false);
-        this.jbQuitarRol.setEnabled(false);
     }
 
     private void cerrar() {

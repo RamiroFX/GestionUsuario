@@ -30,7 +30,7 @@ public class Rol implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    int idRol;
     @Column(name = "descripcion")
     String descripcion;
     @Version
@@ -46,12 +46,12 @@ public class Rol implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getId() {
-        return id;
+    public int getIdRol() {
+        return idRol;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdRol(int id) {
+        this.idRol = id;
     }
 
     public String getDescripcion() {

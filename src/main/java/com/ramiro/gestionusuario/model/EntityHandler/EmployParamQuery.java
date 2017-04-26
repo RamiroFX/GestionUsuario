@@ -7,6 +7,7 @@ package com.ramiro.gestionusuario.model.EntityHandler;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
@@ -136,6 +137,12 @@ public class EmployParamQuery extends AbstractQuery {
     public void insertEmpleado(Empleado employ) {
         open();
         EntityManagerHandler.INSTANCE.getEntityManager().persist(employ);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void insertEmployStatus(EmpleadoEstado empleadoEstado) {
+        open();
+        EntityManagerHandler.INSTANCE.getEntityManager().persist(empleadoEstado);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 }

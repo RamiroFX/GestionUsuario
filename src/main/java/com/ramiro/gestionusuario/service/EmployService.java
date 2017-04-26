@@ -6,6 +6,7 @@ package com.ramiro.gestionusuario.service;
 
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
 import com.ramiro.gestionusuario.model.Pais;
@@ -41,4 +42,10 @@ public interface EmployService {
     public void updateEmploy(Long idEmploy, Empleado employ);
 
     public void deleteEmploy(int idEmploy);
+
+    public void removeRol(Empleado employ, int idRol);
+
+    public void addRol(Empleado employ, int idRol);
+
+    public EmpleadoEstado getEstadoActivo();
 }
