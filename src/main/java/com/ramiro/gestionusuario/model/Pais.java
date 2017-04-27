@@ -41,7 +41,7 @@ public class Pais implements Serializable {
     @NotNull(message = PaisValidationConstants.NOT_NULL)
     @Size(max = 50, message = PaisValidationConstants.SIZE)
     String descripcion;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pais")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pais")
     List<Persona> personas;
 
     public Pais() {

@@ -20,12 +20,14 @@ import javax.persistence.Table;
 @Entity(name = "EmpleadoEstado")
 @Table(name = "empleado_estado")
 @NamedQueries({
-    @NamedQuery(name = "empleadoEstado.getEmpleadoEstadoACTIVO", query = "SELECT ee FROM EmpleadoEstado ee WHERE ee.descripcion = :activo")})
+    @NamedQuery(name = "empleadoEstado.getEmpleadoEstadoACTIVO", query = "SELECT ee FROM EmpleadoEstado ee WHERE ee.descripcion = :activo"),
+    @NamedQuery(name = "empleadoEstado.getAllEmpleadoEstados", query = "SELECT ee FROM EmpleadoEstado ee")})
 public class EmpleadoEstado implements Serializable {
 
     @Id
     @GeneratedValue
-    int idEstadoCivil;
+    @Column(name = "id_empleado_estado")
+    int idEmpleadoEstado;
     @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     String descripcion;
 
@@ -36,12 +38,12 @@ public class EmpleadoEstado implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getIdEstadoCivil() {
-        return idEstadoCivil;
+    public int getIdEmpleadoEstado() {
+        return idEmpleadoEstado;
     }
 
-    public void setIdEstadoCivil(int idEstadoCivil) {
-        this.idEstadoCivil = idEstadoCivil;
+    public void setIdEmpleadoEstado(int idEmpleadoEstado) {
+        this.idEmpleadoEstado = idEmpleadoEstado;
     }
 
     public String getDescripcion() {

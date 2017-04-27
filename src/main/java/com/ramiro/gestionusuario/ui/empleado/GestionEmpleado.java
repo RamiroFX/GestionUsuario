@@ -46,7 +46,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
     private javax.swing.JScrollPane jspObservacion;
     private javax.swing.JTabbedPane jTabbedPane;
     public javax.swing.JButton jbModificarUsuario;
-    public javax.swing.JButton jbEliminarUsuario;
+    public javax.swing.JButton jbCambiarEstadoUsuario;
     public javax.swing.JButton jbCambiarPassword;
     public javax.swing.JButton jbUsuarioParametros;
     public javax.swing.JButton jbCrearUsuario;
@@ -196,27 +196,27 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         //BOTONES
         jbCrearUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_CREATE_BTN);
         jbModificarUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_UPDATE_BTN);
-        jbEliminarUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_DELETE_BTN);
+        jbCambiarEstadoUsuario = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_DELETE_BTN);
         jbCambiarPassword = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_CHANGE_PASS_BTN);
         jbCambiarPassword.setName(EmpleadoUIConstants.USER_MANAGMENT_CHANGE_PASS_BTN);
         jbUsuarioParametros = new javax.swing.JButton(EmpleadoUIConstants.USER_MANAGMENT_PARAM_BTN);
         jbUsuarioParametros.setName(EmpleadoUIConstants.USER_MANAGMENT_PARAM_BTN);
         jbCrearUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_CREATE_BTN);
         jbModificarUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_UPDATE_BTN);
-        jbEliminarUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_DELETE_BTN);
+        jbCambiarEstadoUsuario.setName(EmpleadoUIConstants.USER_MANAGMENT_DELETE_BTN);
         jbGestionRol = new JButton(EmpleadoUIConstants.USER_MANAGMENT_ROL_MANAGMENT);
         jbGestionRol.setName(EmpleadoUIConstants.USER_MANAGMENT_ROL_BTN);
         Insets insets = new Insets(10, 10, 10, 10);
         jbCrearUsuario.setMargin(insets);
         jbModificarUsuario.setMargin(insets);
-        jbEliminarUsuario.setMargin(insets);
+        jbCambiarEstadoUsuario.setMargin(insets);
         jbCambiarPassword.setMargin(insets);
         jbUsuarioParametros.setMargin(insets);
         jbGestionRol.setMargin(insets);
 
         jbCrearUsuario.setFont(CommonFormat.fuente);
         jbModificarUsuario.setFont(CommonFormat.fuente);
-        jbEliminarUsuario.setFont(CommonFormat.fuente);
+        jbCambiarEstadoUsuario.setFont(CommonFormat.fuente);
         jbCambiarPassword.setFont(CommonFormat.fuente);
         jbUsuarioParametros.setFont(CommonFormat.fuente);
         jbGestionRol.setFont(CommonFormat.fuente);
@@ -290,12 +290,12 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         jpSouth.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED), EmpleadoUIConstants.USER_MANAGMENT_OPTIONS_SUBTITLE));
         jpSouth.add(jbCrearUsuario);
         jpSouth.add(jbModificarUsuario);
-        jpSouth.add(jbEliminarUsuario);
+        jpSouth.add(jbCambiarEstadoUsuario);
         jpSouth.add(jbCambiarPassword);
         jpSouth.add(jbUsuarioParametros);
         jpSouth.add(jbGestionRol);
         jbModificarUsuario.setEnabled(false);
-        jbEliminarUsuario.setEnabled(false);
+        jbCambiarEstadoUsuario.setEnabled(false);
         jbCambiarPassword.setEnabled(false);
 
         //ADDING INTO CONTAINER
@@ -306,7 +306,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
     private void addListeners() {
         this.jbCrearUsuario.addActionListener(this);
         this.jbModificarUsuario.addActionListener(this);
-        this.jbEliminarUsuario.addActionListener(this);
+        this.jbCambiarEstadoUsuario.addActionListener(this);
         this.jtUsuario.addMouseListener(this);
         this.jtfBuscar.addKeyListener(this);
         this.jbGestionRol.addActionListener(this);
@@ -370,7 +370,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
                 empleadoTableModel.updateTable();
                 PackColumn.packColumns(jtUsuario, 1);
                 jbModificarUsuario.setEnabled(false);
-                jbEliminarUsuario.setEnabled(false);
+                jbCambiarEstadoUsuario.setEnabled(false);
             }
         });
     }
@@ -424,6 +424,31 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         }
     }
 
+    private void createChangeEmployStatusForm() {
+        int fila = this.jtUsuario.getSelectedRow();
+        if (fila > -1) {
+            Long idFuncionario = (Long) this.jtUsuario.getValueAt(fila, 0);
+            Empleado empleado = service.obtenerEmpleado(idFuncionario);
+            ChangeEmployStatus changeStatus = new ChangeEmployStatus(app, empleado);
+            changeStatus.setVisible(true);
+        }
+    }
+
+    private void createUpdateEmployForm() {
+        int fila = this.jtUsuario.getSelectedRow();
+        if (fila > -1) {
+            Long idFuncionario = (Long) this.jtUsuario.getValueAt(fila, 0);
+            Empleado empleado = service.obtenerEmpleado(idFuncionario);
+            UpdateEmploy updateEmploy = new UpdateEmploy(app, empleado);
+            updateEmploy.setVisible(true);
+            this.jbModificarUsuario.setEnabled(false);
+            this.jbCambiarEstadoUsuario.setEnabled(false);
+        } else {
+            this.jbModificarUsuario.setEnabled(false);
+            this.jbCambiarEstadoUsuario.setEnabled(false);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
@@ -434,19 +459,9 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
             EmpleadoParametros empParam = new EmpleadoParametros(app);
             empParam.setVisible(true);
         } else if (src.equals(jbModificarUsuario)) {
-            int fila = this.jtUsuario.getSelectedRow();
-            if (fila > -1) {
-                Long idFuncionario = (Long) this.jtUsuario.getValueAt(fila, 0);
-                Empleado empleado = service.obtenerEmpleado(idFuncionario);
-                UpdateEmploy updateEmploy = new UpdateEmploy(app, empleado);
-                updateEmploy.setVisible(true);
-                this.jbModificarUsuario.setEnabled(false);
-                this.jbEliminarUsuario.setEnabled(false);
-            } else {
-                this.jbModificarUsuario.setEnabled(false);
-                this.jbEliminarUsuario.setEnabled(false);
-            }
-        } else if (src.equals(jbEliminarUsuario)) {
+            createUpdateEmployForm();
+        } else if (src.equals(jbCambiarEstadoUsuario)) {
+            createChangeEmployStatusForm();
         } else if (src.equals(jbCambiarPassword)) {
         } else if (src.equals(jbGestionRol)) {
         } else if (src.equals(jckbCedula)) {
@@ -466,10 +481,10 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
             //verificarAcceso();
             completarCampos(empleado);
             this.jbModificarUsuario.setEnabled(true);
-            this.jbEliminarUsuario.setEnabled(true);
+            this.jbCambiarEstadoUsuario.setEnabled(true);
         } else {
             this.jbModificarUsuario.setEnabled(false);
-            this.jbEliminarUsuario.setEnabled(false);
+            this.jbCambiarEstadoUsuario.setEnabled(false);
         }
     }
 

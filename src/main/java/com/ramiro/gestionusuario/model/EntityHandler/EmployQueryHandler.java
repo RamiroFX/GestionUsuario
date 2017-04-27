@@ -14,7 +14,6 @@ import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Persona;
 import com.ramiro.gestionusuario.model.Rol;
 import java.util.List;
-import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 

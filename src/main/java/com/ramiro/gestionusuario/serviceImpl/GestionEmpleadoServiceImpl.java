@@ -28,11 +28,6 @@ public class GestionEmpleadoServiceImpl implements GestionEmpleadoService {
     }
 
     @Override
-    public boolean existEmpleado(String cedula) {
-        return this.gestionEmpleadoQuery.existEmpleado(cedula);
-    }
-
-    @Override
     public Empleado obtenerEmpleado(Long id) {
         return this.gestionEmpleadoQuery.obtenerEmpleado(id);
     }

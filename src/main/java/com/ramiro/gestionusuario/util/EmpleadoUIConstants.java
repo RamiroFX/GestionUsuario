@@ -19,7 +19,7 @@ public class EmpleadoUIConstants {
     public static final String USER_MANAGMENT_TITLE = "Gestion de Usuarios";
     public static final String USER_MANAGMENT_CREATE_BTN = "Crear usuario";
     public static final String USER_MANAGMENT_UPDATE_BTN = "Modificar usuario";
-    public static final String USER_MANAGMENT_DELETE_BTN = "Eliminar usuario";
+    public static final String USER_MANAGMENT_DELETE_BTN = "Cambiar estado";
     public static final String USER_MANAGMENT_CHANGE_PASS_BTN = "Cambiar contraseña";
     public static final String USER_MANAGMENT_PARAM_BTN = "Parametros";
     public static final String USER_MANAGMENT_ROL_BTN = "Gestión de Roles";

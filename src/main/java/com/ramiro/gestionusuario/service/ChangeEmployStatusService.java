@@ -6,17 +6,18 @@
 package com.ramiro.gestionusuario.service;
 
 import com.ramiro.gestionusuario.model.Empleado;
+import com.ramiro.gestionusuario.model.EmpleadoEstado;
 import java.util.List;
 
 /**
  *
  * @author Ramiro Ferreira
  */
-public interface GestionEmpleadoService {
+public interface ChangeEmployStatusService {
 
-    public List<Empleado> getAllEmpleados();
+    public List<EmpleadoEstado> getAllEmployStatus();
 
-    public Empleado obtenerEmpleado(Long id);
+    public void changeEmployStatus(Empleado employ, EmpleadoEstado employStatus);
 
-    public List<Empleado> consultarFuncionario(String criteria, boolean isExclusivo, boolean buscarPorNombreApellido, boolean buscarPorPIN);
+    public void changeEmployStatus2(Long idPersona, int idEmpleadoEstado);
 }
