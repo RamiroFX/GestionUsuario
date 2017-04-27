@@ -25,7 +25,7 @@ import javax.persistence.Version;
 @Entity(name = "Rol")
 @Table(name = "rol")
 @NamedQueries({
-    @NamedQuery(name = "rol.getAllRolByIds", query = "SELECT r FROM Rol r WHERE r.id IN :id")})
+    @NamedQuery(name = "rol.getAllRolByIds", query = "SELECT r FROM Rol r WHERE r.idRol IN :id")})
 public class Rol implements Serializable {
 
     @Id

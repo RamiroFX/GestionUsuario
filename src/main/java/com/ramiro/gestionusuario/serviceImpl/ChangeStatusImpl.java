@@ -32,10 +32,4 @@ public class ChangeStatusImpl implements ChangeEmployStatusService {
     public void changeEmployStatus(Empleado employ, EmpleadoEstado employStatus) {
         this.changeEmployStatusQueryHandler.changeEmployStatus(employ, employStatus);
     }
-
-    @Override
-    public void changeEmployStatus2(Long idPersona, int idEmpleadoEstado) {
-        this.changeEmployStatusQueryHandler.changeEmployStatus2(idPersona, idEmpleadoEstado);
-    }
-
 }

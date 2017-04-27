@@ -70,7 +70,7 @@ public class Empleado extends Persona implements Serializable {
             @JoinColumn(name = "idRol"))
     private List<Rol> roles;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_empleado_estado", nullable = false, updatable = false)
+    @JoinColumn(name = "id_empleado_estado", nullable = false)
     private EmpleadoEstado empleadoEstado;
     @Column(name = "OBSERVACION", length = 150)
     @Size(max = 150, message = EmployValidationConstants.SIZE_50)
@@ -188,5 +188,10 @@ public class Empleado extends Persona implements Serializable {
 
     public EmpleadoEstado getEmpleadoEstado() {
         return empleadoEstado;
+    }
+
+    @Override
+    public String toString() {
+        return getApodo() + " " + getNombre() + " " + getApellido();
     }
 }

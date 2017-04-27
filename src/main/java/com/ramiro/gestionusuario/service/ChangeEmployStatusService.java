@@ -18,6 +18,4 @@ public interface ChangeEmployStatusService {
     public List<EmpleadoEstado> getAllEmployStatus();
 
     public void changeEmployStatus(Empleado employ, EmpleadoEstado employStatus);
-
-    public void changeEmployStatus2(Long idPersona, int idEmpleadoEstado);
 }

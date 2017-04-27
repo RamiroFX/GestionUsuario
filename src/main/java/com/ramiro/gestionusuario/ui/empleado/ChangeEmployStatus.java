@@ -129,8 +129,7 @@ public class ChangeEmployStatus extends JDialog implements ActionListener {
             this.dispose();
         } else if (src.equals(removeButton)) {
             EmpleadoEstado employStatus = (EmpleadoEstado) this.employStatusComboBox.getSelectedItem();
-            //this.changeStatusService.changeEmployStatus(this.employ, employStatus);
-            this.changeStatusService.changeEmployStatus2(this.employ.getIdPersona(), employStatus.getIdEmpleadoEstado());
+            this.changeStatusService.changeEmployStatus(this.employ, employStatus);
             this.dispose();
         }
     }

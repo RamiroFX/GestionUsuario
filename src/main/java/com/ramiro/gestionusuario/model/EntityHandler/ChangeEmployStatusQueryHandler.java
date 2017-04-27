@@ -30,12 +30,4 @@ public class ChangeEmployStatusQueryHandler extends AbstractQuery {
         employ.setEmpleadoEstado(employStatus);
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
-
-    public void changeEmployStatus2(Long idEmploy, int idStatus) {
-        open();
-        Empleado employ = EntityManagerHandler.INSTANCE.getEntityManager().find(Empleado.class, idEmploy);
-        EmpleadoEstado employStatus = EntityManagerHandler.INSTANCE.getEntityManager().find(EmpleadoEstado.class, idStatus);
-        employ.setEmpleadoEstado(employStatus);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
 }
