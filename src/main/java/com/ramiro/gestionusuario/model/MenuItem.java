@@ -10,7 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -19,6 +22,8 @@ import javax.persistence.Table;
  */
 @Entity(name = "MenuItem")
 @Table(name = "menu_item")
+@NamedQueries({
+    @NamedQuery(name = "menuItem.getAllMenuItemByIdRole", query = "SELECT m FROM MenuItem m WHERE")})
 public class MenuItem implements Serializable {
 
     private static long SerialVersionUID = 1L;
@@ -28,6 +33,7 @@ public class MenuItem implements Serializable {
     @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     String descripcion;
     @ManyToOne
+    @JoinColumn(name = "id_menu")
     private Menu menu;
 
     public MenuItem() {

@@ -5,6 +5,7 @@
 package com.ramiro.gestionusuario.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,21 +33,12 @@ public class Menu implements Serializable {
     private List<MenuItem> menuItems;
 
     public Menu() {
+        this.menuItems = new ArrayList<>();
     }
 
-    public Long getIdMenu() {
-        return idMenu;
-    }
-
-    public void setIdMenu(Long idMenu) {
-        this.idMenu = idMenu;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
+    public Menu(String descripcion) {
+        this();
         this.descripcion = descripcion;
     }
+
 }
