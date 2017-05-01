@@ -7,9 +7,9 @@ package com.ramiro.gestionusuario.util;
 
 /**
  *
- * @author Ramiro
+ * @author Ramiro Ferreira
  */
-public class PaisValidationConstants {
+public class ParamValidationConstants {
 
     public static final String NOT_NULL = "Por favor, inserte un valor.";
     public static final String SIZE = "El máximo permitido es 50 caracteres";

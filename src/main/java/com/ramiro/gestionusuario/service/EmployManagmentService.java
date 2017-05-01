@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Ramiro Ferreira
  */
-public interface GestionEmpleadoService {
+public interface EmployManagmentService {
 
     public List<Empleado> getAllEmpleados();
 

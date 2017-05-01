@@ -6,20 +6,20 @@
 package com.ramiro.gestionusuario.serviceImpl;
 
 import com.ramiro.gestionusuario.model.Empleado;
-import com.ramiro.gestionusuario.model.EntityHandler.GestionEmpleadoQuery;
-import com.ramiro.gestionusuario.service.GestionEmpleadoService;
+import com.ramiro.gestionusuario.model.EntityHandler.EmployManagmentQueryHandler;
+import com.ramiro.gestionusuario.service.EmployManagmentService;
 import java.util.List;
 
 /**
  *
  * @author Ramiro Ferreira
  */
-public class GestionEmpleadoServiceImpl implements GestionEmpleadoService {
+public class GestionEmpleadoServiceImpl implements EmployManagmentService {
 
-    private GestionEmpleadoQuery gestionEmpleadoQuery;
+    private EmployManagmentQueryHandler gestionEmpleadoQuery;
 
     public GestionEmpleadoServiceImpl() {
-        this.gestionEmpleadoQuery = new GestionEmpleadoQuery();
+        this.gestionEmpleadoQuery = new EmployManagmentQueryHandler();
     }
 
     @Override

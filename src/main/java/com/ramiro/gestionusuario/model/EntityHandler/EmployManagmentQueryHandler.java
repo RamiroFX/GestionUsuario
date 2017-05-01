@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery;
  *
  * @author Ramiro Ferreira
  */
-public class GestionEmpleadoQuery extends AbstractQuery {
+public class EmployManagmentQueryHandler extends AbstractQuery {
 
     public List<Empleado> getAllEmpleados() {
         open();

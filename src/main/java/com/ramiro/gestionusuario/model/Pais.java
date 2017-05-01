@@ -4,7 +4,7 @@
  */
 package com.ramiro.gestionusuario.model;
 
-import com.ramiro.gestionusuario.util.PaisValidationConstants;
+import com.ramiro.gestionusuario.util.ParamValidationConstants;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,8 @@ public class Pais implements Serializable {
     @GeneratedValue
     int id;
     @Column(name = "descripcion", unique = true, nullable = false, length = 50)
-    @NotNull(message = PaisValidationConstants.NOT_NULL)
-    @Size(max = 50, message = PaisValidationConstants.SIZE)
+    @NotNull(message = ParamValidationConstants.NOT_NULL)
+    @Size(max = 50, message = ParamValidationConstants.SIZE)
     String descripcion;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pais")
     List<Persona> personas;

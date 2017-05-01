@@ -1,9 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.ramiro.gestionusuario.tableModel;
 
+import com.ramiro.gestionusuario.model.MenuItem;
 import com.ramiro.gestionusuario.model.Rol;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +15,13 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Ramiro Ferreira
  */
-public class RolTableModel extends AbstractTableModel {
+public class RoleAccessTableModel extends AbstractTableModel {
 
-    List<Rol> rolList;
-    private String[] colNames = {"Id", "Descripcion"};
+    List<MenuItem> menuItemList;
+    private String[] colNames = {"Id", "Descripcion", "Menu"};
 
-    public RolTableModel() {
-        rolList = new ArrayList<>();
+    public RoleAccessTableModel() {
+        menuItemList = new ArrayList<>();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class RolTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return this.rolList.size();
+        return this.menuItemList.size();
     }
 
     @Override
@@ -39,13 +41,16 @@ public class RolTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int colIndex) {
-        Rol rol = this.rolList.get(rowIndex);
+        MenuItem menuItem = this.menuItemList.get(rowIndex);
         switch (colIndex) {
             case 0: {
-                return rol.getIdRol();
+                return menuItem.getIdMenuItem();
             }
             case 1: {
-                return rol.getDescripcion();
+                return menuItem.getDescripcion();
+            }
+            case 2: {
+                return menuItem.getMenu().getDescripcion();
             }
             default: {
                 return null;
@@ -53,8 +58,8 @@ public class RolTableModel extends AbstractTableModel {
         }
     }
 
-    public void setRolList(List<Rol> rolList) {
-        this.rolList = rolList;
+    public void setMenuItemList(List<MenuItem> menuItemList) {
+        this.menuItemList = menuItemList;
     }
 
     public void updateTable() {

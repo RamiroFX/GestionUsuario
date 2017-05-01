@@ -3,9 +3,13 @@ package com.ramiro.gestionusuario;
 import com.ramiro.gestionusuario.model.Ciudad;
 import com.ramiro.gestionusuario.model.Empleado;
 import com.ramiro.gestionusuario.model.EmpleadoEstado;
-import com.ramiro.gestionusuario.model.EntityHandler.EmployParamQuery;
+import com.ramiro.gestionusuario.model.EntityHandler.EmployParamQueryHandler;
+import com.ramiro.gestionusuario.model.EntityHandler.RoleManagmentQueryHandler;
+import com.ramiro.gestionusuario.model.EntityHandler.RoleQueryHandler;
 import com.ramiro.gestionusuario.model.EstadoCivil;
 import com.ramiro.gestionusuario.model.Genero;
+import com.ramiro.gestionusuario.model.Menu;
+import com.ramiro.gestionusuario.model.MenuItem;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.model.Rol;
 import com.ramiro.gestionusuario.ui.empleado.GestionEmpleado;
@@ -47,7 +51,7 @@ public class Main {
 
     public static void test() {
         cargarBD();
-        EmployParamQuery addPersonQuery = new EmployParamQuery();
+        EmployParamQueryHandler addPersonQuery = new EmployParamQueryHandler();
         List<Ciudad> ciudadList = addPersonQuery.getAllCities();
         for (Ciudad ciudad : ciudadList) {
             System.out.println(ciudad.toString());
@@ -55,54 +59,54 @@ public class Main {
     }
 
     public static void cargarBD() {
-        EmployParamQuery addPersonQuery = new EmployParamQuery();
+        EmployParamQueryHandler employParamQuery = new EmployParamQueryHandler();
 
         Ciudad ciudad1 = new Ciudad("SIN ASIGNAR");
         Ciudad ciudad2 = new Ciudad("ASUNCION");
         Ciudad ciudad3 = new Ciudad("LAMBARE");
         Ciudad ciudad4 = new Ciudad("SAN LORENZO");
-        addPersonQuery.insertCity(ciudad1);
-        addPersonQuery.insertCity(ciudad2);
-        addPersonQuery.insertCity(ciudad3);
-        addPersonQuery.insertCity(ciudad4);
+        employParamQuery.insertCity(ciudad1);
+        employParamQuery.insertCity(ciudad2);
+        employParamQuery.insertCity(ciudad3);
+        employParamQuery.insertCity(ciudad4);
 
         Pais paisSinAsignar = new Pais("SIN ASIGNAR");
         Pais paisArgentina = new Pais("ARGENTINA");
         Pais paisParaguay = new Pais("PARAGUAY");
-        addPersonQuery.insertCountry(paisSinAsignar);
-        addPersonQuery.insertCountry(paisArgentina);
-        addPersonQuery.insertCountry(paisParaguay);
+        employParamQuery.insertCountry(paisSinAsignar);
+        employParamQuery.insertCountry(paisArgentina);
+        employParamQuery.insertCountry(paisParaguay);
 
         EstadoCivil estadoCivil1 = new EstadoCivil("SIN ASIGNAR");
         EstadoCivil estadoCivil2 = new EstadoCivil("SOLTERO/A");
         EstadoCivil estadoCivil3 = new EstadoCivil("CASADO/A");
-        addPersonQuery.insertEstadoCivil(estadoCivil1);
-        addPersonQuery.insertEstadoCivil(estadoCivil2);
-        addPersonQuery.insertEstadoCivil(estadoCivil3);
+        employParamQuery.insertEstadoCivil(estadoCivil1);
+        employParamQuery.insertEstadoCivil(estadoCivil2);
+        employParamQuery.insertEstadoCivil(estadoCivil3);
 
         Genero genero1 = new Genero("SIN ASIGNAR");
         Genero genero2 = new Genero("MASCULINO");
         Genero genero3 = new Genero("FEMENINO");
-        addPersonQuery.insertSexo(genero1);
-        addPersonQuery.insertSexo(genero2);
-        addPersonQuery.insertSexo(genero3);
+        employParamQuery.insertSexo(genero1);
+        employParamQuery.insertSexo(genero2);
+        employParamQuery.insertSexo(genero3);
 
-        Rol rol1 = new Rol("ADMINISTRADOR");
-        Rol rol2 = new Rol("VENTAS");
-        Rol rol3 = new Rol("COMPRAS");
-        addPersonQuery.insertRol(rol1);
-        addPersonQuery.insertRol(rol2);
-        addPersonQuery.insertRol(rol3);
+        Rol rolAdministrador = new Rol("ADMINISTRADOR");
+        Rol rolVentas = new Rol("VENTAS");
+        Rol rolCompras = new Rol("COMPRAS");
+        RoleQueryHandler queryHandler = new RoleQueryHandler();
+        queryHandler.insertRol(rolAdministrador);
+        queryHandler.insertRol(rolVentas);
+        queryHandler.insertRol(rolCompras);
         ArrayList<Rol> roles = new ArrayList<>();
-        roles.add(rol1);
-        roles.add(rol2);
-        roles.add(rol3);
+        roles.add(rolAdministrador);
+        roles.add(rolVentas);
+        roles.add(rolCompras);
 
         EmpleadoEstado empleadoEstadoActivo = new EmpleadoEstado("ACTIVO");
         EmpleadoEstado empleadoEstadoInactivo = new EmpleadoEstado("INACTIVO");
-        addPersonQuery.insertEmployStatus(empleadoEstadoActivo);
-        addPersonQuery.insertEmployStatus(empleadoEstadoInactivo);
-
+        employParamQuery.insertEmployStatus(empleadoEstadoActivo);
+        employParamQuery.insertEmployStatus(empleadoEstadoInactivo);
 
         Empleado employ = new Empleado();
         employ.setNombre("Ramiro");
@@ -124,6 +128,26 @@ public class Main {
         employ.setEmpleadoEstado(empleadoEstadoActivo);
         employ.setObservacion("Sin observaciones");
 
-        addPersonQuery.insertEmpleado(employ);
+        employParamQuery.insertEmpleado(employ);
+
+        RoleManagmentQueryHandler roleQueryHandler = new RoleManagmentQueryHandler();
+        Menu gestionEmpleadoMenu = new Menu("Gestion Empleado");
+        MenuItem crearEmpleado = new MenuItem("Crear empleado", gestionEmpleadoMenu);
+        MenuItem modificarEmpleado = new MenuItem("Modificar empleado", gestionEmpleadoMenu);
+        MenuItem eliminarEmpleado = new MenuItem("Cambiar estado empleado", gestionEmpleadoMenu);
+        MenuItem buscarEmpleado = new MenuItem("Buscar empleado", gestionEmpleadoMenu);
+        MenuItem cambiarPasswordEmpleado = new MenuItem("Cambiar password empleado", gestionEmpleadoMenu);
+        MenuItem gestionRol = new MenuItem("Gestion rol", gestionEmpleadoMenu);
+
+        roleQueryHandler.insertMenu(gestionEmpleadoMenu);
+        roleQueryHandler.insertMenuItem(crearEmpleado);
+        roleQueryHandler.insertMenuItem(modificarEmpleado);
+        roleQueryHandler.insertMenuItem(eliminarEmpleado);
+        roleQueryHandler.insertMenuItem(buscarEmpleado);
+        roleQueryHandler.insertMenuItem(cambiarPasswordEmpleado);
+        roleQueryHandler.insertMenuItem(gestionRol);
+
+        roleQueryHandler.addMenuItemIntoRole(rolCompras, crearEmpleado);
     }
+
 }

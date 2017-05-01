@@ -5,9 +5,10 @@
 package com.ramiro.gestionusuario.ui.empleado;
 
 import com.ramiro.gestionusuario.model.Empleado;
-import com.ramiro.gestionusuario.service.GestionEmpleadoService;
+import com.ramiro.gestionusuario.service.EmployManagmentService;
 import com.ramiro.gestionusuario.serviceImpl.GestionEmpleadoServiceImpl;
 import com.ramiro.gestionusuario.tableModel.EmpleadoTableModel;
+import com.ramiro.gestionusuario.ui.empleado.gestionrol.RoleManagement;
 import com.ramiro.gestionusuario.ui.inicio.App;
 import com.ramiro.gestionusuario.util.CommonFormat;
 import com.ramiro.gestionusuario.util.EmpleadoUIConstants;
@@ -94,7 +95,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
     public JCheckBox jckbNombreApellido, jckbCedula;
     public JRadioButton jrbExclusivo, jrbInclusivo;
     App app;
-    GestionEmpleadoService service;
+    EmployManagmentService service;
     EmpleadoTableModel empleadoTableModel;
 
     public GestionEmpleado(App app) {
@@ -434,6 +435,11 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         }
     }
 
+    private void createRoleManagementForm() {
+        RoleManagement gesRol = new RoleManagement(this.app);
+        gesRol.mostrarVista();
+    }
+
     private void createUpdateEmployForm() {
         int fila = this.jtUsuario.getSelectedRow();
         if (fila > -1) {
@@ -464,6 +470,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
             createChangeEmployStatusForm();
         } else if (src.equals(jbCambiarPassword)) {
         } else if (src.equals(jbGestionRol)) {
+            createRoleManagementForm();
         } else if (src.equals(jckbCedula)) {
             checkFilterCedula();
         } else if (src.equals(jckbNombreApellido)) {

@@ -5,7 +5,7 @@
 package com.ramiro.gestionusuario.serviceImpl;
 
 import com.ramiro.gestionusuario.model.Ciudad;
-import com.ramiro.gestionusuario.model.EntityHandler.EmployParamQuery;
+import com.ramiro.gestionusuario.model.EntityHandler.EmployParamQueryHandler;
 import com.ramiro.gestionusuario.model.Pais;
 import com.ramiro.gestionusuario.service.EmployParamService;
 import java.util.List;
@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class EmployParamServiceImpl implements EmployParamService {
 
-    private EmployParamQuery employQuery;
+    private EmployParamQueryHandler employQuery;
 
     public EmployParamServiceImpl() {
-        this.employQuery = new EmployParamQuery();
+        this.employQuery = new EmployParamQueryHandler();
     }
 
     @Override

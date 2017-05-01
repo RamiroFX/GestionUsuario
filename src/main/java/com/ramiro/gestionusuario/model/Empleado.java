@@ -64,10 +64,10 @@ public class Empleado extends Persona implements Serializable {
     private Rol rol;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "EMPLEADO_ROL",
-            joinColumns =
-            @JoinColumn(name = "idPersona"),
-            inverseJoinColumns =
-            @JoinColumn(name = "idRol"))
+            joinColumns
+            = @JoinColumn(name = "id_persona"),
+            inverseJoinColumns
+            = @JoinColumn(name = "id_rol"))
     private List<Rol> roles;
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_empleado_estado", nullable = false)

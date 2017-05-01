@@ -4,6 +4,11 @@
  */
 package com.ramiro.gestionusuario.ui.empleado.gestionrol;
 
+import com.ramiro.gestionusuario.callback.CreateRoleCallback;
+import com.ramiro.gestionusuario.service.RoleMagamentService;
+import com.ramiro.gestionusuario.serviceImpl.RoleManagmentServiceImpl;
+import com.ramiro.gestionusuario.tableModel.RolTableModel;
+import com.ramiro.gestionusuario.tableModel.RoleAccessTableModel;
 import com.ramiro.gestionusuario.util.GestionRolConstants;
 import com.ramiro.gestionusuario.util.PackColumn;
 import java.awt.BorderLayout;
@@ -26,23 +31,33 @@ import javax.swing.border.TitledBorder;
  *
  * @author Ramiro Ferreira
  */
-public class GestionRol extends JDialog implements ActionListener, MouseListener {
+public class RoleManagement extends JDialog implements ActionListener, MouseListener, CreateRoleCallback {
 
     private JPanel jpRoles, jpPermisos;
     private JScrollPane jspRoles, jspPermisos;
     public JTable jtRoles, jtPermisos;
     public JButton jbCrearRol, jbModificarRol, jbEliminarRol;
+    private RoleMagamentService service;
+    private RolTableModel roleTableModel;
+    private RoleAccessTableModel roleAccessTableModel;
 
-    public GestionRol(JFrame frame) {
+    public RoleManagement(JFrame frame) {
         super(frame);
         constructWindow(frame);
         iniciarlizarVista();
+        agregarListeners();
+        initializeLogic();
+        loadData();
+
     }
 
-    public GestionRol(JDialog dialog) {
+    public RoleManagement(JDialog dialog) {
         super(dialog);
         constructWindow(dialog);
         iniciarlizarVista();
+        agregarListeners();
+        initializeLogic();
+        loadData();
     }
 
     private void constructWindow(Component frameOwner) {
@@ -76,6 +91,8 @@ public class GestionRol extends JDialog implements ActionListener, MouseListener
         jpBotones.add(this.jbCrearRol);
         jpBotones.add(this.jbModificarRol);
         jpBotones.add(this.jbEliminarRol);
+        this.jbModificarRol.setEnabled(false);
+        this.jbEliminarRol.setEnabled(false);
 
         JPanel jpTablas = new JPanel(new GridLayout(1, 2));
         jpTablas.add(this.jpRoles);
@@ -94,15 +111,17 @@ public class GestionRol extends JDialog implements ActionListener, MouseListener
     private void inicializarVista() {
         this.jbModificarRol.setEnabled(false);
         this.jbEliminarRol.setEnabled(false);
-        //this.jtRoles.setModel(this.modelo.consultarRoles(""));
     }
 
     public void mostrarVista() {
         this.setVisible(true);
     }
 
-    private void mostrarPermisos(int idRol) {
-        //this.jtPermisos.setModel(this.modelo.consultarPermisos(idRol));
+    private void mostrarPermisos() {
+        int idRol = (int) this.jtRoles.getValueAt(jtRoles.getSelectedRow(), 0);
+        this.roleAccessTableModel.setMenuItemList(service.getAllMenuItemByIdRole(idRol));
+        this.jtPermisos.setModel(roleAccessTableModel);
+        this.roleAccessTableModel.updateTable();
         PackColumn.packColumns(this.jtPermisos, 1);
     }
 
@@ -116,19 +135,9 @@ public class GestionRol extends JDialog implements ActionListener, MouseListener
     public void actionPerformed(ActionEvent ae) {
         Object e = ae.getSource();
         if (e.equals(this.jbCrearRol)) {
-            /*Crear_rol crear_rol = new Crear_rol(this.);
-             crear_rol.mostrarVista();
-             inicializarVista();*/
-        } else if (e.equals(
-                this.jbModificarRol)) {
-            int idRol = (Integer.valueOf((String) this.jtRoles.getValueAt(this.jtRoles.getSelectedRow(), 0)));
-            if (idRol == 1) {
-                JOptionPane.showMessageDialog(this, "El rol administrador no puede ser modificado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                /*Modificar_rol modificar_rol = new Modificar_rol(this, idRol);
-                 modificar_rol.mostrarVista();
-                 inicializarVista();*/
-            }
+            createRoleForm();
+        } else if (e.equals(this.jbModificarRol)) {
+            updateRoleForm();
         } else if (e.equals(this.jbEliminarRol)) {
             int idRol = (Integer.valueOf((String) this.jtRoles.getValueAt(this.jtRoles.getSelectedRow(), 0)));
             if (idRol == 1) {
@@ -143,8 +152,7 @@ public class GestionRol extends JDialog implements ActionListener, MouseListener
     public void mouseClicked(MouseEvent me) {
         int fila = this.jtRoles.rowAtPoint(me.getPoint());
         int columna = this.jtRoles.columnAtPoint(me.getPoint());
-        int idRol = (Integer.valueOf((String) this.jtRoles.getValueAt(fila, 0)));
-        mostrarPermisos(idRol);
+        mostrarPermisos();
         if ((fila > -1) && (columna > -1)) {
             this.jbModificarRol.setEnabled(true);
             this.jbEliminarRol.setEnabled(true);
@@ -153,33 +161,67 @@ public class GestionRol extends JDialog implements ActionListener, MouseListener
             this.jbEliminarRol.setEnabled(false);
         }
         if (me.getClickCount() == 2) {
-            if (idRol == 1) {
-                JOptionPane.showMessageDialog(this, "El rol administrador no puede ser modificado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                /*Modificar_rol modificar_rol = new Modificar_rol(this, idRol);
-                 modificar_rol.mostrarVista();
-                 inicializarVista();*/
-            }
+            /*if (idRol == 1) {
+             JOptionPane.showMessageDialog(this, "El rol administrador no puede ser modificado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
+             } else {
+             Modificar_rol modificar_rol = new Modificar_rol(this, idRol);
+             modificar_rol.mostrarVista();
+             inicializarVista();
+             }*/
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void initializeLogic() {
+        this.service = new RoleManagmentServiceImpl();
+        this.roleTableModel = new RolTableModel();
+        this.roleAccessTableModel = new RoleAccessTableModel();
+    }
+
+    private void loadData() {
+        this.roleTableModel.setRolList(this.service.getAllRoles());
+        this.jtRoles.setModel(roleTableModel);
+        this.roleTableModel.updateTable();
+    }
+
+    private void createRoleForm() {
+        CreateRole createRole = new CreateRole(this);
+        createRole.setCreateRoleCallback(this);
+        createRole.mostrarVista();
+    }
+
+    @Override
+    public void roleCreated() {
+        loadData();
+    }
+
+    private void updateRoleForm() {
+        int row = this.jtRoles.getSelectedRow();
+        if (row > -1) {
+            int idRol = (int) this.jtRoles.getValueAt(row, 0);
+
+        }
+        /*if (idRol == 1) {
+         JOptionPane.showMessageDialog(this, "El rol administrador no puede ser modificado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
+         } else {
+         Modificar_rol modificar_rol = new Modificar_rol(this, idRol);
+         modificar_rol.mostrarVista();
+         inicializarVista();
+         }*/
     }
 }

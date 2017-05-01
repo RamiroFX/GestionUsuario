@@ -21,9 +21,9 @@ import javax.persistence.TypedQuery;
  *
  * @author Ramiro Ferreira
  */
-public class EmployParamQuery extends AbstractQuery {
+public class EmployParamQueryHandler extends AbstractQuery {
 
-    public EmployParamQuery() {
+    public EmployParamQueryHandler() {
     }
 
     public List<Ciudad> getAllCities() {
@@ -116,11 +116,6 @@ public class EmployParamQuery extends AbstractQuery {
         EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
-    public void insertRol(Rol rol) {
-        open();
-        EntityManagerHandler.INSTANCE.getEntityManager().persist(rol);
-        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
-    }
 
     public void insertEstadoCivil(EstadoCivil estadoCivil) {
         open();

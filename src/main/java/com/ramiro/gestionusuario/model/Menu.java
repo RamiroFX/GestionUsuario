@@ -24,8 +24,17 @@ import javax.persistence.Table;
 public class Menu implements Serializable {
 
     private static long SerialVersionUID = 1L;
+
+    public static long getSerialVersionUID() {
+        return SerialVersionUID;
+    }
+
+    public static void setSerialVersionUID(long aSerialVersionUID) {
+        SerialVersionUID = aSerialVersionUID;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_menu")
     private Long idMenu;
     @Column(name = "descripcion", unique = true, nullable = false, length = 50)
     private String descripcion;
@@ -39,6 +48,30 @@ public class Menu implements Serializable {
     public Menu(String descripcion) {
         this();
         this.descripcion = descripcion;
+    }
+
+    public Long getIdMenu() {
+        return idMenu;
+    }
+
+    public void setIdMenu(Long idMenu) {
+        this.idMenu = idMenu;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public List<MenuItem> getMenuItems() {
+        return menuItems;
+    }
+
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
     }
 
 }
