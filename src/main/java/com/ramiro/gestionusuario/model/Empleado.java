@@ -36,6 +36,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "empleado.getEmpleadoByApodo", query = "SELECT e FROM Empleado e WHERE e.apodo = :apodo"),
     @NamedQuery(name = "empleado.getEmpleadoByEmail", query = "SELECT e FROM Empleado e WHERE e.email = :email"),
     @NamedQuery(name = "empleado.getEmpleadoByCedula", query = "SELECT e FROM Empleado e WHERE e.cedula = :cedula"),
+    @NamedQuery(name = "empleado.getEmpleadoByIdRol", query = "SELECT e FROM Empleado e JOIN e.roles er  WHERE er.idRol = :idRol"),
     @NamedQuery(name = "empleado.getEmpleadoByNombreApellido", query = "SELECT e FROM Empleado e WHERE LOWER(e.nombre) LIKE :criteria OR LOWER(e.apellido) LIKE :criteria")
 })
 public class Empleado extends Persona implements Serializable {
@@ -64,10 +65,10 @@ public class Empleado extends Persona implements Serializable {
     private Rol rol;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "EMPLEADO_ROL",
-            joinColumns
-            = @JoinColumn(name = "id_persona"),
-            inverseJoinColumns
-            = @JoinColumn(name = "id_rol"))
+            joinColumns =
+            @JoinColumn(name = "id_persona"),
+            inverseJoinColumns =
+            @JoinColumn(name = "id_rol"))
     private List<Rol> roles;
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_empleado_estado", nullable = false)

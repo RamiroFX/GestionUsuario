@@ -45,7 +45,7 @@ public class CreateRole extends CreateUpdateRole implements ActionListener, Mous
     private void initializeLogic() {
         this.setService(new CreateRoleServiceImpl());
         this.setSelectedRoleAccessTableModel(new RoleAccessTableModel());
-        this.setMenuItemList(new ArrayList<>());
+        this.setMenuItemList(new ArrayList<MenuItem>());
         this.getSelectedRoleAccessTableModel().setMenuItemList(getMenuItemList());
         this.getSelectedRoleAccessTableModel().updateTable();
         this.setRoleAccessTableModel(new RoleAccessTableModel());

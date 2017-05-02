@@ -1,11 +1,14 @@
 package com.ramiro.gestionusuario.ui.inicio;
 
+import com.ramiro.gestionusuario.model.EntityHandler.EntityManagerHandler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.persistence.EntityManager;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +19,8 @@ public class BarraMenu extends JMenuBar implements ActionListener {
     public JMenu jmInicio, jmAyuda, jmHerramientas;
     public JMenuItem jmiCerrar, jmiAcerca, jmiPersonalizar;
     private App frame;
+    public static final String EXIT_TEXT = "¿Esta seguro que desea salir?";
+    public static final String EXIT_TITLE = "Confirmar salida";
 
     public BarraMenu(App frame) {
         this.frame = frame;
@@ -65,7 +70,13 @@ public class BarraMenu extends JMenuBar implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if (src.equals(jmiCerrar)) {
-            System.exit(0);
+            int option = JOptionPane.showConfirmDialog(frame, EXIT_TEXT, EXIT_TITLE, JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                EntityManagerHandler.INSTANCE.shutdown();
+                frame.stopTimer();
+                System.gc();
+                System.exit(0);
+            }
         } else if (src.equals(jmiPersonalizar)) {
             new PreferenceForm(frame).setVisible(true);
         }

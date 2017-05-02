@@ -101,7 +101,6 @@ public class Main {
         ArrayList<Rol> roles = new ArrayList<>();
         roles.add(rolAdministrador);
         roles.add(rolVentas);
-        roles.add(rolCompras);
 
         EmpleadoEstado empleadoEstadoActivo = new EmpleadoEstado("ACTIVO");
         EmpleadoEstado empleadoEstadoInactivo = new EmpleadoEstado("INACTIVO");
@@ -148,6 +147,6 @@ public class Main {
         roleQueryHandler.insertMenuItem(gestionRol);
 
         roleQueryHandler.addMenuItemIntoRole(rolCompras, crearEmpleado);
-    }
 
+    }
 }

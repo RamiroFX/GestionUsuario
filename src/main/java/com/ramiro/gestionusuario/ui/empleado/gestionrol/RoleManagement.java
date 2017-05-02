@@ -41,12 +41,13 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
     private RoleMagamentService service;
     private RolTableModel roleTableModel;
     private RoleAccessTableModel roleAccessTableModel;
+    public static final String CONFIRMAR_ELIMINAR_ROL = "¿Esta seguro que desea continuar?";
 
     public RoleManagement(JFrame frame) {
         super(frame);
         constructWindow(frame);
-        iniciarlizarVista();
-        agregarListeners();
+        initializeUiComponents();
+        addListeners();
         initializeLogic();
         loadData();
 
@@ -55,8 +56,8 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
     public RoleManagement(JDialog dialog) {
         super(dialog);
         constructWindow(dialog);
-        iniciarlizarVista();
-        agregarListeners();
+        initializeUiComponents();
+        addListeners();
         initializeLogic();
         loadData();
     }
@@ -68,7 +69,7 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
         setLocationRelativeTo(frameOwner);
     }
 
-    private void iniciarlizarVista() {
+    private void initializeUiComponents() {
         this.jbCrearRol = new JButton(GestionRolConstants.CREATE_ROL);
         this.jbModificarRol = new JButton(GestionRolConstants.UPDATE_ROL);
         this.jbEliminarRol = new JButton(GestionRolConstants.DELETE_ROL);
@@ -102,16 +103,11 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
         getContentPane().add(jpBotones, BorderLayout.SOUTH);
     }
 
-    private void agregarListeners() {
+    private void addListeners() {
         this.jbCrearRol.addActionListener(this);
         this.jbModificarRol.addActionListener(this);
         this.jbEliminarRol.addActionListener(this);
         this.jtRoles.addMouseListener(this);
-    }
-
-    private void inicializarVista() {
-        this.jbModificarRol.setEnabled(false);
-        this.jbEliminarRol.setEnabled(false);
     }
 
     public void mostrarVista() {
@@ -214,11 +210,13 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
     private void deleteRol() {
         int idRol = (Integer) this.jtRoles.getValueAt(this.jtRoles.getSelectedRow(), 0);
         if (service.isInUseRole(idRol)) {
-            JOptionPane.showMessageDialog(this, "Rol en uso", "Atención", JOptionPane.WARNING_MESSAGE);
-            return;
+            JOptionPane.showMessageDialog(this, "El rol seleccionado se encuentra asignado a uno o mas empleados", "Atención", JOptionPane.WARNING_MESSAGE);
         } else {
-            service.deleteRole(idRol);
-            loadData();
+            int option = JOptionPane.showConfirmDialog(this, CONFIRMAR_ELIMINAR_ROL, "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (option == JOptionPane.YES_OPTION) {
+                service.deleteRole(idRol);
+                loadData();
+            }
         }
     }
 }

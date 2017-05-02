@@ -4,9 +4,11 @@
  */
 package com.ramiro.gestionusuario.model.EntityHandler;
 
+import com.ramiro.gestionusuario.model.Empleado;
 import com.ramiro.gestionusuario.model.Menu;
 import com.ramiro.gestionusuario.model.MenuItem;
 import com.ramiro.gestionusuario.model.Rol;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.TypedQuery;
 
@@ -34,12 +36,17 @@ public class RoleManagmentQueryHandler extends AbstractQuery {
 
     public boolean isInUseRole(int idRol) {
         open();
-        TypedQuery<Rol> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("rol.getAllRolByIds", Rol.class);
-        query.setParameter("id", idRol);
+        TypedQuery<Empleado> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("empleado.getEmpleadoByIdRol", Empleado.class);
+        query.setParameter("idRol", idRol);
         return !query.getResultList().isEmpty();
     }
 
     public void deleteRole(int idRol) {
+        open();
+        Rol rol = EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRol);
+        rol.getMenuItems().clear();
+        EntityManagerHandler.INSTANCE.getEntityManager().remove(rol);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 
     public void insertMenu(Menu menu) {
@@ -62,6 +69,8 @@ public class RoleManagmentQueryHandler extends AbstractQuery {
 
     public Rol getRoleById(int idRol) {
         open();
+
+
         return EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRol);
     }
 }

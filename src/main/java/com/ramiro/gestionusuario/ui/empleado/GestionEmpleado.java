@@ -222,7 +222,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
         jbUsuarioParametros.setFont(CommonFormat.fuente);
         jbGestionRol.setFont(CommonFormat.fuente);
 
-        jpDatos = new javax.swing.JPanel(new java.awt.GridLayout(8, 2));
+        jpDatos = new javax.swing.JPanel(new java.awt.GridLayout(8, 2, 30, 30));
         jpDatos.add(jlNombre);
         jpDatos.add(jtfNombre);
         jpDatos.add(jlApellido);
@@ -260,7 +260,7 @@ public class GestionEmpleado extends JInternalFrame implements ActionListener, M
 
         jpDatosPersonales2.add(jpDatosPersonalesVarios2, java.awt.BorderLayout.CENTER);
 
-        jpDatosEmpresariales = new javax.swing.JPanel(new java.awt.GridLayout(12, 2));
+        jpDatosEmpresariales = new javax.swing.JPanel(new java.awt.GridLayout(12, 2, 10, 10));
         jpDatosEmpresariales.add(jlAlias);
         jpDatosEmpresariales.add(jtfAlias);
         jpDatosEmpresariales.add(jlFechaIngreso);
