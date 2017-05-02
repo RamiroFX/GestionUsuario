@@ -22,4 +22,10 @@ public interface CreateRoleService {
     public void createRole(Rol rol);
 
     public MenuItem getMenuItemById(Long idMenuItem);
+
+    public void updateRole(int idRole, String descripcion);
+
+    public void addAccesToRole(int idRole, Long idMenuItem);
+
+    public void removeAccesToRole(int idRole, Long idMenuItem);
 }

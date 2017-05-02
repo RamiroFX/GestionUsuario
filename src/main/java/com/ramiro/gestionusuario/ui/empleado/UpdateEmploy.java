@@ -46,7 +46,6 @@ public class UpdateEmploy extends CreateUpdateEmploy implements ActionListener, 
     public UpdateEmploy(JFrame frame, Empleado employ) {
         super(frame);
         this.employ = employ;
-        System.out.println("pass: " + employ.getPassword());
         initializeLogic();
         initializeData();
         addListeners();

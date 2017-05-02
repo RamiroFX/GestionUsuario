@@ -24,12 +24,16 @@ import javax.swing.JOptionPane;
  *
  * @author Ramiro Ferreira
  */
-public class CreateRole extends CreateUpdateRole implements ActionListener, MouseListener {
+public class UpdateRole extends CreateUpdateRole implements ActionListener, MouseListener {
 
-    public CreateRole(JDialog dialog) {
+    private Rol role;
+
+    public UpdateRole(JDialog dialog, Rol role) {
         super(dialog);
+        this.role = role;
         initializeLogic();
         addListeners();
+        populateFields(role);
     }
 
     /**
@@ -55,33 +59,32 @@ public class CreateRole extends CreateUpdateRole implements ActionListener, Mous
         PackColumn.packColumns(this.jtPermisosDisponibles, 1);
     }
 
-    private void crearRol() {
+    private void updateRole() {
         String nombreRol = this.jtfNombreRol.getText().toUpperCase().trim();
         if (nombreRol.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Inserte un nombre de Rol", "Atención", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (this.getService().existRole(nombreRol)) {
-            JOptionPane.showMessageDialog(this, "Rol existente", "Atención", JOptionPane.WARNING_MESSAGE);
-        } else {
-            Rol rol = new Rol(nombreRol);
-            if (Validator.validar(rol, this)) {
-                rol.setMenuItems(getMenuItemList());
-                if (rol.getMenuItems().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Seleccione al menos un Acceso", "Atención", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    getService().createRole(rol);
-                    JOptionPane.showMessageDialog(this, "Rol creado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+        if (!this.role.getDescripcion().equals(nombreRol)) {
+            if (this.getService().existRole(nombreRol)) {
+                JOptionPane.showMessageDialog(this, "Rol existente", "Atención", JOptionPane.WARNING_MESSAGE);
+            } else {
+                Rol rol = new Rol(nombreRol);
+                if (Validator.validar(rol, this)) {
+                    getService().updateRole(role.getIdRol(), nombreRol);
+                    JOptionPane.showMessageDialog(this, "Rol modificado", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     getCreateRoleCallback().roleCreated();
                     this.cerrar();
                 }
             }
         }
+        this.cerrar();
     }
 
     private void agregarAcceso() {
         int fila = this.jtPermisosDisponibles.getSelectedRow();
         if (fila > -1) {
+
             Long idMenuItem = (Long) this.jtPermisosDisponibles.getValueAt(fila, 0);
             for (MenuItem menuItemList1 : getMenuItemList()) {
                 if (Objects.equals(menuItemList1.getIdMenuItem(), idMenuItem)) {
@@ -89,11 +92,13 @@ public class CreateRole extends CreateUpdateRole implements ActionListener, Mous
                     return;
                 }
             }
-            MenuItem menuItem = getService().getMenuItemById(idMenuItem);
-            this.getMenuItemList().add(menuItem);
-            this.jtPermisosSeleccionados.setModel(getSelectedRoleAccessTableModel());
-            this.getSelectedRoleAccessTableModel().updateTable();
-            PackColumn.packColumns(this.jtPermisosSeleccionados, 1);
+            int opcion = JOptionPane.showConfirmDialog(this, "Los cambios seran aplicados inmediatamente", "Atención", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (opcion == JOptionPane.OK_OPTION) {
+                getService().addAccesToRole(role.getIdRol(), idMenuItem);
+                this.jtPermisosSeleccionados.setModel(getSelectedRoleAccessTableModel());
+                this.getSelectedRoleAccessTableModel().updateTable();
+                PackColumn.packColumns(this.jtPermisosSeleccionados, 1);
+            }
         }
         this.jbAgregar.setEnabled(false);
         this.jbQuitar.setEnabled(false);
@@ -102,17 +107,21 @@ public class CreateRole extends CreateUpdateRole implements ActionListener, Mous
     private void quitarAcceso() {
         int fila = this.jtPermisosSeleccionados.getSelectedRow();
         if (fila > -1) {
-            this.getMenuItemList().remove(fila);
-            this.jtPermisosSeleccionados.setModel(getSelectedRoleAccessTableModel());
-            this.getSelectedRoleAccessTableModel().updateTable();
-            PackColumn.packColumns(this.jtPermisosSeleccionados, 1);
+            int opcion = JOptionPane.showConfirmDialog(this, "Los cambios seran aplicados inmediatamente", "Atención", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (opcion == JOptionPane.OK_OPTION) {
+                Long idMenuItem = (Long) this.jtPermisosSeleccionados.getValueAt(fila, 0);
+                getService().removeAccesToRole(role.getIdRol(), idMenuItem);
+                this.jtPermisosSeleccionados.setModel(getSelectedRoleAccessTableModel());
+                this.getSelectedRoleAccessTableModel().updateTable();
+                PackColumn.packColumns(this.jtPermisosSeleccionados, 1);
+            }
         }
         this.jbAgregar.setEnabled(false);
         this.jbQuitar.setEnabled(false);
     }
 
     /**
-     * Elimina la
+     * Elimina la vista
      */
     private void cerrar() {
         this.dispose();
@@ -131,13 +140,21 @@ public class CreateRole extends CreateUpdateRole implements ActionListener, Mous
         this.jtPermisosSeleccionados.addMouseListener(this);
     }
 
+    private void populateFields(Rol role) {
+        this.jtfNombreRol.setText(role.getDescripcion());
+        this.setMenuItemList(role.getMenuItems());
+        this.getSelectedRoleAccessTableModel().setMenuItemList(this.getMenuItemList());
+        this.jtPermisosSeleccionados.setModel(this.getSelectedRoleAccessTableModel());
+        this.getSelectedRoleAccessTableModel().updateTable();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.jbCancelar)) {
             cerrar();
         }
         if (e.getSource().equals(this.jbAceptar)) {
-            crearRol();
+            updateRole();
         }
         if (e.getSource().equals(this.jbAgregar)) {
             agregarAcceso();

@@ -5,6 +5,7 @@
 package com.ramiro.gestionusuario.ui.empleado.gestionrol;
 
 import com.ramiro.gestionusuario.callback.CreateRoleCallback;
+import com.ramiro.gestionusuario.model.Rol;
 import com.ramiro.gestionusuario.service.RoleMagamentService;
 import com.ramiro.gestionusuario.serviceImpl.RoleManagmentServiceImpl;
 import com.ramiro.gestionusuario.tableModel.RolTableModel;
@@ -125,12 +126,6 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
         PackColumn.packColumns(this.jtPermisos, 1);
     }
 
-    private void eliminarRol() {
-        int idRol = Integer.valueOf(String.valueOf(this.jtRoles.getValueAt(this.jtRoles.getSelectedRow(), 0)));
-        //this.modelo.eliminarRol(idRol);
-        inicializarVista();
-    }
-
     @Override
     public void actionPerformed(ActionEvent ae) {
         Object e = ae.getSource();
@@ -139,12 +134,7 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
         } else if (e.equals(this.jbModificarRol)) {
             updateRoleForm();
         } else if (e.equals(this.jbEliminarRol)) {
-            int idRol = (Integer.valueOf((String) this.jtRoles.getValueAt(this.jtRoles.getSelectedRow(), 0)));
-            if (idRol == 1) {
-                JOptionPane.showMessageDialog(this, "El rol administrador no puede ser eliminado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                eliminarRol();
-            }
+            deleteRol();
         }
     }
 
@@ -205,23 +195,30 @@ public class RoleManagement extends JDialog implements ActionListener, MouseList
         createRole.mostrarVista();
     }
 
+    private void updateRoleForm() {
+        int row = this.jtRoles.getSelectedRow();
+        if (row > -1) {
+            int idRol = (int) this.jtRoles.getValueAt(row, 0);
+            Rol rol = service.getRoleById(idRol);
+            UpdateRole updateRole = new UpdateRole(this, rol);
+            updateRole.setCreateRoleCallback(this);
+            updateRole.mostrarVista();
+        }
+    }
+
     @Override
     public void roleCreated() {
         loadData();
     }
 
-    private void updateRoleForm() {
-        int row = this.jtRoles.getSelectedRow();
-        if (row > -1) {
-            int idRol = (int) this.jtRoles.getValueAt(row, 0);
-
+    private void deleteRol() {
+        int idRol = (Integer) this.jtRoles.getValueAt(this.jtRoles.getSelectedRow(), 0);
+        if (service.isInUseRole(idRol)) {
+            JOptionPane.showMessageDialog(this, "Rol en uso", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            service.deleteRole(idRol);
+            loadData();
         }
-        /*if (idRol == 1) {
-         JOptionPane.showMessageDialog(this, "El rol administrador no puede ser modificado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
-         } else {
-         Modificar_rol modificar_rol = new Modificar_rol(this, idRol);
-         modificar_rol.mostrarVista();
-         inicializarVista();
-         }*/
     }
 }

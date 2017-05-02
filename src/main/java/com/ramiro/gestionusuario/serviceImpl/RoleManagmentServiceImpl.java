@@ -38,4 +38,14 @@ public class RoleManagmentServiceImpl implements RoleMagamentService {
         this.handler.deleteRole(idRole);
     }
 
+    @Override
+    public Rol getRoleById(int idRol) {
+        return this.handler.getRoleById(idRol);
+    }
+
+    @Override
+    public boolean isInUseRole(int idRol) {
+        return this.handler.isInUseRole(idRol);
+    }
+
 }

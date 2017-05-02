@@ -23,13 +23,6 @@ public class RoleQueryHandler extends AbstractQuery {
         return typedQuery.getResultList().size() > 0;
     }
 
-    public boolean isInUseRole(int idRol) {
-        open();
-        TypedQuery<Rol> query = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("rol.getAllRolByIds", Rol.class);
-        query.setParameter("id", idRol);
-        return !query.getResultList().isEmpty();
-    }
-
     public void updateRole(int idRole, String descripcion) {
         open();
         Rol rol = EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRole);
@@ -54,5 +47,21 @@ public class RoleQueryHandler extends AbstractQuery {
         TypedQuery<MenuItem> empleadoEstado = EntityManagerHandler.INSTANCE.getEntityManager().createNamedQuery("menuItem.getMenuItemById", MenuItem.class);
         empleadoEstado.setParameter("idMenuItem", idMenuItem);
         return empleadoEstado.getSingleResult();
+    }
+
+    public void addAccesToRole(int idRole, Long idMenuItem) {
+        open();
+        Rol rol = EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRole);
+        MenuItem menuItem = EntityManagerHandler.INSTANCE.getEntityManager().find(MenuItem.class, idMenuItem);
+        rol.addMenuItem(menuItem);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
+    }
+
+    public void removeAccesToRole(int idRole, Long idMenuItem) {
+        open();
+        Rol rol = EntityManagerHandler.INSTANCE.getEntityManager().find(Rol.class, idRole);
+        MenuItem menuItem = EntityManagerHandler.INSTANCE.getEntityManager().find(MenuItem.class, idMenuItem);
+        rol.removeMenuItem(menuItem);
+        EntityManagerHandler.INSTANCE.getEntityTransaction().commit();
     }
 }

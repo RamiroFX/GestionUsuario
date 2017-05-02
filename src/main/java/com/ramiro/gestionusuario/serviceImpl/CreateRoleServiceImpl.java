@@ -43,4 +43,19 @@ public class CreateRoleServiceImpl implements CreateRoleService {
         return this.roleQueryHandler.getMenuItemById(idMenuItem);
     }
 
+    @Override
+    public void updateRole(int idRole, String descripcion) {
+        this.roleQueryHandler.updateRole(idRole, descripcion);
+    }
+
+    @Override
+    public void addAccesToRole(int idRole, Long idMenuItem) {
+        this.roleQueryHandler.addAccesToRole(idRole, idMenuItem);
+    }
+
+    @Override
+    public void removeAccesToRole(int idRole, Long idMenuItem) {
+        this.roleQueryHandler.removeAccesToRole(idRole, idMenuItem);
+    }
+
 }

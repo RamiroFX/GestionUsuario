@@ -20,4 +20,8 @@ public interface RoleMagamentService {
     public List<MenuItem> getAllMenuItemByIdRole(int idRole);
 
     public void deleteRole(int idRole);
+
+    public Rol getRoleById(int idRol);
+
+    public boolean isInUseRole(int idRol);
 }
